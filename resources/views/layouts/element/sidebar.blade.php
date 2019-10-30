@@ -91,16 +91,30 @@
         <!-- Navigation -->
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a id="dashboard-id" class="nav-link" href="dashboard">
+                <a id="dashboard-id" class="nav-link" href="{{ route('dashboard') }}">
                     <i class="fa fa-tachometer-alt text-default"></i>
                     Dashboard
                 </a>
             </li>
 
             <li class="nav-item">
-                <a id="category-id" class="nav-link" href="category">
+                <a id="category-id" class="nav-link" href="{{ route('categories.index') }}">
                     <i class="fa fa-list-alt text-default"></i>
                     Category
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a id="category-id" class="nav-link" href="{{ route('units.index') }}">
+                    <i class="fa fa-list-alt text-default"></i>
+                    Unit
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a id="category-id" class="nav-link" href="{{ route('products.index') }}">
+                    <i class="fa fa-list-alt text-default"></i>
+                    Product
                 </a>
             </li>
 
@@ -116,7 +130,7 @@
         $(document).ready(function(){
 
             var url = window.location.href;
-            var urls = url.split('localhost/app-cafe/public/');
+            var urls = url.split('localhost/warungDonto/public/');
             //console.log(urls[1]);
             var param = urls[1].split('edit');
             var p = param[0].split('admin');

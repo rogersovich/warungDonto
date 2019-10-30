@@ -1,6 +1,6 @@
 @extends('layouts.element.main')
 
-@section('title', 'Categories - Add')
+@section('title', 'Produk - Edit')
 
 @section('custom-css')
     <style>
@@ -92,12 +92,12 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('categories.index') }}">
-                                    Categories
+                                <a href="{{ route('products.index') }}">
+                                    Produk
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Add
+                                Edit
                             </li>
                         </ol>
                     </nav>
@@ -108,15 +108,74 @@
             </div>
         </div>
         <div class="card-body" style="background: #f7f8f9;">
-            <form action="{{ route('categories.store') }}" method="POST">
+            <form action="{{ route('products.update', $product->id) }}" method="POST">
             @csrf
+            @method('put')
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-control-label">
-                            Name Kategori
+                            Produk
                         </label>
-                        <input type="text" name="name" class="form-control form-control-alternative" placeholder="Name Categories">
+                        <input type="text" name="name" value="{{ $product->name }}" class="form-control form-control-alternative">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Kategori
+                        </label>
+                        <select name="category_id" id="category_id" class="form-control">
+                            @foreach ($categories as $c)
+                                @php
+                                    $cek = $c->id ==  $product->unit->category->id;
+                                @endphp
+                                <option value="{{ $c->id }}" {{ $cek  ? 'selected = selected' : ''  }}>
+                                    {{ $c->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Satuan
+                        </label>
+                        <select name="unit_id" id="unit_id" class="form-control">
+                            @foreach ($units as $u)
+                                @php
+                                    $cek = $u->id ==  $product->unit->id;
+                                @endphp
+                                <option value="{{ $u->id }}" {{ $cek  ? 'selected = selected' : ''  }}>
+                                    {{ $u->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Kode Barang
+                        </label>
+                        <input type="text" name="code_item" value="{{ $product->code_item }}" class="form-control form-control-alternative">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Harga
+                        </label>
+                        <input type="text" name="harga_jual" value="{{ $product->harga_jual }}" class="form-control form-control-alternative">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Stok
+                        </label>
+                        <input type="text" name="stok" value="{{ $product->stok }}" class="form-control form-control-alternative">
                     </div>
                 </div>
                 <div class="col-md-8"></div>
@@ -129,29 +188,7 @@
             </form>
         </div>
         <div class="card-footer py-4">
-          <nav aria-label="...">
-            <ul class="pagination justify-content-end mb-0">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">
-                  <i class="fas fa-angle-left"></i>
-                  <span class="sr-only">Previous</span>
-                </a>
-              </li>
-              <li class="page-item active">
-                <a class="page-link" href="#">1</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#">
-                  <i class="fas fa-angle-right"></i>
-                  <span class="sr-only">Next</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
+
         </div>
       </div>
     </div>
@@ -160,4 +197,33 @@
 
 @endsection
 
-@section('script')
+@section('scripts')
+<script>
+
+    $( document ).ready(function() {
+
+        $("#category_id").on("change",function(e){
+            var thisId = $(this).val();
+
+            $.ajax({
+                url : "{{ url('getUnits') }}/" +thisId,
+                dataType : 'json',
+                type : 'get',
+                beforeSend : function(e){
+                    $("#unit_id option").first().html('Sedang memuat data satuan...');
+                    $("#unit_id option,#district_id option").not(":first-child").remove();
+                },
+                success : function(response){
+                    console.log(response)
+                    $("#unit_id").html($("<option value=''>Pilih Satuan</option>"))
+                    $.each(response.results,function(e,i){
+                        $("#unit_id").append($("<option value='"+i.id+"'>"+i.name+"</option>"))
+                    })
+                }
+            })
+        })
+
+        });
+
+</script>
+@endsection

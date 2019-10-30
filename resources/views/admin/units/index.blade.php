@@ -1,6 +1,6 @@
 @extends('layouts.element.main')
 
-@section('title', 'Categories')
+@section('title', 'Kategori')
 
 @section('custom-css')
     <style>
@@ -38,13 +38,13 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Categories
+                                Satuan
                             </li>
                         </ol>
                     </nav>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="{{ route('categories.create') }}" class="btn btn-icon btn-neutral btn-round">
+                    <a href="{{ route('units.create') }}" class="btn btn-icon btn-neutral btn-round">
                         <span class="btn-inner--text">Add</span>
                         <span class="btn-inner--icon">
                             <i class="ni ni-fat-add"></i>
@@ -58,16 +58,18 @@
             <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Name</th>
+                    <th scope="col">Satuan</th>
+                    <th scope="col">Kategori</th>
                     <th scope="col">Action</th>
                 </tr>
                 @php
                     $no = 1;
                 @endphp
-                @foreach ($categories as $c)
+                @foreach ($units as $u)
                 <tr>
                     <td>{{ $no }}</td>
-                    <td>{{ $c->name }}</td>
+                    <td>{{ $u->name }}</td>
+                    <td>{{ $u->category->name }}</td>
                     <td>
                         <div class="dropdown">
                             <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -75,12 +77,12 @@
                             </a>
                             <div style="min-width: 6rem;" class="dropdown-menu dropdown-menu-left dropdown-menu-arrow">
                                 <div class="dropdown-item">
-                                    <a href="{{ route('categories.edit', $c->id) }}" class="badge badge-pill badge-success">
+                                    <a href="{{ route('units.edit', $u->id) }}" class="badge badge-pill badge-success">
                                         Edit
                                     </a>
                                 </div>
                                 <div class="dropdown-item">
-                                    <a href="{{ route('categories.destroy', $c->id) }}" class="badge badge-pill badge-danger">
+                                    <a href="{{ route('units.destroy', $u->id) }}" class="badge badge-pill badge-danger">
                                         Delete
                                     </a>
                                 </div>

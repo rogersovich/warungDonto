@@ -1,6 +1,6 @@
 @extends('layouts.element.main')
 
-@section('title', 'Categories - Add')
+@section('title', 'Satuan - Add')
 
 @section('custom-css')
     <style>
@@ -92,8 +92,8 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('categories.index') }}">
-                                    Categories
+                                <a href="{{ route('units.index') }}">
+                                    Satuan
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
@@ -108,15 +108,28 @@
             </div>
         </div>
         <div class="card-body" style="background: #f7f8f9;">
-            <form action="{{ route('categories.store') }}" method="POST">
+            <form action="{{ route('units.store') }}" method="POST">
             @csrf
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-control-label">
-                            Name Kategori
+                            Satuan
                         </label>
                         <input type="text" name="name" class="form-control form-control-alternative" placeholder="Name Categories">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Kategori
+                        </label>
+                        <select name="category_id" class="form-control">
+                            <option value="">Pilih Kategori</option>
+                            @foreach ($categories as $c)
+                            <option value="{{ $c->id }}">{{ $c->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-8"></div>

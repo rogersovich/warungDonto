@@ -17,6 +17,8 @@
     <link href="{{ asset('assets/argon/js/plugins/nucleo/css/nucleo.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/argon/js/plugins/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/argon/css/argon-dashboard.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('assets/css/picker.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/argon/css/font-open-sans.css') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/assets/img/logo_compact.png') }}">
@@ -47,6 +49,8 @@
     <!--   Argon JS   -->
     <script src="{{ asset('assets/argon/js/argon-dashboard.min.js') }}"></script>
     <script src="{{ asset('assets/argon/js/track-js.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dataTables.bootstrap4.min.js') }}"></script>
 
 
 

@@ -19,11 +19,34 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/admin/dashboard', function () {
-    return view('layouts.pages.app');
+Route::prefix('admin')->group(function () {
+
+    Route::get('/', 'HomeController@dashboard')->name('dashboard');
+
+    Route::resource('categories', 'CategoryController')->except([
+        'show','destroy'
+    ]);
+
+    Route::resource('products', 'ProductController')->except([
+        'show','destroy'
+    ]);
+
+    Route::resource('roles', 'RoleController')->except([
+        'show','destroy'
+    ]);
+
+    Route::resource('units', 'UnitController')->except([
+        'show','destroy'
+    ]);
+
 });
 
-Route::get('/admin/category', function () {
-    return view('admin.categories.index');
-});
+// CUSTOM
 
+
+Route::get('/getUnits/{id}', 'ApiController@getUnits')->name('getUnit');
+
+Route::get('/categories/{category}','CategoryController@destroy')->name('categories.destroy');
+Route::get('/units/{unit}','UnitController@destroy')->name('units.destroy');
+Route::get('/products/{product}','ProductController@destroy')->name('products.destroy');
+Route::get('/roles/{role}','RoleController@destroy')->name('roles.destroy');

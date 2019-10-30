@@ -1,6 +1,6 @@
 @extends('layouts.element.main')
 
-@section('title', 'Categories - Add')
+@section('title', 'Produk - Add')
 
 @section('custom-css')
     <style>
@@ -92,8 +92,8 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('categories.index') }}">
-                                    Categories
+                                <a href="{{ route('products.index') }}">
+                                    Produk
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
@@ -108,15 +108,54 @@
             </div>
         </div>
         <div class="card-body" style="background: #f7f8f9;">
-            <form action="{{ route('categories.store') }}" method="POST">
+            <form action="{{ route('products.store') }}" method="POST">
             @csrf
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-control-label">
-                            Name Kategori
+                            Produk
                         </label>
-                        <input type="text" name="name" class="form-control form-control-alternative" placeholder="Name Categories">
+                        <input type="text" name="name" class="form-control form-control-alternative" placeholder="Masukan Produk">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Kategori
+                        </label>
+                        <select name="category_id" id="category_id" class="form-control">
+                            <option value="">Pilih Kategori</option>
+                            @foreach ($categories as $c)
+                            <option value="{{ $c->id }}">{{ $c->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Satuan
+                        </label>
+                        <select name="unit_id" id="unit_id" class="form-control">
+                            <option value="">Pilih Satuan</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Harga Jual
+                        </label>
+                        <input type="text" name="harga_jual" class="form-control form-control-alternative" placeholder="Masukan Harga Jual">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Stok
+                        </label>
+                        <input type="text" name="stok" class="form-control form-control-alternative" placeholder="Masukan Stok">
                     </div>
                 </div>
                 <div class="col-md-8"></div>
@@ -160,4 +199,33 @@
 
 @endsection
 
-@section('script')
+@section('scripts')
+<script>
+
+    $( document ).ready(function() {
+
+        $("#category_id").on("change",function(e){
+            var thisId = $(this).val();
+
+            $.ajax({
+                url : "{{ url('getUnits') }}/" +thisId,
+                dataType : 'json',
+                type : 'get',
+                beforeSend : function(e){
+                    $("#unit_id option").first().html('Sedang memuat data satuan...');
+                    $("#unit_id option,#district_id option").not(":first-child").remove();
+                },
+                success : function(response){
+                    console.log(response)
+                    $("#unit_id").html($("<option value=''>Pilih Satuan</option>"))
+                    $.each(response.results,function(e,i){
+                        $("#unit_id").append($("<option value='"+i.id+"'>"+i.name+"</option>"))
+                    })
+                }
+            })
+        })
+
+        });
+
+</script>
+@endsection

@@ -1,6 +1,6 @@
 @extends('layouts.element.main')
 
-@section('title', 'Categories - Add')
+@section('title', 'Satuan - Edit')
 
 @section('custom-css')
     <style>
@@ -92,12 +92,12 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('categories.index') }}">
-                                    Categories
+                                <a href="{{ route('units.index') }}">
+                                    Satuan
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Add
+                                Edit
                             </li>
                         </ol>
                     </nav>
@@ -108,15 +108,33 @@
             </div>
         </div>
         <div class="card-body" style="background: #f7f8f9;">
-            <form action="{{ route('categories.store') }}" method="POST">
+            <form action="{{ route('units.update', $unit->id) }}" method="POST">
             @csrf
+            @method('put')
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-control-label">
-                            Name Kategori
+                            Satuan
                         </label>
-                        <input type="text" name="name" class="form-control form-control-alternative" placeholder="Name Categories">
+                        <input type="text" name="name" value="{{ $unit->name }}" class="form-control form-control-alternative" placeholder="Name Categories">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Kategori
+                        </label>
+                        <select name="category_id" class="form-control">
+                            @foreach ($categories as $c)
+                                @php
+                                    $cek = $c->id ==  $unit->category->id;
+                                @endphp
+                                <option value="{{ $c->id }}" {{ $cek  ? 'selected = selected' : ''  }}>
+                                    {{ $c->name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-8"></div>
@@ -129,29 +147,7 @@
             </form>
         </div>
         <div class="card-footer py-4">
-          <nav aria-label="...">
-            <ul class="pagination justify-content-end mb-0">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">
-                  <i class="fas fa-angle-left"></i>
-                  <span class="sr-only">Previous</span>
-                </a>
-              </li>
-              <li class="page-item active">
-                <a class="page-link" href="#">1</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#">
-                  <i class="fas fa-angle-right"></i>
-                  <span class="sr-only">Next</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
+
         </div>
       </div>
     </div>
