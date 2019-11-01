@@ -13,6 +13,7 @@ class Product extends Model
         'code_item',
         'harga_jual',
         'stok',
+        'jumlah_awal',
     ];
 
     public function unit()

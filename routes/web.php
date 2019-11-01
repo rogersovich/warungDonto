@@ -51,13 +51,17 @@ Route::prefix('admin')->group(function () {
         'show','destroy'
     ]);
 
+    Route::resource('informations', 'InformationUnitController')->except([
+        'show','destroy'
+    ]);
+
 });
 
 // CUSTOM
 
 
 Route::get('/getUnits/{id}', 'ApiController@getUnits')->name('getUnit');
-Route::get('/getProduct/{id}', 'ApiController@getProduct')->name('getProduct');
+Route::get('/getConvert/{id}', 'ApiController@getConvert')->name('getConvert');
 Route::get('/handleConvert/{id}', 'ApiController@handleConvert')->name('handleConvert');
 
 Route::get('/categories/{category}','CategoryController@destroy')->name('categories.destroy');
@@ -67,3 +71,4 @@ Route::get('/roles/{role}','RoleController@destroy')->name('roles.destroy');
 Route::get('/converts/{convert}','ConvertController@destroy')->name('converts.destroy');
 Route::get('/suppliers/{supplier}','SupplierController@destroy')->name('suppliers.destroy');
 Route::get('/orders/{order}','OrderController@destroy')->name('orders.destroy');
+Route::get('/informations/{information}','InformationUnitController@destroy')->name('informations.destroy');

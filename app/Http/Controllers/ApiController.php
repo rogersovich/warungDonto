@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Unit;
 use App\Product;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-    public function getUnits($id){
+    public function getConvert($id){
 
         $unit = Unit::where('id' , $id)
             ->first();
@@ -25,9 +26,9 @@ class ApiController extends Controller
 
     }
 
-    public function getProduct($id){
+    public function getUnits($id){
 
-        $results = Product::where('unit_id' , $id)
+        $results = Unit::where('category_id' , $id)
             ->orderBy('name', 'asc')
             ->get();
 

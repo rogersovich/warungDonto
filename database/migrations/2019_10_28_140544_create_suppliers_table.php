@@ -23,6 +23,7 @@ class CreateSuppliersTable extends Migration
             $table->string('name');
             $table->integer('harga_beli');
             $table->integer('stok');
+            $table->integer('jumlah_awal');
             $table->timestamps();
         });
     }

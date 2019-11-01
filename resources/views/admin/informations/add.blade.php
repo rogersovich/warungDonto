@@ -1,6 +1,6 @@
 @extends('layouts.element.main')
 
-@section('title', 'Produk - Add')
+@section('title', 'Categories - Add')
 
 @section('custom-css')
     <style>
@@ -92,8 +92,8 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('products.index') }}">
-                                    Produk
+                                <a href="{{ route('categories.index') }}">
+                                    Categories
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
@@ -108,17 +108,9 @@
             </div>
         </div>
         <div class="card-body" style="background: #f7f8f9;">
-            <form action="{{ route('products.store') }}" method="POST">
+            <form action="{{ route('categories.store') }}" method="POST">
             @csrf
             <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label class="form-control-label">
-                            Produk
-                        </label>
-                        <input type="text" name="name" class="form-control form-control-alternative" placeholder="Masukan Produk">
-                    </div>
-                </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-control-label">
@@ -132,44 +124,42 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-control-label">
-                            Satuan
+                            Jumlah Satuan Awal
                         </label>
-                        <select name="unit_id" id="unit_id" class="form-control">
+                        <input type="text" name="jumlah_awal" readonly value="1" class="form-control form-control-alternative">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Satuan Awal
+                        </label>
+                        <select name="satuan_awal" id="satuan_awal_id" class="form-control">
                             <option value="">Pilih Satuan</option>
+
                         </select>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-control-label">
-                            Jumlah Awal
+                            Jumlah Satuan Akhir
                         </label>
-                        <select name="jumlah_awal" id="category_id" class="form-control">
-                            <option value="">Pilih Jumlah Awal</option>
-                            <option value="10">1 Bal = 10 Pack</option>
-                            <option value="15">1 Bal = 15 Pack</option>
-                            <option value="20">1 Bal = 20 Pack</option>
+                        <input type="text" name="jumlah_akhir" class="form-control form-control-alternative">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Satuan Akhir
+                        </label>
+                        <select name="satuan_akhir" id="satuan_akhir_id" class="form-control">
+                            <option value="">Pilih Satuan</option>
+
                         </select>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label class="form-control-label">
-                            Harga Jual
-                        </label>
-                        <input type="text" name="harga_jual" class="form-control form-control-alternative" placeholder="Masukan Harga Jual">
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label class="form-control-label">
-                            Stok
-                        </label>
-                        <input type="text" name="stok" class="form-control form-control-alternative" placeholder="Masukan Stok">
                     </div>
                 </div>
                 <div class="col-md-8"></div>
@@ -181,7 +171,9 @@
             </div>
             </form>
         </div>
+        <div class="card-footer py-4">
 
+        </div>
       </div>
     </div>
   </div>
@@ -202,14 +194,36 @@
                 dataType : 'json',
                 type : 'get',
                 beforeSend : function(e){
-                    $("#unit_id option").first().html('Sedang memuat data satuan...');
-                    $("#unit_id option,#district_id option").not(":first-child").remove();
+                    $("#satuan_awal_id option").first().html('Sedang memuat data satuan...');
+                    $("#satuan_awal_id option,#district_id option").not(":first-child").remove();
                 },
                 success : function(response){
                     console.log(response)
-                    $("#unit_id").html($("<option value=''>Pilih Satuan</option>"))
+                    $("#satuan_awal_id").html($("<option value=''>Pilih Satuan</option>"))
                     $.each(response.results,function(e,i){
-                        $("#unit_id").append($("<option value='"+i.id+"'>"+i.name+"</option>"))
+                        $("#satuan_awal_id").append($("<option value='"+i.id+"'>"+i.name+"</option>"))
+                    })
+                }
+            })
+        })
+
+        $("#satuan_awal_id").on("change",function(e){
+            var thisId = $(this).val();
+
+            $.ajax({
+                url : "{{ url('getConvert') }}/" +thisId,
+                dataType : 'json',
+                type : 'get',
+                beforeSend : function(e){
+                    $("#satuan_akhir_id option").first().html('Sedang memuat data satuan...');
+                    $("#satuan_akhir_id option,#district_id option").not(":first-child").remove();
+                },
+                success : function(response){
+                    console.log(response)
+                    $("#satuan_akhir_id").html($("<option value=''>Pilih Satuan</option>"))
+                    $.each(response.results,function(e,i){
+                        console.log(i);
+                        $("#satuan_akhir_id").append($("<option value='"+i.id+"'>"+i.name+"</option>"))
                     })
                 }
             })

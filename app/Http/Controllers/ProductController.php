@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\Category;
 use App\Unit;
+use App\Supplier;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -12,7 +13,6 @@ class ProductController extends Controller
 
     public function index()
     {
-        //dd('dsfds');
         $products = Product::with('Unit.Category')->latest()->paginate(25);
 
         return view('admin.products.index')->with(compact('products'));
@@ -46,6 +46,17 @@ class ProductController extends Controller
             'harga_jual' => $request['harga_jual'],
             'stok' => $request['stok'],
             'code_item' => $kdBarang,
+            'jumlah_awal' => 0,
+        ]);
+
+        Supplier::create([
+            'name' => $request['name'],
+            'category_id' => $request['category_id'],
+            'unit_id' => $request['unit_id'],
+            'harga_beli' => $request['harga_jual'],
+            'stok' => $request['stok'],
+            'code_item' => $kdBarang,
+            'jumlah_awal' => 0,
         ]);
 
         return redirect()->route('products.index');

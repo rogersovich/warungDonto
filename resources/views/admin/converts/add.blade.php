@@ -195,7 +195,7 @@
             var thisId = $(this).val();
 
             $.ajax({
-                url : "{{ url('getUnits') }}/" +thisId,
+                url : "{{ url('getConvert') }}/" +thisId,
                 dataType : 'json',
                 type : 'get',
                 beforeSend : function(e){

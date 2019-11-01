@@ -1,6 +1,6 @@
 @extends('layouts.element.main')
 
-@section('title', 'Pemasok')
+@section('title', 'Keterangan Satuan')
 
 @section('custom-css')
     <style>
@@ -38,13 +38,13 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Categories
+                                informations
                             </li>
                         </ol>
                     </nav>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="{{ route('categories.create') }}" class="btn btn-icon btn-neutral btn-round">
+                    <a href="{{ route('informations.create') }}" class="btn btn-icon btn-neutral btn-round">
                         <span class="btn-inner--text">Add</span>
                         <span class="btn-inner--icon">
                             <i class="ni ni-fat-add"></i>
@@ -59,40 +59,39 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Kategori</th>
-                    <th scope="col">Satuan</th>
-                    <th scope="col">Kode Barang</th>
-                    <th scope="col">Harga</th>
-                    <th scope="col">Stok</th>
+                    <th scope="col">Satuan Awal</th>
+                    <th scope="col">Jumlah Awal</th>
+                    <th scope="col">Satuan Akhir</th>
+                    <th scope="col">Jumlah Akhir</th>
                     <th scope="col">Action</th>
                 </tr>
+
             </thead>
             <tbody>
                 @php
                     $no = 1;
                 @endphp
-                @foreach ($suppliers as $s)
+                @foreach ($informations as $i)
                 <tr>
                     <td>{{ $no }}</td>
-                    <td>{{ ucwords($s->name) }}</td>
-                    <td>{{ $s->unit->category->name }}</td>
-                    <td>{{ $s->unit->name }}</td>
-                    <td>{{ $s->code_item }}</td>
-                    <td>{{ $s->harga_beli }}</td>
-                    <td>{{ $s->stok }}</td>
+                    <td>{{ $i->name }}</td>
+                    <td>{{ $i->satuan_awal }}</td>
+                    <td>{{ $i->jumlah_awal }}</td>
+                    <td>{{ $i->satuan_akhir }}</td>
+                    <td>{{ $i->satuan_akhir }}</td>
                     <td>
                         <div class="dropdown bd-dark">
-                            <a class="btn btn-sm btn-icon-only ln-normal text-dark mr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="btn btn-sm btn-icon-only ln-normal mr-0 text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <i class="fas fa-ellipsis-v"></i>
                             </a>
                             <div style="min-width: 6rem;" class="dropdown-menu dropdown-menu-left dropdown-menu-arrow">
                                 <div class="dropdown-item">
-                                    <a href="{{ route('suppliers.edit', $s->id) }}" class="badge badge-pill badge-success">
+                                    <a href="{{ route('informations.edit', $i->id) }}" class="badge badge-pill badge-success">
                                         Edit
                                     </a>
                                 </div>
                                 <div class="dropdown-item">
-                                    <a href="{{ route('suppliers.destroy', $s->id) }}" class="badge badge-pill badge-danger">
+                                    <a href="{{ route('informations.destroy', $i->id) }}" class="badge badge-pill badge-danger">
                                         Delete
                                     </a>
                                 </div>
@@ -108,7 +107,7 @@
           </table>
         </div>
         <div class="card-footer py-4">
-            {{ $suppliers->render() }}
+            {{ $informations->render() }}
         </div>
       </div>
     </div>

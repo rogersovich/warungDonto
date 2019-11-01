@@ -139,6 +139,13 @@
                 </a>
             </li>
 
+            <li class="nav-item">
+                <a id="information-id" class="nav-link" href="{{ route('informations.index') }}">
+                    <i class="fa fa-list-alt text-default"></i>
+                    Keterangan Satuan
+                </a>
+            </li>
+
         </ul>
 
       </div>
