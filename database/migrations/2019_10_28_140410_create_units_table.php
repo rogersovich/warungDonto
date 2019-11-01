@@ -14,9 +14,12 @@ class CreateUnitsTable extends Migration
     public function up()
     {
         Schema::create('units', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->Increments('id');
+            $table->integer('category_id')->unsigned();
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->string('code_category');
+            $table->integer('tingkat');
             $table->string('name');
-            $table->integer('category_id');
             $table->timestamps();
         });
     }

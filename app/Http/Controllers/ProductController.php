@@ -13,7 +13,7 @@ class ProductController extends Controller
     public function index()
     {
         //dd('dsfds');
-        $products = Product::with('Unit.Category')->get();
+        $products = Product::with('Unit.Category')->latest()->paginate(25);
 
         return view('admin.products.index')->with(compact('products'));
     }
@@ -30,13 +30,22 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+
+        $kdBarang = Product::select(['code_item'])->max('code_item');
+
+        $noUrut = (int) substr($kdBarang, 5, 3);
+
+        $noUrut++;
+        $char = "BR";
+        $kdBarang = $char . sprintf("%05s", $noUrut);
+
         Product::create([
             'name' => $request['name'],
             'category_id' => $request['category_id'],
             'unit_id' => $request['unit_id'],
             'harga_jual' => $request['harga_jual'],
             'stok' => $request['stok'],
-            'code_item' => 'B0001',
+            'code_item' => $kdBarang,
         ]);
 
         return redirect()->route('products.index');

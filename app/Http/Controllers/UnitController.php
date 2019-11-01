@@ -12,7 +12,7 @@ class UnitController extends Controller
 
     public function index()
     {
-        $units = Unit::with('Category')->get();
+        $units = Unit::with('Category')->latest()->paginate(25);
 
         return view('admin.units.index')->with(compact('units'));
     }
@@ -25,9 +25,18 @@ class UnitController extends Controller
 
     public function store(Request $request)
     {
+        $kdCategory = Unit::select(['code_category'])->max('code_category');
+
+        $noUrut = (int) substr($kdCategory, 5, 3);
+
+        $noUrut++;
+        $char = "CK";
+        $kdCategory = $char . sprintf("%05s", $noUrut);
+
         Unit::create([
             'name' => $request['name'],
             'category_id' => $request['category_id'],
+            'code_category_id' => $kdCategory,
         ]);
 
         return redirect()->route('units.index');

@@ -98,23 +98,44 @@
             </li>
 
             <li class="nav-item">
-                <a id="category-id" class="nav-link" href="{{ route('categories.index') }}">
+                <a id="categorie-id" class="nav-link" href="{{ route('categories.index') }}">
                     <i class="fa fa-list-alt text-default"></i>
-                    Category
+                    Kategori
                 </a>
             </li>
 
             <li class="nav-item">
-                <a id="category-id" class="nav-link" href="{{ route('units.index') }}">
+                <a id="unit-id" class="nav-link" href="{{ route('units.index') }}">
                     <i class="fa fa-list-alt text-default"></i>
-                    Unit
+                    Satuan
                 </a>
             </li>
 
             <li class="nav-item">
-                <a id="category-id" class="nav-link" href="{{ route('products.index') }}">
+                <a id="product-id" class="nav-link" href="{{ route('products.index') }}">
                     <i class="fa fa-list-alt text-default"></i>
-                    Product
+                    Produk
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a id="convert-id" class="nav-link" href="{{ route('converts.index') }}">
+                    <i class="fa fa-list-alt text-default"></i>
+                    Convert
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a id="supplier-id" class="nav-link" href="{{ route('suppliers.index') }}">
+                    <i class="fa fa-list-alt text-default"></i>
+                    Pemasok
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a id="order-id" class="nav-link" href="{{ route('orders.index') }}">
+                    <i class="fa fa-list-alt text-default"></i>
+                    Pembelian
                 </a>
             </li>
 

@@ -14,6 +14,7 @@
 
     </style>
 
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/argon/js/plugins/nucleo/css/nucleo.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/argon/js/plugins/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/argon/css/argon-dashboard.css') }}" rel="stylesheet" />

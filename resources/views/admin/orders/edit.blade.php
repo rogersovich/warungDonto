@@ -1,6 +1,6 @@
 @extends('layouts.element.main')
 
-@section('title', 'Categories - Add')
+@section('title', 'Categories - Edit')
 
 @section('custom-css')
     <style>
@@ -97,7 +97,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Add
+                                Edit
                             </li>
                         </ol>
                     </nav>
@@ -108,15 +108,16 @@
             </div>
         </div>
         <div class="card-body" style="background: #f7f8f9;">
-            <form action="{{ route('categories.store') }}" method="POST">
+            <form action="{{ route('categories.update', $category->id) }}" method="POST">
             @csrf
+            @method('put')
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-control-label">
-                            Name Kategori
+                            Name Categories
                         </label>
-                        <input type="text" name="name" class="form-control form-control-alternative" placeholder="Name Categories">
+                        <input type="text" name="name" value="{{ $category->name }}" class="form-control form-control-alternative" placeholder="Name Categories">
                     </div>
                 </div>
                 <div class="col-md-8"></div>

@@ -92,7 +92,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('units.index') }}">
+                                <a href="{{ route('converts.index') }}">
                                     Satuan
                                 </a>
                             </li>
@@ -108,15 +108,20 @@
             </div>
         </div>
         <div class="card-body" style="background: #f7f8f9;">
-            <form action="{{ route('units.store') }}" method="POST">
+            <form action="{{ route('converts.store') }}" method="POST">
             @csrf
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-control-label">
-                            Satuan
+                            Produk
                         </label>
-                        <input type="text" name="name" class="form-control form-control-alternative" placeholder="Name Categories">
+                        <select name="product_id" id="product_id" class="form-control">
+                            <option value="">Pilih Produk</option>
+                            @foreach ($products as $p)
+                            <option value="{{ $p->id }}">{{ ucwords($p->name.' - '.$p->unit->name) }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -124,12 +129,42 @@
                         <label class="form-control-label">
                             Kategori
                         </label>
-                        <select name="category_id" class="form-control">
+                        <select name="category_id" id="category_id" class="form-control">
                             <option value="">Pilih Kategori</option>
                             @foreach ($categories as $c)
                             <option value="{{ $c->id }}">{{ $c->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Satuan Awal
+                        </label>
+                        <select name="convert_awal" id="convert_awal_id" class="form-control">
+                            <option value="">Pilih Satuan</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Satuan Akhir
+                        </label>
+                        <select name="convert_akhir" id="convert_akhir_id" class="form-control">
+                            <option value="">Pilih Satuan</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Stok
+                        </label>
+                        <input type="text" name="stok" class="form-control form-control-alternative" placeholder="Masukan Stok">
                     </div>
                 </div>
                 <div class="col-md-8"></div>
@@ -151,4 +186,75 @@
 
 @endsection
 
-@section('script')
+@section('scripts')
+<script>
+
+    $( document ).ready(function() {
+
+        $("#convert_awal_id").on("change",function(e){
+            var thisId = $(this).val();
+
+            $.ajax({
+                url : "{{ url('getUnits') }}/" +thisId,
+                dataType : 'json',
+                type : 'get',
+                beforeSend : function(e){
+                    $("#convert_akhir_id option").first().html('Sedang memuat data satuan...');
+                    $("#convert_akhir_id option,#district_id option").not(":first-child").remove();
+                },
+                success : function(response){
+                    console.log(response)
+                    $("#convert_akhir_id").html($("<option value=''>Pilih Satuan</option>"))
+                    $.each(response.results,function(e,i){
+                        console.log(i);
+                        $("#convert_akhir_id").append($("<option value='"+i.id+"'>"+i.name+"</option>"))
+                    })
+                }
+            })
+        })
+
+        $("#product_id").on("change",function(e){
+            var thisId = $(this).val();
+            $.ajax({
+                url : "{{ url('handleConvert') }}/" +thisId,
+                dataType : 'json',
+                type : 'get',
+                beforeSend : function(e){
+                    $("#category_id option").first().html('Sedang memuat data satuan...');
+                    $("#category_id option").not(":first-child").remove();
+                },
+                success : function(response){
+                    //  console.log(response)
+                    $("#category_id").html($("<option value=''>Pilih Satuan</option>"))
+                    $.each(response.results,function(e,i){
+                        $("#category_id").append($("<option value='"+i.unit.category.id+"'>"+i.unit.category.name+"</option>"))
+                    })
+                }
+            })
+        })
+
+        $("#product_id").on("change",function(e){
+            var thisId = $(this).val();
+
+            $.ajax({
+                url : "{{ url('handleConvert') }}/" +thisId,
+                dataType : 'json',
+                type : 'get',
+                beforeSend : function(e){
+                    $("#convert_awal_id option").first().html('Sedang memuat data satuan...');
+                    $("#convert_awal_id option,#district_id option").not(":first-child").remove();
+                },
+                success : function(response){
+                    // console.log(response)
+                    $("#convert_awal_id").html($("<option value=''>Pilih Satuan</option>"))
+                    $.each(response.results,function(e,i){
+                        $("#convert_awal_id").append($("<option value='"+i.unit.id+"'>"+i.unit.name+'    - '+i.stok+"</option>"))
+                    })
+                }
+            })
+        })
+
+        });
+
+</script>
+@endsection
