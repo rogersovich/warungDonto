@@ -6,6 +6,7 @@ use App\Product;
 use App\Category;
 use App\Unit;
 use App\Supplier;
+use App\InformationUnit;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -23,8 +24,9 @@ class ProductController extends Controller
         $products = Product::all();
         $units = Unit::all();
         $categories = Category::all();
+        $informations = InformationUnit::all();
 
-        return view('admin.products.add')->with(compact('products','units','categories'));
+        return view('admin.products.add')->with(compact('products','units','categories','informations'));
     }
 
 
@@ -46,17 +48,16 @@ class ProductController extends Controller
             'harga_jual' => $request['harga_jual'],
             'stok' => $request['stok'],
             'code_item' => $kdBarang,
-            'jumlah_awal' => 0,
+            'information_unit_id' => $request->information_unit_id,
         ]);
 
+        $getProduct = Product::orderBy('name', 'desc')->first();
+
+        //dd($getProduct);
+
         Supplier::create([
-            'name' => $request['name'],
-            'category_id' => $request['category_id'],
-            'unit_id' => $request['unit_id'],
-            'harga_beli' => $request['harga_jual'],
-            'stok' => $request['stok'],
-            'code_item' => $kdBarang,
-            'jumlah_awal' => 0,
+            'product_id' => $getProduct->id,
+            'harga_beli' => 0,
         ]);
 
         return redirect()->route('products.index');

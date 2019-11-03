@@ -112,16 +112,16 @@
             </li>
 
             <li class="nav-item">
-                <a id="product-id" class="nav-link" href="{{ route('products.index') }}">
+                <a id="information-id" class="nav-link" href="{{ route('informations.index') }}">
                     <i class="fa fa-list-alt text-default"></i>
-                    Produk
+                    Keterangan Satuan
                 </a>
             </li>
 
             <li class="nav-item">
-                <a id="convert-id" class="nav-link" href="{{ route('converts.index') }}">
+                <a id="product-id" class="nav-link" href="{{ route('products.index') }}">
                     <i class="fa fa-list-alt text-default"></i>
-                    Convert
+                    Produk
                 </a>
             </li>
 
@@ -133,16 +133,16 @@
             </li>
 
             <li class="nav-item">
-                <a id="order-id" class="nav-link" href="{{ route('orders.index') }}">
+                <a id="order-id" class="nav-link" href="#">
                     <i class="fa fa-list-alt text-default"></i>
                     Pembelian
                 </a>
             </li>
 
             <li class="nav-item">
-                <a id="information-id" class="nav-link" href="{{ route('informations.index') }}">
+                <a id="convert-id" class="nav-link" href="{{ route('converts.index') }}">
                     <i class="fa fa-list-alt text-default"></i>
-                    Keterangan Satuan
+                    Convert
                 </a>
             </li>
 

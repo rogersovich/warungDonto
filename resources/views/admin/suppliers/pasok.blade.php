@@ -1,6 +1,6 @@
 @extends('layouts.element.main')
 
-@section('title', 'Categories - Add')
+@section('title', 'Categories - Edit')
 
 @section('custom-css')
     <style>
@@ -92,12 +92,12 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('categories.index') }}">
+                                <a href="{{ route('suppliers.index') }}">
                                     Categories
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Add
+                                Edit
                             </li>
                         </ol>
                     </nav>
@@ -108,15 +108,34 @@
             </div>
         </div>
         <div class="card-body" style="background: #f7f8f9;">
-            <form action="{{ route('categories.store') }}" method="POST">
+            <form action="{{ route('suppliers.updatePasok', $suppliers->id) }}" method="POST">
             @csrf
+            @method('put')
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-control-label">
-                            Name Kategori
+                            Nama Produk
                         </label>
-                        <input type="text" name="name" class="form-control form-control-alternative" placeholder="Name Categories">
+                        <input type="text" name="name" disabled value="{{ $suppliers->product->name }}" class="form-control form-control-alternative">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Kategori
+                        </label>
+                        <input type="text" name="kategori" disabled value="{{ $suppliers->product->unit->category->name }}" class="form-control form-control-alternative">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Satuan
+                        </label>
+                        <input type="text" name="Satuan" disabled value="{{ $suppliers->product->unit->name }}" class="form-control form-control-alternative">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Jumlah
+                        </label>
+                        <input type="text" name="jumlah" value="" class="form-control form-control-alternative">
                     </div>
                 </div>
                 <div class="col-md-8"></div>
@@ -137,5 +156,3 @@
 </div>
 
 @endsection
-
-@section('script')

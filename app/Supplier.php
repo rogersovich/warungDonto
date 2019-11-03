@@ -7,18 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Supplier extends Model
 {
     protected $fillable= [
-        'name',
-        'category_id',
-        'unit_id',
-        'code_item',
+        'product_id',
         'harga_beli',
-        'stok',
-        'jumlah_awal',
     ];
 
-    public function unit()
+    public function product()
     {
-        return $this->belongsTo('App\Unit');
+        return $this->belongsTo('App\Product');
     }
 
 }

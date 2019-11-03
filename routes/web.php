@@ -47,10 +47,6 @@ Route::prefix('admin')->group(function () {
         'show','destroy'
     ]);
 
-    Route::resource('orders', 'OrderController')->except([
-        'show','destroy'
-    ]);
-
     Route::resource('informations', 'InformationUnitController')->except([
         'show','destroy'
     ]);
@@ -62,6 +58,8 @@ Route::prefix('admin')->group(function () {
 
 Route::get('/getUnits/{id}', 'ApiController@getUnits')->name('getUnit');
 Route::get('/getConvert/{id}', 'ApiController@getConvert')->name('getConvert');
+Route::get('/getProduct/{id}', 'ApiController@getProduct')->name('getProduct');
+Route::get('/getInformations/{id}', 'ApiController@getInformations')->name('getInformations');
 Route::get('/handleConvert/{id}', 'ApiController@handleConvert')->name('handleConvert');
 
 Route::get('/categories/{category}','CategoryController@destroy')->name('categories.destroy');
@@ -69,6 +67,6 @@ Route::get('/units/{unit}','UnitController@destroy')->name('units.destroy');
 Route::get('/products/{product}','ProductController@destroy')->name('products.destroy');
 Route::get('/roles/{role}','RoleController@destroy')->name('roles.destroy');
 Route::get('/converts/{convert}','ConvertController@destroy')->name('converts.destroy');
-Route::get('/suppliers/{supplier}','SupplierController@destroy')->name('suppliers.destroy');
-Route::get('/orders/{order}','OrderController@destroy')->name('orders.destroy');
+Route::put('/suppliers/{updatePasok}','SupplierController@updatePasok')->name('suppliers.updatePasok');
+Route::get('/admin/suppliers/{pasok}','SupplierController@pasok')->name('suppliers.pasok');
 Route::get('/informations/{information}','InformationUnitController@destroy')->name('informations.destroy');

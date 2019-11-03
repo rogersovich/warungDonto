@@ -15,15 +15,9 @@ class CreateSuppliersTable extends Migration
     {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->Increments('id');
-            $table->integer('category_id')->unsigned();
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->integer('unit_id')->unsigned();
-            $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
-            $table->string('code_item');
-            $table->string('name');
+            $table->integer('product_id')->unsigned();
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->integer('harga_beli');
-            $table->integer('stok');
-            $table->integer('jumlah_awal');
             $table->timestamps();
         });
     }

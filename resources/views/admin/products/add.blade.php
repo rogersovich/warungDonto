@@ -148,11 +148,9 @@
                         <label class="form-control-label">
                             Jumlah Awal
                         </label>
-                        <select name="jumlah_awal" id="category_id" class="form-control">
+                        <select name="information_unit_id" id="jumlah_awal_id" class="form-control">
                             <option value="">Pilih Jumlah Awal</option>
-                            <option value="10">1 Bal = 10 Pack</option>
-                            <option value="15">1 Bal = 15 Pack</option>
-                            <option value="20">1 Bal = 20 Pack</option>
+
                         </select>
                     </div>
                 </div>
@@ -213,9 +211,30 @@
                     })
                 }
             })
-        })
-
         });
+
+        $("#unit_id").on("change",function(e){
+            var thisId = $(this).val();
+
+            $.ajax({
+                url : "{{ url('getInformations') }}/" +thisId,
+                dataType : 'json',
+                type : 'get',
+                beforeSend : function(e){
+                    $("#jumlah_awal_id option").first().html('Sedang memuat data jumlah awal...');
+                    $("#jumlah_awal_id option").not(":first-child").remove();
+                },
+                success : function(response){
+                    console.log(response)
+                    $("#jumlah_awal_id").html($("<option value=''>Pilih Jumlah Awal Satuan</option>"))
+                    $.each(response.results,function(e,i){
+                        $("#jumlah_awal_id").append($("<option value='"+i.id+"'>"+i.jumlah_awal+' '+i.unit_one.name+' = '+i.jumlah_akhir+' '+i.unit_two.name+"</option>"))
+                    })
+                }
+            })
+        });
+
+    });
 
 </script>
 @endsection

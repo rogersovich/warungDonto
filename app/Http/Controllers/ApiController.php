@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Unit;
 use App\Product;
+use App\InformationUnit;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -31,6 +32,33 @@ class ApiController extends Controller
         $results = Unit::where('category_id' , $id)
             ->orderBy('name', 'asc')
             ->get();
+
+        return response()->json([
+            'results' => $results
+        ]);
+
+    }
+
+    public function getInformations($id){
+
+        $results = InformationUnit::with(['UnitOne','UnitTwo'])
+            ->where('satuan_awal_id' , $id)
+            ->orderBy('id', 'asc')
+            ->get();
+
+        return response()->json([
+            'results' => $results
+        ]);
+
+    }
+
+    public function getProduct($id){
+
+        $results = Product::with(['InformationUnit.UnitOne','InformationUnit.UnitTwo'])
+            ->where('id' , $id)
+            ->orderBy('name', 'asc')
+            ->get();
+
 
         return response()->json([
             'results' => $results

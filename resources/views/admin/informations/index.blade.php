@@ -58,7 +58,7 @@
             <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Name</th>
+                    <th scope="col">Kategori</th>
                     <th scope="col">Satuan Awal</th>
                     <th scope="col">Jumlah Awal</th>
                     <th scope="col">Satuan Akhir</th>
@@ -74,11 +74,11 @@
                 @foreach ($informations as $i)
                 <tr>
                     <td>{{ $no }}</td>
-                    <td>{{ $i->name }}</td>
-                    <td>{{ $i->satuan_awal }}</td>
+                    <td>{{ $i->category->name }}</td>
+                    <td>{{ $i->unitOne->name }}</td>
                     <td>{{ $i->jumlah_awal }}</td>
-                    <td>{{ $i->satuan_akhir }}</td>
-                    <td>{{ $i->satuan_akhir }}</td>
+                    <td>{{ $i->unitTwo->name }}</td>
+                    <td>{{ $i->jumlah_akhir }}</td>
                     <td>
                         <div class="dropdown bd-dark">
                             <a class="btn btn-sm btn-icon-only ln-normal mr-0 text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

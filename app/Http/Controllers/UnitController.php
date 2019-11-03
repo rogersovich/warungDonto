@@ -25,18 +25,26 @@ class UnitController extends Controller
 
     public function store(Request $request)
     {
-        $kdCategory = Unit::select(['code_category'])->max('code_category');
+        $kdUnit = Unit::select(['code_unit'])->max('code_unit');
 
-        $noUrut = (int) substr($kdCategory, 5, 3);
+        $noUrut = (int) substr($kdUnit, 5, 3);
 
         $noUrut++;
         $char = "CK";
-        $kdCategory = $char . sprintf("%05s", $noUrut);
+        $kdUnit = $char . sprintf("%05s", $noUrut);
+
+        $tingkat = Unit::where('category_id', (int)$request->category_id)
+            ->select('tingkat')
+            ->max('tingkat');
+
+        $tingkat++;
+        // dd($tingkat);
 
         Unit::create([
             'name' => $request['name'],
             'category_id' => $request['category_id'],
-            'code_category_id' => $kdCategory,
+            'code_unit' => $kdUnit,
+            'tingkat' => $tingkat,
         ]);
 
         return redirect()->route('units.index');

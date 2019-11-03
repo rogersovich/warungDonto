@@ -10,15 +10,21 @@ class Product extends Model
         'name',
         'category_id',
         'unit_id',
+        'information_unit_id',
         'code_item',
         'harga_jual',
         'stok',
-        'jumlah_awal',
+
     ];
 
     public function unit()
     {
         return $this->belongsTo('App\Unit');
+    }
+
+    public function informationUnit()
+    {
+        return $this->belongsTo('App\InformationUnit');
     }
 
 }

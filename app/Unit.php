@@ -9,7 +9,8 @@ class Unit extends Model
     protected $fillable= [
         'name',
         'category_id',
-        'code_category',
+        'code_unit',
+        'tingkat',
     ];
 
     public function category()

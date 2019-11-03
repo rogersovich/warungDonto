@@ -17,7 +17,7 @@ class CreateUnitsTable extends Migration
             $table->Increments('id');
             $table->integer('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->string('code_category');
+            $table->string('code_unit');
             $table->integer('tingkat');
             $table->string('name');
             $table->timestamps();

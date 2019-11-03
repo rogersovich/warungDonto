@@ -44,8 +44,8 @@
                     </nav>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="{{ route('categories.create') }}" class="btn btn-icon btn-neutral btn-round">
-                        <span class="btn-inner--text">Add</span>
+                    <a href="{{ route('products.create') }}" class="btn btn-icon btn-neutral btn-round">
+                        <span class="btn-inner--text">Tambah Barang Baru</span>
                         <span class="btn-inner--icon">
                             <i class="ni ni-fat-add"></i>
                         </span>
@@ -58,12 +58,11 @@
             <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Name</th>
+                    <th scope="col">Nama Produk</th>
                     <th scope="col">Kategori</th>
                     <th scope="col">Satuan</th>
-                    <th scope="col">Kode Barang</th>
-                    <th scope="col">Harga</th>
-                    <th scope="col">Stok</th>
+                    <th scope="col">Harga Beli</th>
+                    <th scope="col">Jumlah</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -74,12 +73,11 @@
                 @foreach ($suppliers as $s)
                 <tr>
                     <td>{{ $no }}</td>
-                    <td>{{ ucwords($s->name) }}</td>
-                    <td>{{ $s->unit->category->name }}</td>
-                    <td>{{ $s->unit->name }}</td>
-                    <td>{{ $s->code_item }}</td>
+                    <td>{{ ucwords($s->product->name) }}</td>
+                    <td>{{ $s->product->unit->category->name }}</td>
+                    <td>{{ $s->product->unit->name }}</td>
                     <td>{{ $s->harga_beli }}</td>
-                    <td>{{ $s->stok }}</td>
+                    <td>{{ $s->product->stok }}</td>
                     <td>
                         <div class="dropdown bd-dark">
                             <a class="btn btn-sm btn-icon-only ln-normal text-dark mr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -92,8 +90,8 @@
                                     </a>
                                 </div>
                                 <div class="dropdown-item">
-                                    <a href="{{ route('suppliers.destroy', $s->id) }}" class="badge badge-pill badge-danger">
-                                        Delete
+                                    <a href="{{ route('suppliers.pasok', $s->id) }}" class="badge badge-pill badge-primary">
+                                        Pasok
                                     </a>
                                 </div>
                             </div>

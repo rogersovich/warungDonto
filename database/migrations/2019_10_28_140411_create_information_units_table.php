@@ -15,11 +15,14 @@ class CreateInformationUnitsTable extends Migration
     {
         Schema::create('information_units', function (Blueprint $table) {
             $table->Increments('id');
-            $table->string('category_id');
+            $table->integer('category_id')->unsigned();
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->integer('jumlah_awal');
-            $table->string('satuan_awal');
+            $table->integer('satuan_awal_id')->unsigned();
+            $table->foreign('satuan_awal_id')->references('id')->on('units')->onDelete('cascade');
             $table->integer('jumlah_akhir');
-            $table->string('satuan_akhir');
+            $table->integer('satuan_akhir_id')->unsigned();
+            $table->foreign('satuan_akhir_id')->references('id')->on('units')->onDelete('cascade');
             $table->timestamps();
         });
     }

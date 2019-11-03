@@ -127,6 +127,15 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-control-label">
+                            Jumlah Awal
+                        </label>
+                        <select name="jumlah_awal" disabled id="jumlah_awal_id" class="form-control">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
                             Kategori
                         </label>
                         <select name="category_id" id="category_id" class="form-control">
@@ -148,6 +157,7 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-control-label">
@@ -155,7 +165,6 @@
                         </label>
                         <select name="convert_akhir" id="convert_akhir_id" class="form-control">
                             <option value="">Pilih Satuan</option>
-
                         </select>
                     </div>
                 </div>
@@ -206,12 +215,31 @@
                     console.log(response)
                     $("#convert_akhir_id").html($("<option value=''>Pilih Satuan</option>"))
                     $.each(response.results,function(e,i){
-                        console.log(i);
                         $("#convert_akhir_id").append($("<option value='"+i.id+"'>"+i.name+"</option>"))
                     })
                 }
             })
         })
+
+        $("#product_id").on("change",function(e){
+            var thisId = $(this).val();
+
+            $.ajax({
+                url : "{{ url('getProduct') }}/" +thisId,
+                dataType : 'json',
+                type : 'get',
+                beforeSend : function(e){
+                    $("#jumlah_awal_id option").first().html('Sedang memuat data jumlah awal...');
+                    $("#jumlah_awal_id option").not(":first-child").remove();
+                },
+                success : function(response){
+                    console.log(response)
+                    $.each(response.results,function(e,i){
+                        $("#jumlah_awal_id").append($("<option value='"+i.information_unit.id+"'>"+i.information_unit.jumlah_awal+' '+i.information_unit.unit_one.name+' = '+i.information_unit.jumlah_akhir+' '+i.information_unit.unit_two.name+"</option>"))
+                    })
+                }
+            })
+        });
 
         $("#product_id").on("change",function(e){
             var thisId = $(this).val();

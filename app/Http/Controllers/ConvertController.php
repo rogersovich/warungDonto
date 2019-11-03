@@ -53,12 +53,13 @@ class ConvertController extends Controller
 
         }
 
-
-
         $satuan_akhir = Unit::where('id', $request->convert_akhir)->first();
 
         $product_convert = Product::where('unit_id',$satuan_akhir->id)->first(); // stok 20 pack
-        //dd($unit);
+
+        if($product_convert == null){
+            return redirect()->route('converts.index');
+        }
 
         Product::where(['id' => $product_convert->id])->update([
             'stok' => $product_convert->stok + $stok,
@@ -79,7 +80,7 @@ class ConvertController extends Controller
             'stok' => $request->stok
         ]);
 
-        return redirect('/admin/converts');
+        return redirect()->route('converts.index');
     }
 
     public function edit(Convert $convert)
@@ -87,24 +88,11 @@ class ConvertController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Convert  $convert
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Convert $convert)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Convert  $convert
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Convert $convert)
     {
         //

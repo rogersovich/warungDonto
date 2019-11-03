@@ -92,7 +92,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('categories.index') }}">
+                                <a href="{{ route('suppliers.index') }}">
                                     Categories
                                 </a>
                             </li>
@@ -108,16 +108,46 @@
             </div>
         </div>
         <div class="card-body" style="background: #f7f8f9;">
-            <form action="{{ route('categories.update', $category->id) }}" method="POST">
+            <form action="{{ route('suppliers.update', $suppliers->id) }}" method="POST">
             @csrf
             @method('put')
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-control-label">
-                            Name Categories
+                            Nama Produk
                         </label>
-                        <input type="text" name="name" value="{{ $category->name }}" class="form-control form-control-alternative" placeholder="Name Categories">
+                        <input type="text" name="name" disabled value="{{ $suppliers->product->name }}" class="form-control form-control-alternative">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Kategori
+                        </label>
+                        <input type="text" name="kategori" disabled value="{{ $suppliers->product->unit->category->name }}" class="form-control form-control-alternative">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Satuan
+                        </label>
+                        <input type="text" name="Satuan" disabled value="{{ $suppliers->product->unit->name }}" class="form-control form-control-alternative">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Jumlah
+                        </label>
+                        <input type="text" name="jumlah" disabled value="{{ $suppliers->product->stok }}" class="form-control form-control-alternative">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Harga Jual
+                        </label>
+                        <input type="text" name="jumlah" disabled value="{{ $suppliers->product->harga_jual }}" class="form-control form-control-alternative">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Harga Beli
+                        </label>
+                        <input type="number" name="harga_beli" value="{{ $suppliers->harga_beli }}" placeholder="2xxxxxx" class="form-control form-control-alternative">
                     </div>
                 </div>
                 <div class="col-md-8"></div>

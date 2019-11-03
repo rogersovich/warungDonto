@@ -92,7 +92,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('categories.index') }}">
+                                <a href="{{ route('informations.index') }}">
                                     Categories
                                 </a>
                             </li>
@@ -108,7 +108,7 @@
             </div>
         </div>
         <div class="card-body" style="background: #f7f8f9;">
-            <form action="{{ route('categories.store') }}" method="POST">
+            <form action="{{ route('informations.store') }}" method="POST">
             @csrf
             <div class="row">
                 <div class="col-md-12">
@@ -137,7 +137,7 @@
                         <label class="form-control-label">
                             Satuan Awal
                         </label>
-                        <select name="satuan_awal" id="satuan_awal_id" class="form-control">
+                        <select name="satuan_awal_id" id="satuan_awal_id" class="form-control">
                             <option value="">Pilih Satuan</option>
 
                         </select>
@@ -156,7 +156,7 @@
                         <label class="form-control-label">
                             Satuan Akhir
                         </label>
-                        <select name="satuan_akhir" id="satuan_akhir_id" class="form-control">
+                        <select name="satuan_akhir_id" id="satuan_akhir_id" class="form-control">
                             <option value="">Pilih Satuan</option>
 
                         </select>
