@@ -38,7 +38,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Categories
+                                Laporan
                             </li>
                         </ol>
                     </nav>
@@ -49,17 +49,31 @@
             </div>
         </div>
         <div class="card-body" style="background: #f7f8f9;">
+            <form action="{{ route('reports.store') }}" method="POST">
+            @csrf
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6 p-1">
+                    <div class="col-md-12 p-1">
                         <div class="form-group">
                             <label class="form-control-label">
                                 Jenis Laporan
                             </label>
-                            <select name="jenis_laporan" id="laporan-id" required class="form-control form-control-alternative">
+                            <select name="jenis_laporan" id="jenisLaporan-id" required class="form-control form-control-alternative">
                                 <option value="">Pilih Jenis Laporan</option>
                                 <option value="mingguan">Mingguan</option>
                                 <option value="bulanan">Bulanan</option>
+                            </select>
+                        </div>
+                     </div>
+                     <div class="col-md-6 p-1" id="laporan-id">
+                        <div class="form-group">
+                            <label class="form-control-label">
+                                Laporan
+                            </label>
+                            <select name="laporan" id="select-laporan-id" required class="form-control form-control-alternative">
+                                <option value="">Pilih Laporan</option>
+                                <option value="pembelian">Pembelian</option>
+                                <option value="pasok">Pasok</option>
                             </select>
                         </div>
                      </div>
@@ -76,14 +90,15 @@
                             <label class="form-control-label">
                                 Week
                             </label>
-                            <input type="week" value="{{ $weekNow }}" name="month" class="form-control form-control-alternative">
+                            <input type="week" value="{{ $weekNow }}" name="week" class="form-control form-control-alternative">
                         </div>
                      </div>
                      <div class="col-md-12 text-right">
-                         <button type="button" class="btn btn-primary" id="button-id">Print</button>
+                         <button class="btn btn-primary" id="button-id">Print</button>
                      </div>
                 </div>
             </div>
+            </form>
         </div>
         <div class="card-footer py-4">
 
@@ -102,23 +117,29 @@
 
         $('#week-id').hide();
         $('#month-id').hide();
+        $('#laporan-id').hide();
 
-        var values = $('#laporan-id').val();
+        var values_1 = $('#jenisLaporan-id').val();
+        var values_2 = $('#select-laporan-id').val();
+        //console.log(values_2);
 
-        if(values == ''){
+        if(values_1 == ''){
             $('#button-id').prop('disabled', true);
         }else{
             $('#button-id').prop('disabled', false);
         }
 
-        $('#laporan-id').on('change', function(){
+        $('#jenisLaporan-id').on('change', function(){
             var value = $(this).val();
 
             if(value == 'mingguan'){
                 $('#button-id').prop('disabled', false);
+
+                $('#laporan-id').show();
                 $('#week-id').show();
                 $('#month-id').hide();
             }else if(value == 'bulanan'){
+                $('#laporan-id').show();
                 $('#button-id').prop('disabled', false);
                 $('#month-id').show();
                 $('#week-id').hide();
@@ -126,8 +147,27 @@
                 $('#button-id').prop('disabled', true);
                 $('#week-id').hide();
                 $('#month-id').hide();
+                $('#laporan-id').hide();
             }
 
+            if(values_2 == ''){
+                $('#button-id').prop('disabled', true);
+            }else{
+                $('#button-id').prop('disabled', false);
+            }
+
+        })
+
+        $('#select-laporan-id').on('change', function(){
+            var values = $(this).val();
+
+            if(values == 'pembelian'){
+                $('#button-id').prop('disabled', false);
+            }else if(values == 'pasok'){
+                $('#button-id').prop('disabled', false);
+            }else{
+                $('#button-id').prop('disabled', true);
+            }
         })
 
     } );

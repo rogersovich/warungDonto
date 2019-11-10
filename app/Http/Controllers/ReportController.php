@@ -58,13 +58,6 @@ class ReportController extends Controller
 
     public function print($id)
     {
-        // $calls = \DB::table('calls')
-        //     ->where('owned_by_id', $report->id)
-        //     ->whereBetween('created_at', [Carbon::now()->subWeek()->format("Y-m-d H:i:s"), Carbon::now()])
-        //     ->get();
-        // $report->callsCount = $calls->count();
-        // $week =Carbon::now()->subWeek()->format("Y-m-d");
-        // dd($week);
 
         $data = Report::find($id);
         $order_details = OrderDetail::with('Product.Unit')
@@ -72,7 +65,7 @@ class ReportController extends Controller
 
         $order = Order::where('id', $data->order_id)->first();
 
-        $pdf = PDF::loadView('pegawai_pdf', compact('data','order_details','order'));
+        $pdf = PDF::loadView('pdf.harian_pdf', compact('data','order_details','order'));
 
         return $pdf->setPaper('a4', 'landscape')->save('test.pdf')->stream('haha.pdf');
     }
@@ -80,7 +73,82 @@ class ReportController extends Controller
 
     public function store(Request $request)
     {
-        //
+        //dd($request->all());
+
+        $week = date_format(date_create($request->week), 'W');
+        $month = date_format(date_create($request->month), 'm');
+        $year = date_format(date_create($request->week), 'Y');
+        $weekNow = Carbon::now()->format('W');
+        $monthNow = Carbon::now()->format('m');
+        //dd($month);
+
+        if($request->jenis_laporan == 'mingguan'){
+
+            if($request->laporan == 'pembelian'){
+
+                if($week == $weekNow){
+                    $reports = Report::whereBetween('tanggal',[Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                    ->get();
+
+                    $pdf = PDF::loadView('pdf.mingguan_pdf', compact('reports'));
+
+                    return $pdf->setPaper('a4', 'landscape')->save('test.pdf')->stream('haha.pdf');
+
+                }else{
+                    $weekFirst = Carbon::now()->setISODate($year, $week);
+                    $weekLast = Carbon::now()->setISODate($year, $week, 7);
+                    $reports = Report::whereBetween('tanggal', [$weekFirst, $weekLast])
+                        ->get();
+
+                }
+
+            }else{
+
+                if($week == $weekNow){
+                    $reports = Report::whereBetween('tanggal',[Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                    ->get();
+
+                }else{
+                    $weekFirst = Carbon::now()->setISODate($year, $week);
+                    $weekLast = Carbon::now()->setISODate($year, $week, 7);
+                    $reports = Report::whereBetween('tanggal', [$weekFirst, $weekLast])
+                        ->get();
+
+                }
+            }
+
+        }else{
+
+            if($request->laporan == 'pembelian'){
+
+                if($month == $monthNow){
+                    $reports = Report::whereMonth('tanggal',$monthNow)
+                    ->get();
+
+                }else{
+                    $reports = Report::whereMonth('tanggal',$month)
+                    ->get();
+
+                }
+
+            }else{
+
+                if($month == $monthNow){
+                    $reports = Report::whereMonth('tanggal',$monthNow)
+                    ->get();
+
+                }else{
+                    $reports = Report::whereMonth('tanggal',$month)
+                    ->get();
+
+                }
+
+            }
+
+        }
+
+        dd($reports);
+
     }
 
     public function edit(Report $report)
