@@ -36,7 +36,7 @@
   <div class="row">
     <div class="col">
       <div class="card shadow">
-        <div class="card-header border-0">
+        <div class="card-header border-1">
             <div class="row">
                 <div class="col-8">
                     <nav aria-label="breadcrumb" class="nav-none-float">
@@ -90,8 +90,8 @@
                     <td>{{ $p->harga_jual }}</td>
                     <td>{{ $p->stok }}</td>
                     <td>
-                        <div class="dropdown bd-dark">
-                            <a class="btn btn-sm btn-icon-only ln-normal text-dark mr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="dropdown">
+                            <a class="btn btn-sm btn-icon-only pt-2 text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <i class="fas fa-ellipsis-v"></i>
                             </a>
                             <div style="min-width: 6rem;" class="dropdown-menu dropdown-menu-left dropdown-menu-arrow">
@@ -103,6 +103,11 @@
                                 <div class="dropdown-item">
                                     <a href="{{ route('products.destroy', $p->id) }}" class="badge badge-pill badge-danger">
                                         Delete
+                                    </a>
+                                </div>
+                                <div class="dropdown-item">
+                                    <a href="{{ route('carts.edit', $p->id) }}" class="badge badge-pill badge-primary">
+                                        Pesen
                                     </a>
                                 </div>
                             </div>
@@ -126,7 +131,7 @@
 
 @endsection
 
-@section('scripts')
+<script src="{{ asset('/assets/js/jquery-3.4.1.min.js') }}"></script>
 
 <script>
 
@@ -140,4 +145,3 @@
 
 </script>
 
-@endsection

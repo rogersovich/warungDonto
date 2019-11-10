@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Cart;
 
 class HomeController extends Controller
 {
@@ -28,6 +29,17 @@ class HomeController extends Controller
 
     public function dashboard()
     {
-        return view('layouts.pages.app');
+
+        $carts = Cart::with('Product')->paginate(15);
+        $harga = [];
+        foreach ($carts as $c) {
+            $harga[] = $c->qty * $c->product->harga_jual;
+        }
+
+        $subtotal = array_sum($harga);
+
+        $count = $carts->count();
+
+        return view('layouts.pages.app')->with(compact('carts','count','subtotal'));
     }
 }

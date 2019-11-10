@@ -1,6 +1,7 @@
 
 
 <nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">
+    <div class="scrollbar-inner">
     <div class="container-fluid">
       <!-- Toggler -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,7 +90,7 @@
           </div>
         </form>
         <!-- Navigation -->
-        <ul class="navbar-nav">
+        <ul class="navbar-nav pb-5">
             <li class="nav-item">
                 <a id="dashboard-id" class="nav-link" href="{{ route('dashboard') }}">
                     <i class="fa fa-tachometer-alt text-default"></i>
@@ -98,7 +99,7 @@
             </li>
 
             <li class="nav-item">
-                <a id="categorie-id" class="nav-link" href="{{ route('categories.index') }}">
+                <a id="category-id" class="nav-link" href="{{ route('categories.index') }}">
                     <i class="fa fa-list-alt text-default"></i>
                     Kategori
                 </a>
@@ -106,7 +107,7 @@
 
             <li class="nav-item">
                 <a id="unit-id" class="nav-link" href="{{ route('units.index') }}">
-                    <i class="fa fa-list-alt text-default"></i>
+                    <i class="fa fa-balance-scale text-default"></i>
                     Satuan
                 </a>
             </li>
@@ -120,7 +121,7 @@
 
             <li class="nav-item">
                 <a id="product-id" class="nav-link" href="{{ route('products.index') }}">
-                    <i class="fa fa-list-alt text-default"></i>
+                    <i class="fa fa-circle text-default"></i>
                     Produk
                 </a>
             </li>
@@ -133,7 +134,7 @@
             </li>
 
             <li class="nav-item">
-                <a id="order-id" class="nav-link" href="#">
+                <a id="order-id" class="nav-link" href="{{ route('orders.create') }}">
                     <i class="fa fa-list-alt text-default"></i>
                     Pembelian
                 </a>
@@ -146,16 +147,47 @@
                 </a>
             </li>
 
+            <li class="nav-item">
+                <a id="role-id" class="nav-link" href="{{ route('roles.index') }}">
+                    <i class="fa fa-list-alt text-default"></i>
+                    Role
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a id="account-id" class="nav-link" href="{{ route('adminAccount.index') }}">
+                    <i class="fa fa-list-alt text-default"></i>
+                    Akun
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a id="cart-id" class="nav-link" href="{{ route('carts.index') }}">
+                    <i class="fa fa-list-alt text-default"></i>
+                    Keranjang
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a id="report-id" class="nav-link" href="{{ route('reports.index') }}">
+                    <i class="fa fa-list-alt text-default"></i>
+                    Laporan
+                </a>
+            </li>
+
         </ul>
 
       </div>
     </div>
+</div>
 </nav>
 
 @section('scripts')
 
     <script>
         $(document).ready(function(){
+
+            $('.scrollbar-inner').scrollbar();
 
             var url = window.location.href;
             var urls = url.split('localhost/warungDonto/public/');
@@ -169,14 +201,46 @@
                 $('.nav-item a').removeClass('test');
                 $('#product-id i').removeClass('text-default');
                 $('#product-id').addClass('test');
+            }else if( urls[1] == 'admin/carts' || urls[1] == 'admin/carts/' || urls[1] == 'admin/carts/create' || urls[1] == 'admin/carts/'+asli[2]+'/edit' ){
+                $('.nav-item a').removeClass('test');
+                $('#cart-id i').removeClass('text-default');
+                $('#cart-id').addClass('test');
+            }else if( urls[1] == 'admin/orders' || urls[1] == 'admin/orders/' || urls[1] == 'admin/orders/create' || urls[1] == 'admin/orders/'+asli[2]+'/edit' ){
+                $('.nav-item a').removeClass('test');
+                $('#order-id i').removeClass('text-default');
+                $('#order-id').addClass('test');
+            }else if( urls[1] == 'admin/adminAccount' || urls[1] == 'admin/adminAccount/' || urls[1] == 'admin/adminAccount/create' || urls[1] == 'admin/adminAccount/'+asli[2]+'/edit' ){
+                $('.nav-item a').removeClass('test');
+                $('#account-id i').removeClass('text-default');
+                $('#account-id').addClass('test');
+            }else if( urls[1] == 'admin/converts' || urls[1] == 'admin/converts/' || urls[1] == 'admin/converts/create' || urls[1] == 'admin/converts/'+asli[2]+'/edit' ){
+                $('.nav-item a').removeClass('test');
+                $('#convert-id i').removeClass('text-default');
+                $('#convert-id').addClass('test');
+            }else if( urls[1] == 'admin/suppliers' || urls[1] == 'admin/suppliers/' || urls[1] == 'admin/suppliers/create' || urls[1] == 'admin/suppliers/'+asli[2]+'/edit' ){
+                $('.nav-item a').removeClass('test');
+                $('#supplier-id i').removeClass('text-default');
+                $('#supplier-id').addClass('test');
+            }else if( urls[1] == 'admin/informations' || urls[1] == 'admin/informations/' || urls[1] == 'admin/informations/create' || urls[1] == 'admin/informations/'+asli[2]+'/edit' ){
+                $('.nav-item a').removeClass('test');
+                $('#information-id i').removeClass('text-default');
+                $('#information-id').addClass('test');
             }else if( urls[1] == 'admin/categories' || urls[1] == 'admin/categories/' || urls[1] == 'admin/categories/create' || urls[1] == 'admin/categories/'+asli[2]+'/edit' ){
                 $('.nav-item a').removeClass('test');
                 $('#category-id i').removeClass('text-default');
                 $('#category-id').addClass('test');
+            }else if( urls[1] == 'admin/units' || urls[1] == 'admin/units/' || urls[1] == 'admin/units/create' || urls[1] == 'admin/units/'+asli[2]+'/edit' ){
+                $('.nav-item a').removeClass('test');
+                $('#unit-id i').removeClass('text-default');
+                $('#unit-id').addClass('test');
             }else if( urls[1] == 'admin/accounts' || urls[1] == 'admin/accounts/' || urls[1] == 'admin/accounts/create' || urls[1] == 'admin/accounts/'+asli[2]+'/edit' ){
                 $('.nav-item a').removeClass('test');
                 $('#account-id i').removeClass('text-default');
                 $('#account-id').addClass('test');
+            }else if( urls[1] == 'admin/reports' || urls[1] == 'admin/reports/' || urls[1] == 'admin/reports/create' || urls[1] == 'admin/reports/'+asli[2]+'/edit' ){
+                $('.nav-item a').removeClass('test');
+                $('#report-id i').removeClass('text-default');
+                $('#report-id').addClass('test');
             }else if( urls[1] == 'admin/roles' || urls[1] == 'admin/roles/' || urls[1] == 'admin/roles/create' || urls[1] == 'admin/roles/'+asli[2]+'/edit' ){
                 $('.nav-item a').removeClass('test');
                 $('#role-id i').removeClass('text-default');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\InformationUnit;
 use App\Unit;
 use App\Category;
+use App\Cart;
 use Illuminate\Http\Request;
 
 class InformationUnitController extends Controller
@@ -16,9 +17,17 @@ class InformationUnitController extends Controller
             ->latest()
             ->paginate(25);
 
-        //dd($informations);
+        $carts = Cart::with('Product')->paginate(15);
+        $harga = [];
+        foreach ($carts as $c) {
+            $harga[] = $c->qty * $c->product->harga_jual;
+        }
 
-        return view('admin.informations.index')->with(compact('informations'));
+        $subtotal = array_sum($harga);
+
+        $count = $carts->count();
+
+        return view('admin.informations.index')->with(compact('informations','carts','count','subtotal'));
     }
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Unit;
 use Illuminate\Http\Request;
 use App\Category;
+use App\Cart;
 use Carbon\Traits\Units;
 
 class UnitController extends Controller
@@ -14,7 +15,17 @@ class UnitController extends Controller
     {
         $units = Unit::with('Category')->latest()->paginate(25);
 
-        return view('admin.units.index')->with(compact('units'));
+        $carts = Cart::with('Product')->paginate(15);
+        $harga = [];
+        foreach ($carts as $c) {
+            $harga[] = $c->qty * $c->product->harga_jual;
+        }
+
+        $subtotal = array_sum($harga);
+
+        $count = $carts->count();
+
+        return view('admin.units.index')->with(compact('units','carts','count','subtotal'));
     }
 
     public function create()

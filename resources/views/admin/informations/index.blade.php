@@ -27,7 +27,7 @@
   <div class="row">
     <div class="col">
       <div class="card shadow">
-        <div class="card-header border-0">
+        <div class="card-header border-1">
             <div class="row">
                 <div class="col-8">
                     <nav aria-label="breadcrumb">
@@ -80,8 +80,8 @@
                     <td>{{ $i->unitTwo->name }}</td>
                     <td>{{ $i->jumlah_akhir }}</td>
                     <td>
-                        <div class="dropdown bd-dark">
-                            <a class="btn btn-sm btn-icon-only ln-normal mr-0 text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="dropdown">
+                            <a class="btn btn-sm btn-icon-only pt-2 text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <i class="fas fa-ellipsis-v"></i>
                             </a>
                             <div style="min-width: 6rem;" class="dropdown-menu dropdown-menu-left dropdown-menu-arrow">
@@ -116,8 +116,7 @@
 
 @endsection
 
-@section('scripts')
-
+<script src="{{ asset('/assets/js/jquery-3.4.1.min.js') }}"></script>
 <script>
 
     $(document).ready( function () {
@@ -129,5 +128,3 @@
     } );
 
 </script>
-
-@endsection

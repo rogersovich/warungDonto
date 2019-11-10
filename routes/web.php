@@ -11,15 +11,24 @@
 |
 */
 
+use App\Role;
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Route::get('/orders/struk', function () {
+//     return view('admin.orders.struk');
+// })->name('orders.struk');
+
+Route::get('/orders/struk', 'ReportController@struk')->name('orders.struk');
+Route::get('/orders/print/{id}', 'ReportController@print')->name('orders.print');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix('admin')->group(function () {
+Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('/', 'HomeController@dashboard')->name('dashboard');
 
@@ -39,6 +48,10 @@ Route::prefix('admin')->group(function () {
         'show','destroy'
     ]);
 
+    Route::resource('roles', 'RoleController')->except([
+        'show','destroy'
+    ]);
+
     Route::resource('converts', 'ConvertController')->except([
         'show','destroy'
     ]);
@@ -47,13 +60,43 @@ Route::prefix('admin')->group(function () {
         'show','destroy'
     ]);
 
+    Route::resource('adminAccount', 'AdminAccountController')->except([
+        'show','destroy'
+    ]);
+
     Route::resource('informations', 'InformationUnitController')->except([
+        'show','destroy'
+    ]);
+
+    Route::resource('carts', 'CartController')->except([
+        'show','destroy'
+    ]);
+
+    Route::resource('orders', 'OrderController')->except([
+        'show','destroy'
+    ]);
+
+    Route::resource('reports', 'ReportController')->except([
         'show','destroy'
     ]);
 
 });
 
 // CUSTOM
+
+Route::get('/signUp', function () {
+
+    $roles = Role::all();
+
+    return view('layouts.pages.register_custom', compact('roles'));
+})->name('signUp');
+
+Route::get('/signIn', function () {
+
+    return view('layouts.pages.login_custom');
+})->name('signIn');
+
+Route::post('/regiter/process', 'RegisterCustomController@register')->name('regiter.process');
 
 
 Route::get('/getUnits/{id}', 'ApiController@getUnits')->name('getUnit');
@@ -63,9 +106,13 @@ Route::get('/getInformations/{id}', 'ApiController@getInformations')->name('getI
 Route::get('/handleConvert/{id}', 'ApiController@handleConvert')->name('handleConvert');
 
 Route::get('/categories/{category}','CategoryController@destroy')->name('categories.destroy');
+Route::get('/adminAccount/{account}','AdminAccountController@destroy')->name('adminAccount.destroy');
 Route::get('/units/{unit}','UnitController@destroy')->name('units.destroy');
+Route::get('/carts/{cart}','CartController@destroy')->name('carts.destroy');
 Route::get('/products/{product}','ProductController@destroy')->name('products.destroy');
 Route::get('/roles/{role}','RoleController@destroy')->name('roles.destroy');
+Route::get('/reports/{report}','ReportController@destroy')->name('reports.destroy');
+Route::get('/orders/{order}','OrderController@destroy')->name('orders.destroy');
 Route::get('/converts/{convert}','ConvertController@destroy')->name('converts.destroy');
 Route::put('/suppliers/{updatePasok}','SupplierController@updatePasok')->name('suppliers.updatePasok');
 Route::get('/admin/suppliers/{pasok}','SupplierController@pasok')->name('suppliers.pasok');

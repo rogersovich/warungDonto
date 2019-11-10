@@ -6,6 +6,7 @@ use App\Convert;
 use App\Product;
 use App\Unit;
 use App\Category;
+use App\Cart;
 use Illuminate\Http\Request;
 
 class ConvertController extends Controller
@@ -13,10 +14,19 @@ class ConvertController extends Controller
 
     public function index()
     {
-        $converts = Convert::with('Product.Unit.Category')->latest()->paginate(10);
+        $converts = Convert::with('Product.Unit.Category', 'Product.InformationUnit')->latest()->paginate(10);
 
+        $carts = Cart::with('Product')->paginate(15);
+        $harga = [];
+        foreach ($carts as $c) {
+            $harga[] = $c->qty * $c->product->harga_jual;
+        }
 
-        return view('admin.converts.index')->with(compact('converts'));
+        $subtotal = array_sum($harga);
+
+        $count = $carts->count();
+
+        return view('admin.converts.index')->with(compact('converts','carts','count','subtotal'));
     }
 
     public function create()
@@ -33,7 +43,7 @@ class ConvertController extends Controller
 
         //dd($request->all());
 
-        $product = Product::where('id', $request->product_id)->first(); // stok 10 bal
+        $product = Product::with('InformationUnit')->where('id', $request->product_id)->first(); // stok 10 bal
 
         $unit = Unit::where('id', $request->convert_awal)->first();
 
@@ -41,17 +51,19 @@ class ConvertController extends Controller
 
         if($unit->tingkat == 1){
 
-            if($product->jumlah_awal == 10){
+            if($product->informationUnit->jumlah_akhir == 10){
                 $satuan_sebelumnya = 10;
 
                 $stok = $request->stok * $satuan_sebelumnya;
-            }elseif($product->jumlah_awal == 20){
+            }elseif($product->informationUnit->jumlah_akhir == 20){
                 $satuan_sebelumnya = 20;
 
                 $stok = $request->stok * $satuan_sebelumnya;
             }
 
         }
+
+        //dd($stok);
 
         $satuan_akhir = Unit::where('id', $request->convert_akhir)->first();
 
@@ -95,6 +107,8 @@ class ConvertController extends Controller
 
     public function destroy(Convert $convert)
     {
-        //
+        $convert->delete();
+
+        return redirect()->route('converts.index');
     }
 }

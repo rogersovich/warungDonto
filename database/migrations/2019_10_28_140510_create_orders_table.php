@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->Increments('id');
             $table->integer('code');
             $table->date('tanggal');
+            $table->string('total_harga');
             $table->string('total_bayar');
             $table->integer('kembalian');
             $table->timestamps();

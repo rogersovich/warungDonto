@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Supplier;
 use App\Product;
+use App\Cart;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
@@ -12,9 +13,18 @@ class SupplierController extends Controller
     public function index()
     {
         $suppliers = Supplier::with('Product.Unit.Category')->latest()->paginate(25);
-        //dd($suppliers);
 
-        return view('admin.suppliers.index')->with(compact('suppliers'));
+        $carts = Cart::with('Product')->paginate(15);
+        $harga = [];
+        foreach ($carts as $c) {
+            $harga[] = $c->qty * $c->product->harga_jual;
+        }
+
+        $subtotal = array_sum($harga);
+
+        $count = $carts->count();
+
+        return view('admin.suppliers.index')->with(compact('suppliers','carts','count','subtotal'));
     }
 
     public function pasok($id)

@@ -92,7 +92,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('categories.index') }}">
+                                <a href="{{ route('roles.index') }}">
                                     Categories
                                 </a>
                             </li>
@@ -108,16 +108,16 @@
             </div>
         </div>
         <div class="card-body" style="background: #f7f8f9;">
-            <form action="{{ route('categories.update', $category->id) }}" method="POST">
+            <form action="{{ route('roles.update', $role->id) }}" method="POST">
             @csrf
             @method('put')
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-control-label">
-                            Name Categories
+                            Name Role
                         </label>
-                        <input type="text" name="name" value="{{ $category->name }}" class="form-control form-control-alternative" placeholder="Name Categories">
+                        <input type="text" name="name" value="{{ $role->name }}" class="form-control form-control-alternative" placeholder="Name Role">
                     </div>
                 </div>
                 <div class="col-md-8"></div>

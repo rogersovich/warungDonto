@@ -24,4 +24,9 @@ class Convert extends Model
         return $this->belongsTo('App\Product');
     }
 
+    public function informationUnit()
+    {
+        return $this->belongsTo('App\InformationUnit');
+    }
+
 }
