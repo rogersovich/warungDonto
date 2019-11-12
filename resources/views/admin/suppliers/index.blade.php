@@ -53,10 +53,12 @@
                 </div>
             </div>
         </div>
-        <div class="table-responsive p-3">
+        <form action="{{ route('suppliers.pasok') }}" method="POST">
+        <div class="table-responsive p-3" style="background: #f7f8f9;">
           <table class="table align-items-center table-flush" id="table-category">
             <thead class="thead-light">
                 <tr>
+                    <th scope="col">No</th>
                     <th scope="col">#</th>
                     <th scope="col">Nama Produk</th>
                     <th scope="col">Kategori</th>
@@ -66,13 +68,23 @@
                     <th scope="col">Action</th>
                 </tr>
             </thead>
+
             <tbody>
                 @php
                     $no = 1;
                 @endphp
                 @foreach ($suppliers as $s)
                 <tr>
+
                     <td>{{ $no }}</td>
+                    <td>
+                        <div class="custom-control custom-control-alternative custom-checkbox mb-3">
+                            <input class="custom-control-input check-class" id="check-{{ $s->id }}" name="pasok[]" value="{{ $s->product->id }}" type="checkbox">
+                            <label class="custom-control-label pt-1" for="check-{{ $s->id }}">
+                                Pasok
+                            </label>
+                        </div>
+                    </td>
                     <td>{{ ucwords($s->product->name) }}</td>
                     <td>{{ $s->product->unit->category->name }}</td>
                     <td>{{ $s->product->unit->name }}</td>
@@ -89,11 +101,11 @@
                                         Edit
                                     </a>
                                 </div>
-                                <div class="dropdown-item">
+                                {{-- <div class="dropdown-item">
                                     <a href="{{ route('suppliers.pasok', $s->id) }}" class="badge badge-pill badge-primary">
                                         Pasok
                                     </a>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </td>
@@ -104,8 +116,16 @@
                 @endforeach
             </tbody>
           </table>
+
+            @csrf
+                <div class="col text-right">
+                    <button type="submit" class="btn btn-icon btn-primary" style="border-radius: 22px;">
+                        <span class="btn-inner--text">Submit</span>
+                    </button>
+                </div>
+            </form>
         </div>
-        <div class="card-footer py-4">
+        <div class="card-footer">
             {{ $suppliers->render() }}
         </div>
       </div>
@@ -124,6 +144,14 @@
             paging: false,
             searching: true,
         });
+
+
+
+        $('.check-class').on('change', function(){
+            var check = $(this).prop('checked');
+            var val = $(this).val()
+        })
+
     } );
 
 </script>

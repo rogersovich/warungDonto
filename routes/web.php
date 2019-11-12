@@ -21,8 +21,6 @@ Route::get('/', function () {
 //     return view('admin.orders.struk');
 // })->name('orders.struk');
 
-Route::get('/orders/struk', 'ReportController@struk')->name('orders.struk');
-Route::get('/orders/print/{id}', 'ReportController@print')->name('orders.print');
 
 Auth::routes();
 
@@ -97,6 +95,8 @@ Route::get('/signIn', function () {
 })->name('signIn');
 
 Route::post('/regiter/process', 'RegisterCustomController@register')->name('regiter.process');
+Route::get('/orders/struk', 'ReportController@struk')->name('orders.struk');
+Route::get('/orders/print/{id}', 'ReportController@print')->name('orders.print');
 
 
 Route::get('/getUnits/{id}', 'ApiController@getUnits')->name('getUnit');
@@ -115,5 +115,5 @@ Route::get('/reports/{report}','ReportController@destroy')->name('reports.destro
 Route::get('/orders/{order}','OrderController@destroy')->name('orders.destroy');
 Route::get('/converts/{convert}','ConvertController@destroy')->name('converts.destroy');
 Route::put('/suppliers/{updatePasok}','SupplierController@updatePasok')->name('suppliers.updatePasok');
-Route::get('/admin/suppliers/{pasok}','SupplierController@pasok')->name('suppliers.pasok');
+Route::post('/admin/suppliers/pasok','SupplierController@pasok')->name('suppliers.pasok');
 Route::get('/informations/{information}','InformationUnitController@destroy')->name('informations.destroy');

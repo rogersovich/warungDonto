@@ -91,7 +91,7 @@ class ProductController extends Controller
             'information_unit_id' => $request->information_unit_id,
         ]);
 
-        $getProduct = Product::orderBy('name', 'desc')->first();
+        $getProduct = Product::orderBy('id', 'desc')->first();
 
         //dd($getProduct);
 

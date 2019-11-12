@@ -27,15 +27,53 @@ class SupplierController extends Controller
         return view('admin.suppliers.index')->with(compact('suppliers','carts','count','subtotal'));
     }
 
-    public function pasok($id)
+    public function pasok(Request $request)
     {
-        // dd($id);
-        $suppliers = Supplier::with('Product.Unit.Category')
-            ->where('id', $id)
-            ->first();
+        $pasok = [];
 
-        return view('admin.suppliers.pasok')->with(compact('suppliers'));
+        foreach ($request->pasok as $val) {
+
+            $product = Product::with('Unit.Category')->find($val);
+            //dd($product);
+            $pasok[] = [
+                'id' => $product->id,
+                'name' => $product->name,
+                'unit' => $product->unit->name,
+                'category' => $product->unit->category->name
+            ];
+
+        }
+
+
+        return view('admin.suppliers.pasok', compact('pasok'));
     }
+
+    public function store(Request $request)
+    {
+        //dd($request->all());
+
+
+        foreach ($request->pasok as $val) {
+
+            $product = Product::with('Unit.Category')->find($val['id']);
+            Product::where(['id' => $val['id']])->update([
+                'stok' => $product->stok + $val['qty']
+            ]);
+
+        }
+
+
+        return redirect()->route('suppliers.index');
+    }
+
+    // public function pasok($id)
+    // {
+    //     $suppliers = Supplier::with('Product.Unit.Category')
+    //         ->where('id', $id)
+    //         ->first();
+
+    //     return view('admin.suppliers.pasok')->with(compact('suppliers'));
+    // }
 
 
     public function updatePasok(Request $request, $id)

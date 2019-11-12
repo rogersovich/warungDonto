@@ -108,37 +108,29 @@
             </div>
         </div>
         <div class="card-body" style="background: #f7f8f9;">
-            <form action="{{ route('suppliers.updatePasok', $suppliers->id) }}" method="POST">
+            <form action="{{ route('suppliers.store') }}" method="POST">
             @csrf
-            @method('put')
+            @method('post')
             <div class="row">
-                <div class="col-md-12">
+                @foreach ($pasok as $p)
+                <div class="col-md-6 p-1">
                     <div class="form-group">
                         <label class="form-control-label">
-                            Nama Produk
+                            Nama Barang
                         </label>
-                        <input type="text" name="name" disabled value="{{ $suppliers->product->name }}" class="form-control form-control-alternative">
+                        <input type="text" name="name" disabled value="{{ ucwords($p['name'].' - '.$p['unit'].' - '.$p['category']) }}" class="form-control form-control-alternative">
                     </div>
-                    <div class="form-group">
-                        <label class="form-control-label">
-                            Kategori
-                        </label>
-                        <input type="text" name="kategori" disabled value="{{ $suppliers->product->unit->category->name }}" class="form-control form-control-alternative">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-control-label">
-                            Satuan
-                        </label>
-                        <input type="text" name="Satuan" disabled value="{{ $suppliers->product->unit->name }}" class="form-control form-control-alternative">
-                    </div>
+                </div>
+                 <div class="col-md-6 p-1">
                     <div class="form-group">
                         <label class="form-control-label">
                             Jumlah
                         </label>
-                        <input type="text" name="jumlah" value="" class="form-control form-control-alternative">
+                        <input type="hidden" name="pasok[{{ $p['id'] }}][id]" value="{{ $p['id'] }}" class="form-control form-control-alternative">
+                        <input type="text" name="pasok[{{ $p['id'] }}][qty]" autofocus class="form-control form-control-alternative">
                     </div>
                 </div>
-                <div class="col-md-8"></div>
+                @endforeach
                 <div class="col text-right">
                     <button type="submit" class="btn btn-icon btn-primary" style="border-radius: 22px;">
                         <span class="btn-inner--text">Submit</span>
