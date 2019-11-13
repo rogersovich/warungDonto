@@ -19,6 +19,7 @@ class CreateReportsTable extends Migration
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->string('code_report');
             $table->string('jenis_laporan');
+            $table->date('tanggal');
             $table->timestamps();
         });
     }
