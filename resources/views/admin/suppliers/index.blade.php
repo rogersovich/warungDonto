@@ -59,13 +59,12 @@
             <thead class="thead-light">
                 <tr>
                     <th scope="col">No</th>
-                    <th scope="col">#</th>
                     <th scope="col">Nama Produk</th>
                     <th scope="col">Kategori</th>
                     <th scope="col">Satuan</th>
                     <th scope="col">Harga Beli</th>
                     <th scope="col">Jumlah</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">#</th>
                 </tr>
             </thead>
 
@@ -77,36 +76,17 @@
                 <tr>
 
                     <td>{{ $no }}</td>
-                    <td>
-                        <div class="custom-control custom-control-alternative custom-checkbox mb-3">
-                            <input class="custom-control-input check-class" id="check-{{ $s->id }}" name="pasok[]" value="{{ $s->product->id }}" type="checkbox">
-                            <label class="custom-control-label pt-1" for="check-{{ $s->id }}">
-                                Pasok
-                            </label>
-                        </div>
-                    </td>
                     <td>{{ ucwords($s->product->name) }}</td>
                     <td>{{ $s->product->unit->category->name }}</td>
                     <td>{{ $s->product->unit->name }}</td>
                     <td>{{ $s->harga_beli }}</td>
                     <td>{{ $s->product->stok }}</td>
                     <td>
-                        <div class="dropdown">
-                            <a class="btn btn-sm btn-icon-only pt-2 text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <i class="fas fa-ellipsis-v"></i>
-                            </a>
-                            <div style="min-width: 6rem;" class="dropdown-menu dropdown-menu-left dropdown-menu-arrow">
-                                <div class="dropdown-item">
-                                    <a href="{{ route('suppliers.edit', $s->id) }}" class="badge badge-pill badge-success">
-                                        Edit
-                                    </a>
-                                </div>
-                                {{-- <div class="dropdown-item">
-                                    <a href="{{ route('suppliers.pasok', $s->id) }}" class="badge badge-pill badge-primary">
-                                        Pasok
-                                    </a>
-                                </div> --}}
-                            </div>
+                        <div class="custom-control custom-control-alternative custom-checkbox mb-3">
+                            <input class="custom-control-input check-class" id="check-{{ $s->id }}" name="pasok[]" value="{{ $s->id }}" type="checkbox">
+                            <label class="custom-control-label text-primary font-weight-bold pt-1" for="check-{{ $s->id }}">
+                                Pasok
+                            </label>
                         </div>
                     </td>
                 </tr>

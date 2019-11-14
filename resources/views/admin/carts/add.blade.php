@@ -92,7 +92,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('categories.index') }}">
+                                <a href="{{ route('products.index') }}">
                                     Categories
                                 </a>
                             </li>
@@ -108,18 +108,36 @@
             </div>
         </div>
         <div class="card-body" style="background: #f7f8f9;">
-            <form action="{{ route('categories.store') }}" method="POST">
+            <form action="{{ route('carts.store') }}" method="POST">
             @csrf
             <div class="row">
-                <div class="col-md-12">
+                @foreach ($pesen as $p)
+                <div class="col-md-4 p-1">
                     <div class="form-group">
                         <label class="form-control-label">
-                            Name Kategori
+                            Nama Barang
                         </label>
-                        <input type="text" name="name" class="form-control form-control-alternative" placeholder="Name Categories">
+                        <input type="text" name="name" disabled value="{{ ucwords($p['name'].' - '.$p['unit'].' - '.$p['category']) }}" class="form-control form-control-alternative">
                     </div>
                 </div>
-                <div class="col-md-8"></div>
+                <div class="col-md-4 p-1">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Sisa Stok
+                        </label>
+                        <input type="text" name="name" disabled value="{{ $p['stok'] }}" class="form-control form-control-alternative">
+                    </div>
+                </div>
+                <div class="col-md-4 p-1">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Jumlah
+                        </label>
+                        <input type="hidden" name="pesen[{{ $p['id'] }}][id]" value="{{ $p['id'] }}" class="form-control form-control-alternative">
+                        <input type="text" name="pesen[{{ $p['id'] }}][qty]" autofocus class="form-control form-control-alternative">
+                    </div>
+                </div>
+                @endforeach
                 <div class="col text-right">
                     <button type="submit" class="btn btn-icon btn-primary" style="border-radius: 22px;">
                         <span class="btn-inner--text">Submit</span>

@@ -67,7 +67,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     ]);
 
     Route::resource('carts', 'CartController')->except([
-        'show','destroy'
+        'show','destroy','create'
     ]);
 
     Route::resource('orders', 'OrderController')->except([
@@ -109,6 +109,8 @@ Route::get('/categories/{category}','CategoryController@destroy')->name('categor
 Route::get('/adminAccount/{account}','AdminAccountController@destroy')->name('adminAccount.destroy');
 Route::get('/units/{unit}','UnitController@destroy')->name('units.destroy');
 Route::get('/carts/{cart}','CartController@destroy')->name('carts.destroy');
+Route::post('/admin/carts/','CartController@create')->name('carts.create');
+Route::post('/admin/store/','CartController@store')->name('carts.store');
 Route::get('/products/{product}','ProductController@destroy')->name('products.destroy');
 Route::get('/roles/{role}','RoleController@destroy')->name('roles.destroy');
 Route::get('/reports/{report}','ReportController@destroy')->name('reports.destroy');

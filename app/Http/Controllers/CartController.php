@@ -52,39 +52,89 @@ class CartController extends Controller
     }
 
 
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $pesen = [];
+
+        foreach ($request->pesen as $val) {
+
+            $product = Product::with('Unit.Category')->find($val);
+            //dd($product);
+            $pesen[] = [
+                'id' => $product->id,
+                'name' => $product->name,
+                'stok' => $product->stok,
+                'unit' => $product->unit->name,
+                'category' => $product->unit->category->name
+            ];
+
+            //dd($pesen);
+
+        }
+
+
+        return view('admin.carts.add', compact('pesen'));
     }
 
 
     public function store(Request $request)
     {
         //dd($request->all());
-        $cart = Cart::where('product_id', $request->product_id)->first();
-        $product = Product::where('id',$request->product_id)->first();
 
-        if($cart == null){
-            Cart::create([
-                'product_id' => $request->product_id,
-                'qty' => $request->qty
+
+        foreach ($request->pesen as $val) {
+
+            $product = Product::with('Unit.Category')->find($val['id']);
+            $cart = Cart::where('product_id', $val['id'])->first();
+
+            if($cart == null){
+                Cart::create([
+                    'product_id' => $val['id'],
+                    'qty' => $val['qty']
+                ]);
+
+            }else{
+
+                Cart::where(['id' => $cart->id])->update([
+                    'qty' => $val['qty'] + $cart->qty
+                ]);
+            }
+
+            Product::where('id', $val['id'])->update([
+                'stok' => $product->stok - $val['qty']
             ]);
 
-        }else{
-
-            Cart::where(['id' => $cart->id])->update([
-                'qty' => $request->qty + $cart->qty
-            ]);
         }
+
+
+        return redirect()->route('products.index');
+
+        //batas
+
+        // $cart = Cart::where('product_id', $request->product_id)->first();
+        // $product = Product::where('id',$request->product_id)->first();
+
+        // if($cart == null){
+        //     Cart::create([
+        //         'product_id' => $request->product_id,
+        //         'qty' => $request->qty
+        //     ]);
+
+        // }else{
+
+        //     Cart::where(['id' => $cart->id])->update([
+        //         'qty' => $request->qty + $cart->qty
+        //     ]);
+        // }
 
         //$cartBaru = Cart::where('product_id', $request->product_id)->first();
         //dd($cartBaru);
 
-        Product::where('id', $request->product_id)->update([
-            'stok' => $product->stok - $request->qty
-        ]);
+        // Product::where('id', $request->product_id)->update([
+        //     'stok' => $product->stok - $request->qty
+        // ]);
 
-        return redirect()->route('products.index');
+        //return redirect()->route('products.index');
     }
 
 

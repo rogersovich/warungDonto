@@ -113,7 +113,7 @@
             @method('post')
             <div class="row">
                 @foreach ($pasok as $p)
-                <div class="col-md-6 p-1">
+                <div class="col-md-4 p-1">
                     <div class="form-group">
                         <label class="form-control-label">
                             Nama Barang
@@ -121,7 +121,23 @@
                         <input type="text" name="name" disabled value="{{ ucwords($p['name'].' - '.$p['unit'].' - '.$p['category']) }}" class="form-control form-control-alternative">
                     </div>
                 </div>
-                 <div class="col-md-6 p-1">
+                <div class="col-md-2 p-1">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Sisa Stok
+                        </label>
+                        <input type="text" name="name" disabled value="{{ $p['stok'] }}" class="form-control form-control-alternative">
+                    </div>
+                </div>
+                <div class="col-md-3 p-1">
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Harga Beli
+                        </label>
+                        <input type="text" name="pasok[{{ $p['id'] }}][harga_beli]" value="{{ $p['harga'] }}" class="form-control form-control-alternative">
+                    </div>
+                </div>
+                 <div class="col-md-3 p-1">
                     <div class="form-group">
                         <label class="form-control-label">
                             Jumlah

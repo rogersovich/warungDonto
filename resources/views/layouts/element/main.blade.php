@@ -12,6 +12,10 @@
             color: #ffffff!important;
         }
 
+        .bd-primary{
+            border: 1px #5e72e4 solid;
+        }
+
         /*************** SCROLLBAR BASE CSS ***************/
 
     .scroll-wrapper {

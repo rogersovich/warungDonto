@@ -97,7 +97,7 @@ class ProductController extends Controller
 
         Supplier::create([
             'product_id' => $getProduct->id,
-            'harga_beli' => 0,
+            'harga_beli' => $request['harga_beli'],
         ]);
 
         return redirect()->route('products.index');

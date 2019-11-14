@@ -60,13 +60,16 @@ class SupplierController extends Controller
 
         foreach ($request->pasok as $val) {
 
-            $product = Product::with('Unit.Category')->find($val);
+            // $product = Product::with('Unit.Category')->find($val);
+            $product = Supplier::with('Product.Unit.Category')->find($val);
             //dd($product);
             $pasok[] = [
-                'id' => $product->id,
-                'name' => $product->name,
-                'unit' => $product->unit->name,
-                'category' => $product->unit->category->name
+                'id' => $product->product->id,
+                'harga' => $product->harga_beli,
+                'name' => $product->product->name,
+                'stok' => $product->product->stok,
+                'unit' => $product->product->unit->name,
+                'category' => $product->product->unit->category->name
             ];
 
         }
@@ -77,14 +80,16 @@ class SupplierController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request->all());
-
 
         foreach ($request->pasok as $val) {
-
+            // dd($val);
             $product = Product::with('Unit.Category')->find($val['id']);
             Product::where(['id' => $val['id']])->update([
                 'stok' => $product->stok + $val['qty']
+            ]);
+
+            Supplier::where(['product_id' => $val['id']])->update([
+                'harga_beli' => $val['harga_beli']
             ]);
 
         }

@@ -62,11 +62,12 @@
                 </div>
             </div>
         </div>
+        <form action="{{ route('carts.create') }}" method="POST">
         <div class="table-responsive p-3">
           <table class="table align-items-center table-flush" id="table-product">
             <thead class="thead-light">
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">No</th>
                     <th scope="col">Name</th>
                     <th scope="col">Kategori</th>
                     <th scope="col">Satuan</th>
@@ -74,6 +75,7 @@
                     <th scope="col">Harga</th>
                     <th scope="col">Stok</th>
                     <th scope="col">Action</th>
+                    <th scope="col">#</th>
                 </tr>
             </thead>
             <tbody>
@@ -81,6 +83,7 @@
                     $no = 1;
                 @endphp
                 @foreach ($products as $p)
+
                 <tr>
                     <td>{{ $no }}</td>
                     <td>{{ ucwords($p->name) }}</td>
@@ -105,12 +108,20 @@
                                         Delete
                                     </a>
                                 </div>
-                                <div class="dropdown-item">
+                                {{-- <div class="dropdown-item">
                                     <a href="{{ route('carts.edit', $p->id) }}" class="badge badge-pill badge-primary">
                                         Pesen
                                     </a>
-                                </div>
+                                </div> --}}
                             </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="custom-control custom-control-alternative custom-checkbox mb-3">
+                            <input class="custom-control-input check-class" id="check-{{ $p->id }}" name="pesen[]" value="{{ $p->id }}" type="checkbox">
+                            <label class="custom-control-label text-primary font-weight-bold pt-1" for="check-{{ $p->id }}">
+                                Pesen
+                            </label>
                         </div>
                     </td>
                 </tr>
@@ -120,6 +131,14 @@
                 @endforeach
             </tbody>
           </table>
+
+          @csrf
+                <div class="col text-right">
+                    <button type="submit" class="btn btn-icon btn-primary" style="border-radius: 22px;">
+                        <span class="btn-inner--text">Pesan</span>
+                    </button>
+                </div>
+            </form>
         </div>
         <div class="card-footer">
           {{ $products->render() }}
@@ -141,6 +160,12 @@
             paging: false,
             searching: true,
         });
+
+        $('.check-class').on('change', function(){
+            var check = $(this).prop('checked');
+            var val = $(this).val()
+        })
+
     } );
 
 </script>

@@ -90,7 +90,7 @@
           </div>
         </form>
         <!-- Navigation -->
-        <ul class="navbar-nav pb-5">
+        <ul class="navbar-nav">
             <li class="nav-item">
                 <a id="dashboard-id" class="nav-link" href="{{ route('dashboard') }}">
                     <i class="fa fa-tachometer-alt text-default"></i>
@@ -98,15 +98,21 @@
                 </a>
             </li>
 
+        </ul>
+
+        <hr class="my-2">
+
+        <ul class="navbar-nav">
+
             <li class="nav-item">
                 <a id="category-id" class="nav-link" href="{{ route('categories.index') }}">
-                    <i class="fa fa-list-alt text-default"></i>
+                    <i class="fa fa-th-large text-default"></i>
                     Kategori
                 </a>
             </li>
 
             <li class="nav-item">
-                <a id="unit-id" class="nav-link" href="{{ route('units.index') }}">
+                <a id="unit-id" class="nav-link text-primary" href="{{ route('units.index') }}">
                     <i class="fa fa-balance-scale text-default"></i>
                     Satuan
                 </a>
@@ -114,10 +120,16 @@
 
             <li class="nav-item">
                 <a id="information-id" class="nav-link" href="{{ route('informations.index') }}">
-                    <i class="fa fa-list-alt text-default"></i>
+                    <i class="fa fa-info-circle text-default"></i>
                     Keterangan Satuan
                 </a>
             </li>
+
+        </ul>
+
+        <hr class="my-2">
+
+        <ul class="navbar-nav">
 
             <li class="nav-item">
                 <a id="product-id" class="nav-link" href="{{ route('products.index') }}">
@@ -128,49 +140,48 @@
 
             <li class="nav-item">
                 <a id="supplier-id" class="nav-link" href="{{ route('suppliers.index') }}">
-                    <i class="fa fa-list-alt text-default"></i>
+                    <i class="fa fa-people-carry text-default"></i>
                     Pemasok
                 </a>
             </li>
 
             <li class="nav-item">
                 <a id="order-id" class="nav-link" href="{{ route('orders.create') }}">
-                    <i class="fa fa-list-alt text-default"></i>
+                    <i class="fa fa-money-bill-wave text-default"></i>
                     Pembelian
                 </a>
             </li>
 
+        </ul>
+
+        <hr class="my-2">
+
+        <ul class="navbar-nav">
+
             <li class="nav-item">
                 <a id="convert-id" class="nav-link" href="{{ route('converts.index') }}">
-                    <i class="fa fa-list-alt text-default"></i>
+                    <i class="fa fa-balance-scale text-default"></i>
                     Convert
                 </a>
             </li>
 
             <li class="nav-item">
                 <a id="role-id" class="nav-link" href="{{ route('roles.index') }}">
-                    <i class="fa fa-list-alt text-default"></i>
+                    <i class="fa fa-user-tag text-default"></i>
                     Role
                 </a>
             </li>
 
             <li class="nav-item">
                 <a id="account-id" class="nav-link" href="{{ route('adminAccount.index') }}">
-                    <i class="fa fa-list-alt text-default"></i>
+                    <i class="fa fa-user-cog text-default"></i>
                     Akun
                 </a>
             </li>
 
             <li class="nav-item">
-                <a id="cart-id" class="nav-link" href="{{ route('carts.index') }}">
-                    <i class="fa fa-list-alt text-default"></i>
-                    Keranjang
-                </a>
-            </li>
-
-            <li class="nav-item">
                 <a id="report-id" class="nav-link" href="{{ route('reports.index') }}">
-                    <i class="fa fa-list-alt text-default"></i>
+                    <i class="fa fa-file-alt text-default"></i>
                     Laporan
                 </a>
             </li>

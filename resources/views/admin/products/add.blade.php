@@ -157,6 +157,14 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-control-label">
+                            Harga Beli
+                        </label>
+                        <input type="text" name="harga_beli" class="form-control form-control-alternative" placeholder="Masukan Harga Jual">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-control-label">
                             Harga Jual
                         </label>
                         <input type="text" name="harga_jual" class="form-control form-control-alternative" placeholder="Masukan Harga Jual">

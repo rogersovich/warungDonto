@@ -88,6 +88,30 @@ class ConvertController extends Controller
                 $stok = $request->stok * $satuan_sebelumnya;
             }
 
+        }elseif($unit->tingkat == 2){
+
+            if($product->informationUnit->jumlah_akhir == 10){
+                $satuan_sebelumnya = 10;
+
+                $stok = $request->stok * $satuan_sebelumnya;
+            }elseif($product->informationUnit->jumlah_akhir == 20){
+                $satuan_sebelumnya = 20;
+
+                $stok = $request->stok * $satuan_sebelumnya;
+            }
+
+        }else{
+
+            if($product->informationUnit->jumlah_akhir == 10){
+                $satuan_sebelumnya = 10;
+
+                $stok = $request->stok * $satuan_sebelumnya;
+            }elseif($product->informationUnit->jumlah_akhir == 20){
+                $satuan_sebelumnya = 20;
+
+                $stok = $request->stok * $satuan_sebelumnya;
+            }
+
         }
 
         //dd($stok);
