@@ -73,46 +73,23 @@ class ConvertController extends Controller
         $product = Product::with('InformationUnit')->where('id', $request->product_id)->first(); // stok 10 bal
 
         $unit = Unit::where('id', $request->convert_awal)->first();
-
+        //dd($product);
         $stok = 0;
+        $stok = $request->stok * $product->informationUnit->jumlah_akhir;
 
-        if($unit->tingkat == 1){
+        // if($unit->tingkat == 1){
 
-            if($product->informationUnit->jumlah_akhir == 10){
-                $satuan_sebelumnya = 10;
+        //     if($product->informationUnit->jumlah_akhir == 10){
+        //         $satuan_sebelumnya = 10;
 
-                $stok = $request->stok * $satuan_sebelumnya;
-            }elseif($product->informationUnit->jumlah_akhir == 20){
-                $satuan_sebelumnya = 20;
+        //         $stok = $request->stok * $satuan_sebelumnya;
+        //     }elseif($product->informationUnit->jumlah_akhir == 20){
+        //         $satuan_sebelumnya = 20;
 
-                $stok = $request->stok * $satuan_sebelumnya;
-            }
+        //         $stok = $request->stok * $satuan_sebelumnya;
+        //     }
 
-        }elseif($unit->tingkat == 2){
-
-            if($product->informationUnit->jumlah_akhir == 10){
-                $satuan_sebelumnya = 10;
-
-                $stok = $request->stok * $satuan_sebelumnya;
-            }elseif($product->informationUnit->jumlah_akhir == 20){
-                $satuan_sebelumnya = 20;
-
-                $stok = $request->stok * $satuan_sebelumnya;
-            }
-
-        }else{
-
-            if($product->informationUnit->jumlah_akhir == 10){
-                $satuan_sebelumnya = 10;
-
-                $stok = $request->stok * $satuan_sebelumnya;
-            }elseif($product->informationUnit->jumlah_akhir == 20){
-                $satuan_sebelumnya = 20;
-
-                $stok = $request->stok * $satuan_sebelumnya;
-            }
-
-        }
+        // }
 
         //dd($stok);
 

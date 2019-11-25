@@ -142,14 +142,14 @@
         </h1>
         <table class="table">
             <tr>
-                <th rowspan="2" class="bg-blue">No</th>
-                <th rowspan="2" class="bg-red wt-150">Nama Barang</th>
-                <th rowspan="2" class="bg-blue">Harga Beli</th>
-                <th rowspan="2" class="bg-red">Harga Jual</th>
-                <th colspan="2" class="bg-blue">Pesedian Awal</th>
-                <th colspan="2" class="bg-red">Penjualan</th>
-                <th colspan="2" class="bg-blue">Persediaan Akhir</th>
-                <th colspan="2" class="bg-red">Keterangan</th>
+                <th rowspan="2">No</th>
+                <th rowspan="2" class="wt-150">Nama Barang</th>
+                <th rowspan="2">Harga Beli</th>
+                <th rowspan="2" class="">Harga Jual</th>
+                <th colspan="2">Pesedian Awal</th>
+                <th colspan="2" class="">Penjualan</th>
+                <th colspan="2">Persediaan Akhir</th>
+                <th colspan="2" class="">Keterangan</th>
             </tr>
             <tr>
                 <th class="">Jumlah</th>
@@ -158,44 +158,33 @@
                 <th class="">Harga</th>
                 <th class="">Jumlah</th>
                 <th class="">Harga</th>
-                <th class="" style="border-right: none;"></th>
-                <th class="" style="border-left: none;"></th>
+                <th class="" style="border-right: none;">Jumlah Beli</th>
+                <th class="" style="border-left: none;">Jumlah Jual</th>
             </tr>
-            <tr>
-                <td >1</td>
-                <td >Djarum Coklat - Pack - Rokok</td>
-                <td >300000</td>
-                <td >400000</td>
-                <td >10</td>
-                <td >1500000</td>
-                <td >10</td>
-                <td >1500000</td>
-                <td >10</td>
-                <td >1500000</td>
-                <td >Untung</td>
-                <td >Rugi</td>
-            </tr>
-        </table>
-        <br><br>
-        <table class="table-none">
-            <tr>
-                <td class="wt-555 text-left td">Total</td>
-                <td class="wt-100 text-right td">
-                    900000
-                </td>
-            </tr>
-            <tr>
-                <td class="wt-555 text-left td">Tunai</td>
-                <td class="wt-100 text-right td">
-                    1000000
-                </td>
-            </tr>
-            <tr>
-                <td class="wt-555 text-left td">Kembali</td>
-                <td class="wt-100 text-right td">
-                    10000
-                </td>
-            </tr>
+            @php
+                $no = 1;
+            @endphp
+            @foreach ($reports as $r)
+
+                <tr>
+                    <td>{{ $no++ }}</td>
+                    <td>{{ ucwords($r->Product->name.' - '.$r->Product->Unit->name) }}</td>
+                    <td>{{ $r->Product->Supplier['harga_beli'] }}</td>
+                    <td>{{ $r->Product->harga_jual}}</td>
+                    <td>{{ $r->jumlah_awal }}</td>
+                    <td>{{ $r->jumlah_awal * $r->harga }}</td>
+                    <td>{{ $r->jumlah_jual }}</td>
+                    <td>{{ $r->jumlah_jual * $r->harga }}</td>
+                    <td>{{ $r->jumlah_akhir }}</td>
+                    <td>{{ $r->jumlah_akhir * $r->harga }}</td>
+                    <td>
+                        {{ $r->Product->Supplier['harga_beli'] * $r->jumlah_awal }}
+                    </td>
+                    <td>
+                        {{ $r->Product->harga_jual * $r->jumlah_awal }}
+                    </td>
+                </tr>
+            @endforeach
         </table>
     </div>
 

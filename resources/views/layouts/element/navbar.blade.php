@@ -75,13 +75,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="pb-2">
-                    <div class="text-center">
-                        <a href="{{ route('carts.index') }}" class="text-dark text-lg font-weight-bold">
-                            Lihat Keranjang
-                        </a>
-                    </div>
-                </div>
+
             </div>
         </li>
         <li class="nav-item dropdown">

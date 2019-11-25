@@ -1,12 +1,10 @@
 
-<title>Laporan</title>
+<title>Laporan Harian</title>
 
 <style>
 
     .container {
         width: 100%;
-        padding-right: 15px;
-        padding-left: 15px;
         margin-right: auto;
         margin-left: auto;
     }
@@ -15,15 +13,53 @@
         font-family: sans-serif;
         color: #232323;
         border-collapse: collapse;
+
     }
 
-    th, td {
+    .table, th, td {
         font-weight: 300;
         font-size: 15px;
+        padding: 2px 10px;
+        text-align: center;
+        border: 1px solid #999;
+    }
+
+    .table-none{
+        font-family: sans-serif;
+        color: #232323;
+        border-collapse: collapse;
+    }
+
+    .table-none, .th, .td {
+        font-weight: 300;
+        font-size: 15px;
+        padding: 2px 10px;
+        text-align: center;
+        border: none!important;
+    }
+
+    .bg-red{
+        background: red;
+    }
+
+    .bg-blue{
+        background: blue;
     }
 
     .text-center{
-        text-align: center;
+        text-align: center!important;
+    }
+
+    .text-right{
+        text-align: right!important;
+    }
+
+    .text-left{
+        text-align: left!important;
+    }
+
+    .wt-10{
+        width: 10px;
     }
 
     .wt-50{
@@ -86,6 +122,10 @@
         padding: 0px;
     }
 
+    .f-20{
+        font-size: 20px;
+    }
+
 </style>
 
 @php
@@ -93,74 +133,59 @@
 @endphp
 
 <body class="pt-50 pb-50">
+    <div class="">
+        <h1>
+            Laporan Mingguan -
+            <span class="f-20">
+                2019 11 08
+            </span>
+        </h1>
+        <table class="table">
+            <tr>
+                <th rowspan="2">No</th>
+                <th rowspan="2" class="wt-150">Nama Barang</th>
+                <th rowspan="2">Harga Beli</th>
+                <th rowspan="2" class="">Harga Jual</th>
+                <th colspan="2">Pesedian Awal</th>
+                <th colspan="2" class="">Penjualan</th>
+                <th colspan="2">Persediaan Akhir</th>
+                <th colspan="2" class="">Keterangan</th>
+            </tr>
+            <tr>
+                <th class="">Jumlah</th>
+                <th class="">Harga</th>
+                <th class="">Jumlah</th>
+                <th class="">Harga</th>
+                <th class="">Jumlah</th>
+                <th class="">Harga</th>
+                <th class="" style="border-right: none;">Jumlah Beli</th>
+                <th class="" style="border-left: none;">Jumlah Jual</th>
+            </tr>
+            @php
+                $no = 1;
+            @endphp
+            @foreach ($reports as $r)
 
-    <div class="container">
-        <p class="mt-3">
-            Nama Toko Anda
-            <br>
-            Jl.absdfsdfsdfsdf
-            <br>
-            Telp (023)24223423423
-            <br>
-            Code Laporan
-        </p>
-        <span>
-            ----------------------------------------------------------------------------------------------------------------------------
-        </span>
-        <table class="table">
-            <tr>
-                <th class="wt-350">Nama Barang</th>
-                <th class="wt-100">Jumlah</th>
-                <th class="wt-100">Harga</th>
-                <th class="wt-100">Subtotal</th>
-            </tr>
-        </table>
-        <span>
-            ----------------------------------------------------------------------------------------------------------------------------
-        </span>
-        <table class="table">
-            @foreach ($order_details as $od)
-            <tr>
-                <td class="wt-350">{{ ucwords($od->product->name.' - '.$od->product->unit->name) }}</td>
-                <td class="wt-100">{{ $od->qty }}</td>
-                <td class="wt-100">{{ $od->product->harga_jual }}</td>
-                <td class="wt-100">{{ $od->product->harga_jual * $od->qty }}</td>
-            </tr>
+                <tr>
+                    <td>{{ $no++ }}</td>
+                    <td>{{ ucwords($r->Product->name.' - '.$r->Product->Unit->name) }}</td>
+                    <td>{{ $r->Product->Supplier['harga_beli'] }}</td>
+                    <td>{{ $r->Product->harga_jual}}</td>
+                    <td>{{ $r->jumlah_awal }}</td>
+                    <td>{{ $r->jumlah_awal * $r->harga }}</td>
+                    <td>{{ $r->jumlah_jual }}</td>
+                    <td>{{ $r->jumlah_jual * $r->harga }}</td>
+                    <td>{{ $r->jumlah_akhir }}</td>
+                    <td>{{ $r->jumlah_akhir * $r->harga }}</td>
+                    <td>
+                        {{ $r->Product->Supplier['harga_beli'] * $r->jumlah_awal }}
+                    </td>
+                    <td>
+                        {{ $r->Product->harga_jual * $r->jumlah_awal }}
+                    </td>
+                </tr>
             @endforeach
         </table>
-        <span>
-            ----------------------------------------------------------------------------------------------------------------------------
-        </span>
-        <table class="table">
-            <tr>
-                <td class="wt-555">Total</td>
-                <td class="wt-100">
-                    Rp {{ number_format($order->total_harga) }}
-                </td>
-            </tr>
-            <tr>
-                <td class="wt-555">Tunai</td>
-                <td class="wt-100">
-                    Rp {{ number_format($order->total_bayar) }}
-                </td>
-            </tr>
-            <tr>
-                <td class="wt-555">Kembali</td>
-                <td class="wt-100">
-                    Rp {{ number_format($order->kembalian) }}
-                </td>
-            </tr>
-        </table>
-        <span>
-            ----------------------------------------------------------------------------------------------------------------------------
-        </span>
-        <div class="container text-center pr-150 pl-150">
-            <p>
-                Terima Kasih & Selamat Berbelanja Kembali
-                <br><br>
-                Pembeli Adalah Raja Kami
-            </p>
-        </div>
     </div>
 
 </body>

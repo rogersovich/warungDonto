@@ -27,4 +27,9 @@ class Product extends Model
         return $this->belongsTo('App\InformationUnit');
     }
 
+    public function supplier()
+    {
+        return $this->hasOne('App\Supplier');
+    }
+
 }

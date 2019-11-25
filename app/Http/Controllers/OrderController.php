@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\OrderDetail;
+use App\Debt;
+use App\DebtDetail;
 use App\Cart;
 use App\Product;
 use App\Report;
@@ -63,9 +65,11 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request->Order);
+        //dd($request->all());
         $date = Carbon::now()->format('Y-m-d');
 
+
+        // CODE ORDER
         $kdOrder = Order::select(['code'])->max('code');
 
         $noUrut = (int) substr($kdOrder, 5, 3);
@@ -73,6 +77,16 @@ class OrderController extends Controller
         $noUrut++;
         $char = "OR";
         $kdOrder = $char . sprintf("%05s", $noUrut);
+
+        // CODE DEBT
+        $kdDebt = Debt::select(['code_debt'])->max('code_debt');
+
+        $noDebt = (int) substr($kdDebt, 5, 3);
+
+        $noDebt++;
+        $charDebt = "DB";
+        $kdDebt = $charDebt . sprintf("%05s", $noDebt);
+
 
         $order = Order::create([
             'code' => $kdOrder,
@@ -82,28 +96,115 @@ class OrderController extends Controller
             'total_harga' => $request->subtotal,
         ]);
 
-        foreach($request->Order as $key){
-                OrderDetail::create([
-                    'order_id' => $order->id,
+        if(!$request->nama == null){
+
+            $sisa = $request->subtotal - $request->duit;
+
+            $debt = Debt::create([
+                'name' => $request->nama,
+                'order_id' => $order->id,
+                'code_debt' => $kdDebt,
+                'tanggal' => $date,
+                'total_sebelumnya' => $request->subtotal,
+                'sudah_bayar' => $request->duit,
+                'sisa_bayar' => $sisa,
+                'total_bayar' => 0,
+                'kembalian' => 0,
+            ]);
+
+            foreach($request->Order as $key){
+                DebtDetail::create([
+                    'debt_id' => $debt->id,
                     'product_id' => $key['product_id'],
                     'qty' => $key['qty']
-            ]);
+                ]);
+            }
+
+            
+
         }
 
-        $kdReport = Report::select(['code_report'])->max('code_report');
+        foreach($request->Order as $key){
+            OrderDetail::create([
+                'order_id' => $order->id,
+                'product_id' => $key['product_id'],
+                'qty' => $key['qty']
+            ]);
 
-        $noReport = (int) substr($kdReport, 5, 3);
+            $reports = $order->orderDetails()->latest()->get();
 
-        $noReport++;
-        $charReport = "RP";
-        $kdReport = $charReport . sprintf("%05s", $noReport);
+            foreach ($reports as $r) {
 
-        Report::create([
-            'code_report' => $kdReport,
-            'tanggal' => $date,
-            'order_id' => $order->id,
-            'jenis_laporan' => 'harian'
-        ]);
+                // CODE Report
+                $kdReport = Report::select(['code_report'])->max('code_report');
+
+                $noUrut = (int) substr($kdReport, 5, 3);
+
+                $noUrut++;
+                $char = "RP";
+                $kdReport = $char . sprintf("%05s", $noUrut);
+
+
+                $report = Report::where('product_id',$r->product_id)->first();
+
+                //dd($report);
+
+                if ($report) {
+
+                    $report_now = Report::where('product_id',$r->product_id)->first();
+
+                    Report::create([
+                        'product_id' => $r->product_id,
+                        'tanggal' => $date,
+                        'jumlah_awal' => $report_now->jumlah_awal,
+                        'jumlah_jual' => $r->qty + $report_now->jumlah_jual,
+                        'jumlah_akhir' => $report_now->jumlah_awal - ($r->qty + $report_now->jumlah_jual),
+                        'harga' => $report_now->harga,
+                        'keterangan' => null,
+                        'code_report' => $kdReport,
+                        'jenis_laporan' => 'barang'
+                    ]);
+
+                    $report_back = Report::where('product_id', $r->product_id)
+                        ->orderBy('code_report','asc')
+                        ->select('code_report','product_id')
+                        ->first();
+
+                    $report_now_banget = Report::where('product_id', $r->product_id)
+                        ->orderBy('code_report','desc')
+                        ->first();
+
+                    //dd($report_now_banget);
+
+                    Report::where(['id' => $report_back->id])->update([
+                        'jumlah_jual' => $report_now_banget->jumlah_jual,
+                        'jumlah_akhir' => $report_now_banget->jumlah_akhir
+                    ]);
+
+
+
+
+                }else{
+
+                    $product = Product::where('id',$r->product_id)->first();
+
+                    Report::create([
+                        'product_id' => $r->product_id,
+                        'tanggal' => $date,
+                        'jumlah_awal' => $product->stok,
+                        'jumlah_jual' => $r->qty,
+                        'jumlah_akhir' => $product->stok - $r->qty,
+                        'harga' => $product->harga_jual,
+                        'keterangan' => null,
+                        'code_report' => $kdReport,
+                        'jenis_laporan' => 'barang'
+                    ]);
+                }
+
+
+            }
+
+        }
 
         Cart::query()->truncate();
 

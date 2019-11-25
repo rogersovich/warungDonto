@@ -81,15 +81,33 @@ class ProductController extends Controller
         $char = "BR";
         $kdBarang = $char . sprintf("%05s", $noUrut);
 
-        Product::create([
-            'name' => $request['name'],
-            'category_id' => $request['category_id'],
-            'unit_id' => $request['unit_id'],
-            'harga_jual' => $request['harga_jual'],
-            'stok' => $request['stok'],
-            'code_item' => $kdBarang,
-            'information_unit_id' => $request->information_unit_id,
-        ]);
+        //dd($request->all());
+
+        if($request->information_unit_id == null){
+
+            Product::create([
+                'name' => $request['name'],
+                'category_id' => $request['category_id'],
+                'unit_id' => $request['unit_id'],
+                'harga_jual' => $request['harga_jual'],
+                'stok' => $request['stok'],
+                'code_item' => $kdBarang,
+                'information_unit_id' => null,
+            ]);
+
+        }else{
+
+            Product::create([
+                'name' => $request['name'],
+                'category_id' => $request['category_id'],
+                'unit_id' => $request['unit_id'],
+                'harga_jual' => $request['harga_jual'],
+                'stok' => $request['stok'],
+                'code_item' => $kdBarang,
+                'information_unit_id' => $request->information_unit_id,
+            ]);
+
+        }
 
         $getProduct = Product::orderBy('id', 'desc')->first();
 

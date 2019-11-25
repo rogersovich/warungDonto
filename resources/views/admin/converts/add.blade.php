@@ -212,7 +212,7 @@
                     $("#convert_akhir_id option,#district_id option").not(":first-child").remove();
                 },
                 success : function(response){
-                    console.log(response)
+                    //console.log(response)
                     $("#convert_akhir_id").html($("<option value=''>Pilih Satuan</option>"))
                     $.each(response.results,function(e,i){
                         $("#convert_akhir_id").append($("<option value='"+i.id+"'>"+i.name+"</option>"))
@@ -234,8 +234,9 @@
                 },
                 success : function(response){
                     console.log(response)
+
                     $.each(response.results,function(e,i){
-                        $("#jumlah_awal_id").append($("<option value='"+i.information_unit.id+"'>"+i.information_unit.jumlah_awal+' '+i.information_unit.unit_one.name+' = '+i.information_unit.jumlah_akhir+' '+i.information_unit.unit_two.name+"</option>"))
+                        $("#jumlah_awal_id").html($("<option value='"+i.information_unit.id+"'>"+i.information_unit.jumlah_awal+' '+i.information_unit.unit_one.name+' = '+i.information_unit.jumlah_akhir+' '+i.information_unit.unit_two.name+"</option>"))
                     })
                 }
             })

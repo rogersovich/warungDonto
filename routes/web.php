@@ -74,6 +74,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         'show','destroy'
     ]);
 
+    Route::resource('debts', 'DebtController')->except([
+        'show','destroy'
+    ]);
+
     Route::resource('reports', 'ReportController')->except([
         'show','destroy'
     ]);
@@ -111,10 +115,13 @@ Route::get('/units/{unit}','UnitController@destroy')->name('units.destroy');
 Route::get('/carts/{cart}','CartController@destroy')->name('carts.destroy');
 Route::post('/admin/carts/','CartController@create')->name('carts.create');
 Route::post('/admin/store/','CartController@store')->name('carts.store');
+Route::get('/admin/debts/bayar/{id}','DebtController@bayar')->name('debts.bayar');
+Route::post('/admin/debts/bayar/process','DebtController@process')->name('debts.process');
 Route::get('/products/{product}','ProductController@destroy')->name('products.destroy');
 Route::get('/roles/{role}','RoleController@destroy')->name('roles.destroy');
 Route::get('/reports/{report}','ReportController@destroy')->name('reports.destroy');
 Route::get('/orders/{order}','OrderController@destroy')->name('orders.destroy');
+Route::get('/debts/{debt}','DebtController@destroy')->name('debts.destroy');
 Route::get('/converts/{convert}','ConvertController@destroy')->name('converts.destroy');
 Route::put('/suppliers/{updatePasok}','SupplierController@updatePasok')->name('suppliers.updatePasok');
 Route::post('/admin/suppliers/pasok','SupplierController@pasok')->name('suppliers.pasok');

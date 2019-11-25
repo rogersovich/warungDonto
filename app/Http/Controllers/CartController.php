@@ -55,6 +55,7 @@ class CartController extends Controller
     public function create(Request $request)
     {
         $pesen = [];
+        //dd($pesen);
 
         foreach ($request->pesen as $val) {
 

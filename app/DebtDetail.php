@@ -4,22 +4,22 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Report extends Model
+class DebtDetail extends Model
 {
     protected $fillable= [
-        'jenis_laporan',
-        'tanggal',
+        'debt_id',
         'product_id',
-        'code_report',
-        'harga',
-        'keterangan',
-        'jumlah_awal',
-        'jumlah_jual',
-        'jumlah_akhir'
+        'qty',
     ];
+
+    public function debt()
+    {
+        return $this->belongsTo('App\Debt');
+    }
 
     public function product()
     {
         return $this->belongsTo('App\Product');
     }
+
 }

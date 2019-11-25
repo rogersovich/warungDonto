@@ -55,9 +55,18 @@
               <div class="card-body px-lg-5 py-lg-5">
                   <div class="jumbotron jumbotron-fluid px-3 py-3 bg-gradient-white">
                     <div class="container">
-                        <a href="{{ route('orders.print', $report->id) }}" class="btn btn-primary btn-sm" target="_blank">
-                            CETAK PDF
-                        </a>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="{{ route('orders.print', $order->id) }}" class="btn btn-primary btn-sm" target="_blank">
+                                    CETAK PDF
+                                </a>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <a href="{{ route('products.index') }}" class="btn btn-primary btn-sm">
+                                    Kembali
+                                </a>
+                            </div>
+                        </div>
                         <p class="mt-3">
                             Warung Donto
                             <br>
@@ -65,7 +74,7 @@
                             <br>
                             Telp (023)9823213422
                             <br>
-                            {{ $report->code_report }}
+                            {{ $order->code_report }}
                         </p>
                         <p>
                             --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -83,7 +92,7 @@
                         </p>
                         <div class="container">
                             <div class="row">
-                                @foreach ($order_details as $od)
+                                @foreach ($data as $od)
                                 <div class="col-md-6">{{ ucwords($od->product->name.' - '.$od->product->unit->name) }}</div>
                                 <div class="col-md-2">{{ $od->qty }}</div>
                                 <div class="col-md-2">{{ $od->product->harga_jual }}</div>
@@ -99,17 +108,28 @@
                                 <div class="col-md-6">Total</div>
                                 <div class="col-md-2"></div>
                                 <div class="col-md-2"></div>
-                                <div class="col-md-2">Rp {{ number_format($order->total_harga) }}</div>
+                                <div class="col-md-2">
+                                    @if ($data2->code_debt)
+                                    Rp {{ number_format($data2->sisa_bayar) }}
+                                    @else
+                                    Rp {{ number_format($data2->total_harga) }}
+                                    @endif
+
+                                </div>
 
                                 <div class="col-md-6">Tunai</div>
                                 <div class="col-md-2"></div>
                                 <div class="col-md-2"></div>
-                                <div class="col-md-2">Rp {{ number_format($order->total_bayar) }}</div>
+                                <div class="col-md-2">
+                                    Rp {{ number_format($data2->total_bayar) }}
+                                </div>
 
                                 <div class="col-md-6">Kembalian</div>
                                 <div class="col-md-2"></div>
                                 <div class="col-md-2"></div>
-                                <div class="col-md-2">Rp {{ number_format($order->kembalian) }}</div>
+                                <div class="col-md-2">
+                                    Rp {{ number_format($data2->kembalian) }}
+                                </div>
                             </div>
                         </div>
                         <p>

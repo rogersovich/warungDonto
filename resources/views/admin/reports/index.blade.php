@@ -62,6 +62,7 @@
                                 <option value="">Pilih Jenis Laporan</option>
                                 <option value="mingguan">Mingguan</option>
                                 <option value="bulanan">Bulanan</option>
+                                <option value="harian">Harian</option>
                             </select>
                         </div>
                      </div>
@@ -72,7 +73,7 @@
                             </label>
                             <select name="laporan" id="select-laporan-id" required class="form-control form-control-alternative">
                                 <option value="">Pilih Laporan</option>
-                                <option value="pembelian">Pembelian</option>
+                                <option value="barang">Barang</option>
                                 <option value="pasok">Pasok</option>
                             </select>
                         </div>
@@ -93,8 +94,16 @@
                             <input type="week" value="{{ $weekNow }}" name="week" class="form-control form-control-alternative">
                         </div>
                      </div>
+                     <div class="col-md-6" id="day-id">
+                        <div class="form-group p-1">
+                            <label class="form-control-label">
+                                Hari
+                            </label>
+                            <input type="date" name="day" value="{{ $dayNow }}" class="form-control form-control-alternative">
+                        </div>
+                     </div>
                      <div class="col-md-12 text-right">
-                         <button class="btn btn-primary" id="button-id">Print</button>
+                         <button class="btn btn-primary" formtarget="_blank " id="button-id">Print</button>
                      </div>
                 </div>
             </div>
@@ -117,6 +126,7 @@
 
         $('#week-id').hide();
         $('#month-id').hide();
+        $('#day-id').hide();
         $('#laporan-id').hide();
 
         var values_1 = $('#jenisLaporan-id').val();
@@ -138,14 +148,23 @@
                 $('#laporan-id').show();
                 $('#week-id').show();
                 $('#month-id').hide();
+                $('#day-id').hide();
+            }else if(value == 'harian'){
+                $('#laporan-id').show();
+                $('#button-id').prop('disabled', false);
+                $('#day-id').show();
+                $('#month-id').hide();
+                $('#week-id').hide();
             }else if(value == 'bulanan'){
                 $('#laporan-id').show();
                 $('#button-id').prop('disabled', false);
                 $('#month-id').show();
                 $('#week-id').hide();
+                $('#day-id').hide();
             }else{
                 $('#button-id').prop('disabled', true);
                 $('#week-id').hide();
+                $('#day-id').hide();
                 $('#month-id').hide();
                 $('#laporan-id').hide();
             }
@@ -161,7 +180,7 @@
         $('#select-laporan-id').on('change', function(){
             var values = $(this).val();
 
-            if(values == 'pembelian'){
+            if(values == 'barang'){
                 $('#button-id').prop('disabled', false);
             }else if(values == 'pasok'){
                 $('#button-id').prop('disabled', false);

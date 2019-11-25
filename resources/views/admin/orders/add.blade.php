@@ -64,6 +64,7 @@
             @csrf
                 @php
                     $no = 1;
+                    $cek = $carts->all() == [];
                 @endphp
                 @foreach ($carts as $c)
                 <tr>
@@ -93,9 +94,12 @@
           </table>
         </div>
         <div class="card-footer pt-4 pb-4 pr-5">
-            <div class="row">
+            @if ($cek)
+
+            @else
+            <div class="row" id="form-pembelian">
                 <div class="col-8"></div>
-                <div class="col-4">
+                <div class="col-4 p-4">
                     <div class=" pb-3">
                         <h2 class="text-primary font-weight-light">
                             <strong>
@@ -103,6 +107,16 @@
                             </strong>
                         </h2>
                     </div>
+
+                    <div class="pb-3">
+                        <div class="custom-control custom-control-alternative custom-checkbox mb-3">
+                            <input class="custom-control-input" id="orang-dekat-id" type="checkbox">
+                            <label class="custom-control-label font-weight-bold text-primary" for="orang-dekat-id">
+                                Orang Dekat
+                            </label>
+                        </div>
+                    </div>
+
                     <div class="d-flex justify-content-between align-items-center pb-1">
                         <div>
                             <h2 class="text-primary font-weight-light">
@@ -116,6 +130,24 @@
                                 <strong>
                                     Rp.{{ number_format( $subtotal ) }}
                                     <input type="hidden" name="subtotal" value="{{ $subtotal }}">
+                                </strong>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center pb-2">
+                        <div id="pembeli-title">
+                            <h2 class="text-primary font-weight-light">
+                                <strong>
+                                    Nama
+                                </strong>
+                            </h2>
+                        </div>
+                        <div id="pembeli-form" class="text-right">
+                            <h2 class="text-red font-weight-light">
+                                <strong>
+                                    <div class="form-group">
+                                        <input type="text" name="nama" placeholder="Nama Pembeli" class="form-control form-control-alternative">
+                                    </div>
                                 </strong>
                             </h2>
                         </div>
@@ -138,6 +170,7 @@
                             </h2>
                         </div>
                     </div>
+
                     <div>
                         <button class="btn btn-primary btn-lg btn-block text-white text-lg font-weight-bold">
                             Bayar
@@ -145,6 +178,8 @@
                     </div>
                 </div>
             </div>
+            @endif
+
         </div>
         </form>
       </div>
@@ -159,6 +194,22 @@
 
     $(document).ready( function () {
 
+        $('#pembeli-title').hide();
+        $('#pembeli-form').hide();
+
+        $('#orang-dekat-id').on('change', function(){
+
+            var check = $(this).prop('checked');
+
+            if(check){
+                $('#pembeli-title').show();
+                $('#pembeli-form').show();
+            }else{
+                $('#pembeli-title').hide();
+                $('#pembeli-form').hide();
+            }
+
+        })
 
     });
 

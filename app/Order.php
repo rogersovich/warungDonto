@@ -13,4 +13,9 @@ class Order extends Model
         'total_bayar',
         'kembalian',
     ];
+
+    public function orderDetails()
+    {
+        return $this->hasMany('App\OrderDetail');
+    }
 }
