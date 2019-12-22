@@ -1,6 +1,6 @@
 @extends('layouts.element.main')
 
-@section('title', 'Kategori')
+@section('title', 'Satuan')
 
 @section('custom-css')
     <style>
@@ -20,7 +20,7 @@
 @include('layouts.element.navbar')
 
 <!-- Header -->
-<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+<div class="header bg-gradient-success pb-8 pt-5 pt-md-8">
 </div>
 <div class="container-fluid mt--7">
           <!-- Table -->
@@ -34,7 +34,7 @@
                         <ol class="breadcrumb breadcrumb-links" style="background:none;">
                             <li class="breadcrumb-item">
                                 <a href="javascript:;">
-                                    <i class="fa fa-home"></i>
+                                    <i class="fa fa-home text-success"></i>
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
@@ -45,9 +45,9 @@
                 </div>
                 <div class="col-4 text-right">
                     <a href="{{ route('units.create') }}" class="btn btn-icon btn-neutral btn-round">
-                        <span class="btn-inner--text">Add</span>
-                        <span class="btn-inner--icon">
-                            <i class="ni ni-fat-add"></i>
+                        {{-- <span class="btn-inner--text">Add</span> --}}
+                        <span class="btn-inner--icon text-lg">
+                            <i class="ni ni-fat-add text-success"></i>
                         </span>
                     </a>
                 </div>
@@ -84,7 +84,7 @@
                                     </a>
                                 </div>
                                 <div class="dropdown-item">
-                                    <a href="{{ route('units.destroy', $u->id) }}" class="badge badge-pill badge-danger">
+                                    <a href="javascript:;" data-id="{{ route('units.destroy', $u->id) }}" class="btn-danger badge badge-pill badge-danger">
                                         Delete
                                     </a>
                                 </div>
@@ -118,6 +118,33 @@
             paging: false,
             searching: true,
         });
+
+        $('.btn-danger').on('click', function() {
+
+            Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#1aae6f',
+            cancelButtonColor: '#f80031',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel'
+            }).then((result) => {
+                if (result.value) {
+                    var data = $(this).data('id')
+                    console.log(data)
+                    window.location = data;
+                }else{
+                    Swal.fire(
+                    'Cancelled!',
+                    'Your file has been cancel.',
+                    'error'
+                    )
+                }
+            })
+        });
+
     } );
 
 </script>

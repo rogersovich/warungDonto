@@ -117,7 +117,7 @@
                         <label class="form-control-label">
                             Satuan
                         </label>
-                        <input type="text" name="name" value="{{ $unit->name }}" class="form-control form-control-alternative" placeholder="Name Categories">
+                        <input type="text" name="name" value="{{ $unit->name }}" class="form-control form-control-alternative" placeholder="Name Satuan">
                     </div>
                 </div>
                 <div class="col-md-12">

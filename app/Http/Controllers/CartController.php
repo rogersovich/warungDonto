@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Cart;
 use App\Product;
+use App\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use Session;
 
 class CartController extends Controller
@@ -19,7 +21,18 @@ class CartController extends Controller
             $role = $user->roles->first()->pivot->role_id;
 
             if ($role == 2) {
-                return redirect('home/');
+                if($user){
+                    $data = collect([
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'id' => $user->id,
+                        'role_id' => $role,
+                        'user_id' => $user->id,
+                    ]);
+                    Session::put('user', $data);
+                }
+
+                return $next($request);
             }else{
                 if($user){
                     $data = collect([
@@ -27,6 +40,7 @@ class CartController extends Controller
                         'email' => $user->email,
                         'id' => $user->id,
                         'role_id' => $role,
+                        'user_id' => $user->id,
                     ]);
                     Session::put('user', $data);
                 }
@@ -69,10 +83,7 @@ class CartController extends Controller
                 'category' => $product->unit->category->name
             ];
 
-            //dd($pesen);
-
         }
-
 
         return view('admin.carts.add', compact('pesen'));
     }
@@ -81,8 +92,7 @@ class CartController extends Controller
     public function store(Request $request)
     {
         //dd($request->all());
-
-
+        
         foreach ($request->pesen as $val) {
 
             $product = Product::with('Unit.Category')->find($val['id']);
@@ -107,42 +117,27 @@ class CartController extends Controller
 
         }
 
+        $date = Carbon::now();
 
+        $total = count($request->pesen);
+
+        Log::create([
+            'user_id' => $request->user,
+            'activity' => $request->activity,
+            'detail_activity' => $request->activity.' '.$total.' jumlah produk',
+            'tanggal' => $date,
+            'order_change' => 1
+        ]);
+        
         return redirect()->route('products.index');
 
-        //batas
-
-        // $cart = Cart::where('product_id', $request->product_id)->first();
-        // $product = Product::where('id',$request->product_id)->first();
-
-        // if($cart == null){
-        //     Cart::create([
-        //         'product_id' => $request->product_id,
-        //         'qty' => $request->qty
-        //     ]);
-
-        // }else{
-
-        //     Cart::where(['id' => $cart->id])->update([
-        //         'qty' => $request->qty + $cart->qty
-        //     ]);
-        // }
-
-        //$cartBaru = Cart::where('product_id', $request->product_id)->first();
-        //dd($cartBaru);
-
-        // Product::where('id', $request->product_id)->update([
-        //     'stok' => $product->stok - $request->qty
-        // ]);
-
-        //return redirect()->route('products.index');
     }
 
 
     public function edit($id)
     {
-        $product = Product::find($id);
-        // dd($product);
+        $product = Product::where('id', $id)->first();
+        //dd($product);
         $cart = Cart::where('product_id', $id)->first();
         $qty = null;
 

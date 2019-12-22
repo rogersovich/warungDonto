@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Supplier;
 use App\Product;
+use App\Report;
 use App\Cart;
+use App\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use Session;
 
 class SupplierController extends Controller
@@ -20,7 +23,18 @@ class SupplierController extends Controller
             $role = $user->roles->first()->pivot->role_id;
 
             if ($role == 2) {
-                return redirect('home/');
+                if($user){
+                    $data = collect([
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'id' => $user->id,
+                        'role_id' => $role,
+                        'user_id' => $user->id,
+                    ]);
+                    Session::put('user', $data);
+                }
+
+                return $next($request);
             }else{
                 if($user){
                     $data = collect([
@@ -28,6 +42,7 @@ class SupplierController extends Controller
                         'email' => $user->email,
                         'id' => $user->id,
                         'role_id' => $role,
+                        'user_id' => $user->id,
                     ]);
                     Session::put('user', $data);
                 }
@@ -80,9 +95,80 @@ class SupplierController extends Controller
 
     public function store(Request $request)
     {
+        //dd($request->all());
+
+        $date = Carbon::now()->format('Y-m-d');
 
         foreach ($request->pasok as $val) {
-            // dd($val);
+
+            // CODE Report
+            $kdReport = Report::select(['code_report'])->max('code_report');
+            $noUrut = (int) substr($kdReport, 5, 3);
+            $noUrut++;
+            $char = "RP";
+            $kdReport = $char . sprintf("%05s", $noUrut);
+
+            $report = Report::where([
+                ['product_id', '=' , $val['id'] ],
+                ['bm_jumlah', '<>', null]
+            ])
+            ->latest()
+            ->first();
+
+            // dd($report);
+
+            if ($report) {
+
+                Report::create([
+                    'product_id' => $val['id'],
+                    'order_id' => null,
+                    'tanggal' => $date,
+                    'jumlah_awal' => $report->jumlah_akhir,
+                    'bm_jumlah' => $val['qty'],
+                    'jumlah_akhir' => $report->jumlah_akhir + ($val['qty']),
+                    'harga' => $report->harga,
+                    'keterangan' => null,
+                    'status' => 1,
+                    'code_report' => $kdReport,
+                    'jenis_laporan' => 'pasok'
+                    ]);
+
+                $report_back = Report::where('product_id', $val['id'])
+                    ->orderBy('code_report','asc')
+                    ->select('code_report','product_id')
+                    ->first();
+
+                $report_banget = Report::where('product_id', $val['id'])
+                    ->orderBy('code_report','desc')
+                    ->first();
+
+                Report::where(['id' => $report_back->id])->update([
+                    'bm_jumlah' => $report_banget->bm_jumlah,
+                    'jumlah_akhir' => $report_banget->jumlah_akhir
+                ]);
+
+            }else{
+                //dd('test');
+                $product = Product::where('id',$val['id'])->first();
+
+                Report::create([
+                    'product_id' => $val['id'],
+                    'order_id' => null,
+                    'tanggal' => $date,
+                    'jumlah_awal' => $product->stok,
+                    'bm_jumlah' => $val['qty'],
+                    'jumlah_akhir' => $product->stok + $val['qty'],
+                    'harga' => $product->harga_jual,
+                    'keterangan' => null,
+                    'status' => 1,
+                    'code_report' => $kdReport,
+                    'jenis_laporan' => 'pasok'
+                ]);
+
+            }
+
+            //BATAS
+
             $product = Product::with('Unit.Category')->find($val['id']);
             Product::where(['id' => $val['id']])->update([
                 'stok' => $product->stok + $val['qty']
@@ -94,19 +180,20 @@ class SupplierController extends Controller
 
         }
 
+        $dateNow = Carbon::now();
+        $total = count($request->pasok);
+
+        Log::create([
+            'user_id' => $request->user,
+            'activity' => $request->activity,
+            'detail_activity' => 'memasok '.$total.' Jumlah Produk',
+            'tanggal' => $dateNow,
+            'supplier_change' => 1
+        ]);
+
 
         return redirect()->route('suppliers.index');
     }
-
-    // public function pasok($id)
-    // {
-    //     $suppliers = Supplier::with('Product.Unit.Category')
-    //         ->where('id', $id)
-    //         ->first();
-
-    //     return view('admin.suppliers.pasok')->with(compact('suppliers'));
-    // }
-
 
     public function updatePasok(Request $request, $id)
     {

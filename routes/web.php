@@ -14,7 +14,7 @@
 use App\Role;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts.pages.login_custom');
 });
 
 // Route::get('/orders/struk', function () {
@@ -78,6 +78,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         'show','destroy'
     ]);
 
+    Route::resource('logs', 'LogController')->except([
+        'destroy'
+    ]);
+
     Route::resource('reports', 'ReportController')->except([
         'show','destroy'
     ]);
@@ -88,9 +92,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
 Route::get('/signUp', function () {
 
-    $roles = Role::all();
-
+    $roles = Role::where('name','<>','Admin')->get();
     return view('layouts.pages.register_custom', compact('roles'));
+
 })->name('signUp');
 
 Route::get('/signIn', function () {
@@ -101,6 +105,7 @@ Route::get('/signIn', function () {
 Route::post('/regiter/process', 'RegisterCustomController@register')->name('regiter.process');
 Route::get('/orders/struk', 'ReportController@struk')->name('orders.struk');
 Route::get('/orders/print/{id}', 'ReportController@print')->name('orders.print');
+// Route::get('/logs/detail/{id}','LogController@detail')->name('logs.detail');
 
 
 Route::get('/getUnits/{id}', 'ApiController@getUnits')->name('getUnit');
@@ -111,6 +116,7 @@ Route::get('/handleConvert/{id}', 'ApiController@handleConvert')->name('handleCo
 
 Route::get('/categories/{category}','CategoryController@destroy')->name('categories.destroy');
 Route::get('/adminAccount/{account}','AdminAccountController@destroy')->name('adminAccount.destroy');
+Route::get('/adminAccount/accept/{id}','AdminAccountController@accept')->name('adminAccount.accept');
 Route::get('/units/{unit}','UnitController@destroy')->name('units.destroy');
 Route::get('/carts/{cart}','CartController@destroy')->name('carts.destroy');
 Route::post('/admin/carts/','CartController@create')->name('carts.create');

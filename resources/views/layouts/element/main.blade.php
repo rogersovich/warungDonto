@@ -6,9 +6,27 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <style>
-            .test{
+            .sidebar-primary{
                 border-left: 2px #5e72e4 solid;
                 background-color: #5e72e4;
+                color: #ffffff!important;
+            }
+
+            .sidebar-success{
+                border-left: 2px #2dce89 solid;
+                background-color: #2dce89;
+                color: #ffffff!important;
+            }
+
+            .sidebar-warning{
+                border-left: 2px #fb6340 solid;
+                background-color: #fb6340;
+                color: #ffffff!important;
+            }
+
+            .sidebar-info{
+                border-left: 2px #11cdef solid;
+                background-color: #11cdef;
                 color: #ffffff!important;
             }
 
@@ -144,7 +162,7 @@
         }
 
         .scrollbar-inner > .scroll-element .scroll-element_track { background-color: #e0e0e0; }
-        .scrollbar-inner > .scroll-element .scroll-bar { background-color: #5e72e4 ; }
+        .scrollbar-inner > .scroll-element .scroll-bar { background-color: #3d3d3d ; }
         .scrollbar-inner > .scroll-element:hover .scroll-bar { background-color: #919191; }
         .scrollbar-inner > .scroll-element.scroll-draggable .scroll-bar { background-color: #919191; }
 
@@ -201,6 +219,8 @@
         <script src="{{ asset('assets/js/jquery-scrollLock.min.js') }}"></script>
         <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
         <script src="{{ asset('assets/js/dataTables.bootstrap4.min.js') }}"></script>
+
+        <script src="{{ asset('assets/js/sweetalert2.all.js') }}"></script>
 
         @yield('scripts')
 

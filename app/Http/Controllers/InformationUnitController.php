@@ -67,7 +67,6 @@ class InformationUnitController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request->all());
 
         InformationUnit::create([
             'category_id' => $request->category_id,

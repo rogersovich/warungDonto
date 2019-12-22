@@ -12,7 +12,7 @@
                     <a href="{{ route('signUp') }}" class="signup-image-link">Create an account</a>
                 </div>
                 <div class="signin-form">
-                    <h2 class="form-title">Sign In</h2>
+                    <h2 class="form-title">Silahkan Masuk</h2>
                     <form action="{{ route('login') }}" method="POST" class="register-form">
                         @csrf
                         <div class="form-group">
@@ -23,11 +23,11 @@
                             <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
                             <input type="password" name="password" placeholder="Password"/>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
                             <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
-                        </div>
-                        <div class="form-group form-button">
+                        </div> --}}
+                        <div class="form-group form-button mt-5">
                             <button style="width: 100px;" type="submit" class="btn btn-primary">Login</button>
                         </div>
                     </form>

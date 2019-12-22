@@ -1,6 +1,6 @@
 @extends('layouts.element.main')
 
-@section('title', 'Categories - Add')
+@section('title', 'Pembelian')
 
 @section('custom-css')
     <style>
@@ -15,11 +15,12 @@
 
 @php
     $session = Session::get('user');
+    // dd($session)
 @endphp
 
 @include('layouts.element.navbar')
 <!-- Header -->
-<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+<div class="header bg-gradient-warning pb-8 pt-5 pt-md-8">
 </div>
 <div class="container-fluid mt--7 pb-4">
     <div class="row">
@@ -32,11 +33,11 @@
                         <ol class="breadcrumb breadcrumb-links" style="background:none;">
                             <li class="breadcrumb-item">
                                 <a href="javascript:;">
-                                    <i class="fa fa-home"></i>
+                                    <i class="fa fa-home text-warning"></i>
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Categories
+                                Pembelian
                             </li>
                         </ol>
                     </nav>
@@ -74,14 +75,14 @@
                         <input type="hidden" name="Order[{{ $c->id }}][qty]" value="{{ $c->qty }}">
                     </td>
                     <td>{{ ucwords($c->product->name.' - '.$c->product->unit->name) }}</td>
-                    <td>{{ $c->product->harga_jual }}</td>
+                    <td>Rp. {{ number_format($c->product->harga_jual) }}</td>
                     <td>{{ $c->qty }}</td>
-                    <td>{{ $c->qty * $c->product->harga_jual }}</td>
+                    <td>Rp. {{ number_format($c->qty * $c->product->harga_jual) }}</td>
                     <td>
-                        <a href="{{ route('orders.destroy', $c->id) }}" class="badge badge-pill badge-danger">
+                        <a href="javascript:;" data-id="{{ route('orders.destroy', $c->id) }}" class="btn-danger badge badge-pill badge-danger">
                             Cancel
                         </a>
-                        <a href="{{ route('carts.edit', $c->id) }}" class="badge badge-pill badge-primary">
+                        <a href="{{ route('carts.edit', $c->product->id) }}" class="badge badge-pill badge-primary">
                             Pesen
                         </a>
                     </td>
@@ -98,10 +99,10 @@
 
             @else
             <div class="row" id="form-pembelian">
-                <div class="col-8"></div>
-                <div class="col-4 p-4">
+                <div class="col-7"></div>
+                <div class="col-5 p-4 bg-warning">
                     <div class=" pb-3">
-                        <h2 class="text-primary font-weight-light">
+                        <h2 class="text-white font-weight-light">
                             <strong>
                                 TOTAL KERANJANG
                             </strong>
@@ -111,7 +112,7 @@
                     <div class="pb-3">
                         <div class="custom-control custom-control-alternative custom-checkbox mb-3">
                             <input class="custom-control-input" id="orang-dekat-id" type="checkbox">
-                            <label class="custom-control-label font-weight-bold text-primary" for="orang-dekat-id">
+                            <label class="custom-control-label font-weight-bold text-white" for="orang-dekat-id">
                                 Orang Dekat
                             </label>
                         </div>
@@ -119,14 +120,14 @@
 
                     <div class="d-flex justify-content-between align-items-center pb-1">
                         <div>
-                            <h2 class="text-primary font-weight-light">
+                            <h2 class="text-white font-weight-light">
                                 <strong>
                                     SUBTOTAL
                                 </strong>
                             </h2>
                         </div>
                         <div class="text-right">
-                            <h2 class="text-red font-weight-light">
+                            <h2 class="text-white font-weight-light">
                                 <strong>
                                     Rp.{{ number_format( $subtotal ) }}
                                     <input type="hidden" name="subtotal" value="{{ $subtotal }}">
@@ -136,7 +137,7 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center pb-2">
                         <div id="pembeli-title">
-                            <h2 class="text-primary font-weight-light">
+                            <h2 class="text-white font-weight-light">
                                 <strong>
                                     Nama
                                 </strong>
@@ -146,7 +147,14 @@
                             <h2 class="text-red font-weight-light">
                                 <strong>
                                     <div class="form-group">
-                                        <input type="text" name="nama" placeholder="Nama Pembeli" class="form-control form-control-alternative">
+                                        <div class="input-group input-group-alternative mb-4">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-user"></i>
+                                                </span>
+                                            </div>
+                                            <input type="text" autocomplete="off" name="nama" placeholder="Nama Pembeli" class="form-control form-control-alternative">
+                                        </div>                                      
                                     </div>
                                 </strong>
                             </h2>
@@ -154,7 +162,7 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center pb-2">
                         <div>
-                            <h2 class="text-primary font-weight-light">
+                            <h2 class="text-white font-weight-light">
                                 <strong>
                                     Uang
                                 </strong>
@@ -164,7 +172,14 @@
                             <h2 class="text-red font-weight-light">
                                 <strong>
                                     <div class="form-group">
-                                        <input type="text" required name="duit" placeholder="Uang Duit" class="form-control form-control-alternative">
+                                        <div class="input-group input-group-alternative mb-4">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    Rp.
+                                                </span>
+                                            </div>
+                                            <input type="text" required autocomplete="off" name="duit" placeholder="Uang Duit" class="form-control form-control-alternative">
+                                        </div>      
                                     </div>
                                 </strong>
                             </h2>
@@ -172,7 +187,9 @@
                     </div>
 
                     <div>
-                        <button class="btn btn-primary btn-lg btn-block text-white text-lg font-weight-bold">
+                        <input type="hidden" name="user" value="{{ $session['user_id'] }}">
+                        <input type="hidden" name="activity" value="membayar">
+                        <button class="btn btn-white btn-lg btn-block text-warning text-lg font-weight-bold">
                             Bayar
                         </button>
                     </div>
@@ -210,6 +227,32 @@
             }
 
         })
+
+        $('.btn-danger').on('click', function() {
+
+            Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#1aae6f',
+            cancelButtonColor: '#f80031',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel'
+            }).then((result) => {
+                if (result.value) {
+                    var data = $(this).data('id')
+                    console.log(data)
+                    window.location = data;
+                }else{
+                    Swal.fire(
+                    'Cancelled!',
+                    'Your file has been cancel.',
+                    'error'
+                    )
+                }
+            })
+        });
 
     });
 

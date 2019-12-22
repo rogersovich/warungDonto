@@ -89,6 +89,10 @@
             </div>
           </div>
         </form>
+        @php
+          $session = Session::get('user');
+          //dd($session);
+        @endphp
         <!-- Navigation -->
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -100,32 +104,31 @@
 
         </ul>
 
+        @if ( $session['role_id'] == 2 )
+            
+        @else
         <hr class="my-2">
-
         <ul class="navbar-nav">
-
             <li class="nav-item">
                 <a id="category-id" class="nav-link" href="{{ route('categories.index') }}">
-                    <i class="fa fa-th-large text-primary"></i>
+                    <i class="fa fa-th-large text-success"></i>
                     Kategori
                 </a>
             </li>
-
             <li class="nav-item">
                 <a id="unit-id" class="nav-link" href="{{ route('units.index') }}">
-                    <i class="fa fa-balance-scale text-primary"></i>
+                    <i class="fa fa-balance-scale text-success"></i>
                     Satuan
                 </a>
             </li>
-
             <li class="nav-item">
                 <a id="information-id" class="nav-link" href="{{ route('informations.index') }}">
-                    <i class="fa fa-info-circle text-primary"></i>
+                    <i class="fa fa-info-circle text-success"></i>
                     Keterangan Satuan
                 </a>
             </li>
-
-        </ul>
+        </ul>     
+        @endif
 
         <hr class="my-2">
 
@@ -133,28 +136,28 @@
 
             <li class="nav-item">
                 <a id="product-id" class="nav-link" href="{{ route('products.index') }}">
-                    <i class="fa fa-circle text-primary"></i>
+                    <i class="fa fa-circle text-warning"></i>
                     Produk
                 </a>
             </li>
 
             <li class="nav-item">
                 <a id="supplier-id" class="nav-link" href="{{ route('suppliers.index') }}">
-                    <i class="fa fa-people-carry text-primary"></i>
+                    <i class="fa fa-people-carry text-warning"></i>
                     Pemasok
                 </a>
             </li>
 
             <li class="nav-item">
                 <a id="order-id" class="nav-link" href="{{ route('orders.create') }}">
-                    <i class="fa fa-money-bill-wave text-primary"></i>
+                    <i class="fa fa-money-bill-wave text-warning"></i>
                     Pembelian
                 </a>
             </li>
 
             <li class="nav-item">
                 <a id="debt-id" class="nav-link" href="{{ route('debts.index') }}">
-                    <i class="fa fa-credit-card text-primary"></i>
+                    <i class="fa fa-credit-card text-warning"></i>
                     Daftar Hutang
                 </a>
             </li>
@@ -165,30 +168,41 @@
 
         <ul class="navbar-nav">
 
+            
+            @if ( $session['role_id'] == 2 )
+                
+            @else
             <li class="nav-item">
                 <a id="convert-id" class="nav-link" href="{{ route('converts.index') }}">
-                    <i class="fa fa-exchange-alt text-primary"></i>
+                    <i class="fa fa-exchange-alt text-info"></i>
                     Convert
                 </a>
             </li>
-
             <li class="nav-item">
                 <a id="role-id" class="nav-link" href="{{ route('roles.index') }}">
-                    <i class="fa fa-cogs text-primary"></i>
+                    <i class="fa fa-cogs text-info"></i>
                     Role
                 </a>
             </li>
-
             <li class="nav-item">
                 <a id="account-id" class="nav-link" href="{{ route('adminAccount.index') }}">
-                    <i class="fa fa-users text-primary"></i>
+                    <i class="fa fa-users text-info"></i>
                     Akun
                 </a>
             </li>
 
             <li class="nav-item">
+                <a id="log-id" class="nav-link" href="{{ route('logs.index') }}">
+                    <i class="fa fa-history text-info"></i>
+                    History
+                </a>
+            </li>
+            
+            @endif
+            
+            <li class="nav-item">
                 <a id="report-id" class="nav-link" href="{{ route('reports.index') }}">
-                    <i class="fa fa-file-invoice text-primary"></i>
+                    <i class="fa fa-file-invoice text-info"></i>
                     Laporan
                 </a>
             </li>
@@ -209,68 +223,72 @@
 
             var url = window.location.href;
             var urls = url.split('localhost/warungDonto/public/');
-            //console.log(urls[1]);
+            console.log(urls[1]);
             var param = urls[1].split('edit');
             var p = param[0].split('admin');
             var asli = p[1].split('/');
             //console.log(asli);
 
             if( urls[1] == 'admin/products' || urls[1] == 'admin/products/' || urls[1] == 'admin/products/create' || urls[1] == 'admin/products/'+asli[2]+'/edit' ){
-                $('.nav-item a').removeClass('test');
-                $('#product-id i').removeClass('text-primary');
-                $('#product-id').addClass('test');
-            }else if( urls[1] == 'admin/carts' || urls[1] == 'admin/carts/' || urls[1] == 'admin/carts/create' || urls[1] == 'admin/carts/'+asli[2]+'/edit' ){
-                $('.nav-item a').removeClass('test');
-                $('#cart-id i').removeClass('text-primary');
-                $('#cart-id').addClass('test');
-            }else if( urls[1] == 'admin/orders' || urls[1] == 'admin/orders/' || urls[1] == 'admin/orders/create' || urls[1] == 'admin/orders/'+asli[2]+'/edit' ){
-                $('.nav-item a').removeClass('test');
-                $('#order-id i').removeClass('text-primary');
-                $('#order-id').addClass('test');
+                $('.nav-item a').removeClass('sidebar-warning');
+                $('#product-id i').removeClass('text-warning');
+                $('#product-id').addClass('sidebar-warning');
+            }else if( urls[1] == 'admin/carts' || urls[1] == 'admin/carts/' || urls[1] == 'admin/carts/create' ){
+                $('.nav-item a').removeClass('sidebar-warning');
+                $('#product-id i').removeClass('text-warning');
+                $('#product-id').addClass('sidebar-warning');
+            }else if( urls[1] == 'admin/orders' || urls[1] == 'admin/orders/' || urls[1] == 'admin/orders/create' || urls[1] == 'admin/carts/'+asli[2]+'/edit' ){
+                $('.nav-item a').removeClass('sidebar-warning');
+                $('#order-id i').removeClass('text-warning');
+                $('#order-id').addClass('sidebar-warning');
             }else if( urls[1] == 'admin/adminAccount' || urls[1] == 'admin/adminAccount/' || urls[1] == 'admin/adminAccount/create' || urls[1] == 'admin/adminAccount/'+asli[2]+'/edit' ){
-                $('.nav-item a').removeClass('test');
-                $('#account-id i').removeClass('text-primary');
-                $('#account-id').addClass('test');
+                $('.nav-item a').removeClass('sidebar-info');
+                $('#account-id i').removeClass('text-info');
+                $('#account-id').addClass('sidebar-info');
             }else if( urls[1] == 'admin/converts' || urls[1] == 'admin/converts/' || urls[1] == 'admin/converts/create' || urls[1] == 'admin/converts/'+asli[2]+'/edit' ){
-                $('.nav-item a').removeClass('test');
-                $('#convert-id i').removeClass('text-primary');
-                $('#convert-id').addClass('test');
-            }else if( urls[1] == 'admin/suppliers' || urls[1] == 'admin/suppliers/' || urls[1] == 'admin/suppliers/create' || urls[1] == 'admin/suppliers/'+asli[2]+'/edit' ){
-                $('.nav-item a').removeClass('test');
-                $('#supplier-id i').removeClass('text-primary');
-                $('#supplier-id').addClass('test');
+                $('.nav-item a').removeClass('sidebar-info');
+                $('#convert-id i').removeClass('text-info');
+                $('#convert-id').addClass('sidebar-info');
+            }else if( urls[1] == 'admin/logs' || urls[1] == 'admin/logs/' || urls[1] == 'admin/logs/create' || urls[1] == 'admin/logs/'+asli[2]+'/edit' ){
+                $('.nav-item a').removeClass('sidebar-info');
+                $('#log-id i').removeClass('text-info');
+                $('#log-id').addClass('sidebar-info');
+            }else if( urls[1] == 'admin/suppliers' || urls[1] == 'admin/suppliers/' || urls[1] == 'admin/suppliers/pasok' || urls[1] == 'admin/suppliers/'+asli[2]+'/edit' ){
+                $('.nav-item a').removeClass('sidebar-warning');
+                $('#supplier-id i').removeClass('text-warning');
+                $('#supplier-id').addClass('sidebar-warning');
             }else if( urls[1] == 'admin/informations' || urls[1] == 'admin/informations/' || urls[1] == 'admin/informations/create' || urls[1] == 'admin/informations/'+asli[2]+'/edit' ){
-                $('.nav-item a').removeClass('test');
-                $('#information-id i').removeClass('text-primary');
-                $('#information-id').addClass('test');
+                $('.nav-item a').removeClass('sidebar-success');
+                $('#information-id i').removeClass('text-success');
+                $('#information-id').addClass('sidebar-success');
             }else if( urls[1] == 'admin/categories' || urls[1] == 'admin/categories/' || urls[1] == 'admin/categories/create' || urls[1] == 'admin/categories/'+asli[2]+'/edit' ){
-                $('.nav-item a').removeClass('test');
-                $('#category-id i').removeClass('text-primary');
-                $('#category-id').addClass('test');
+                $('.nav-item a').removeClass('sidebar-success');
+                $('#category-id i').removeClass('text-success');
+                $('#category-id').addClass('sidebar-success');
             }else if( urls[1] == 'admin/units' || urls[1] == 'admin/units/' || urls[1] == 'admin/units/create' || urls[1] == 'admin/units/'+asli[2]+'/edit' ){
-                $('.nav-item a').removeClass('test');
-                $('#unit-id i').removeClass('text-primary');
-                $('#unit-id').addClass('test');
+                $('.nav-item a').removeClass('sidebar-success');
+                $('#unit-id i').removeClass('text-success');
+                $('#unit-id').addClass('sidebar-success');
             }else if( urls[1] == 'admin/accounts' || urls[1] == 'admin/accounts/' || urls[1] == 'admin/accounts/create' || urls[1] == 'admin/accounts/'+asli[2]+'/edit' ){
-                $('.nav-item a').removeClass('test');
-                $('#account-id i').removeClass('text-primary');
-                $('#account-id').addClass('test');
-            }else if( urls[1] == 'admin/debts' || urls[1] == 'admin/debts/' || urls[1] == 'admin/debts/create' || urls[1] == 'admin/debts/'+asli[2]+'/edit' ){
-                $('.nav-item a').removeClass('test');
-                $('#debt-id i').removeClass('text-primary');
-                $('#debt-id').addClass('test');
+                $('.nav-item a').removeClass('sidebar-info');
+                $('#account-id i').removeClass('text-info');
+                $('#account-id').addClass('sidebar-info');
+            }else if( urls[1] == 'admin/debts' || urls[1] == 'admin/debts/' || urls[1] == 'admin/debts/bayar/'+asli[3] || urls[1] == 'admin/debts/'+asli[2]+'/edit' ){
+                $('.nav-item a').removeClass('sidebar-warning');
+                $('#debt-id i').removeClass('text-warning');
+                $('#debt-id').addClass('sidebar-warning');
             }else if( urls[1] == 'admin/reports' || urls[1] == 'admin/reports/' || urls[1] == 'admin/reports/create' || urls[1] == 'admin/reports/'+asli[2]+'/edit' ){
-                $('.nav-item a').removeClass('test');
-                $('#report-id i').removeClass('text-primary');
-                $('#report-id').addClass('test');
+                $('.nav-item a').removeClass('sidebar-info');
+                $('#report-id i').removeClass('text-info');
+                $('#report-id').addClass('sidebar-info');
             }else if( urls[1] == 'admin/roles' || urls[1] == 'admin/roles/' || urls[1] == 'admin/roles/create' || urls[1] == 'admin/roles/'+asli[2]+'/edit' ){
-                $('.nav-item a').removeClass('test');
-                $('#role-id i').removeClass('text-primary');
-                $('#role-id').addClass('test');
+                $('.nav-item a').removeClass('sidebar-info');
+                $('#role-id i').removeClass('text-info');
+                $('#role-id').addClass('sidebar-info');
             }else{
-                $('.nav-item a').removeClass('test');
+                $('.nav-item a').removeClass('sidebar-primary');
                 $('#dashboard-id i').removeClass('text-primary');
-                $('#dashboard-id').addClass('test');
+                $('#dashboard-id').addClass('sidebar-primary');
             }
 
         })

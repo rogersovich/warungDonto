@@ -14,12 +14,26 @@ class ApiController extends Controller
 
         $unit = Unit::where('id' , $id)
             ->first();
+        
+        $tingkat = Unit::where('category_id', $unit->category_id)
+            ->select('tingkat')
+            ->max('tingkat');
 
-        //dd($unit);
+        if ($unit->tingkat == $tingkat) {
 
-        $results = Unit::where('id','<>', $id)
-            ->where('category_id', $unit->category_id)
-            ->get();
+            $results = [
+                'cek' => 'true'
+            ];
+
+        }else{
+            $results = Unit::where('id','<>', $id)
+                ->where('category_id', $unit->category_id)
+                ->orderBy('tingkat', 'asc')
+                ->get();
+        }
+
+        //dd($results);
+
 
         return response()->json([
             'results' => $results
@@ -30,7 +44,7 @@ class ApiController extends Controller
     public function getUnits($id){
 
         $results = Unit::where('category_id' , $id)
-            ->orderBy('name', 'asc')
+            ->orderBy('tingkat', 'asc')
             ->get();
 
         return response()->json([

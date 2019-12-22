@@ -22,7 +22,17 @@ class ConvertController extends Controller
             $role = $user->roles->first()->pivot->role_id;
 
             if ($role == 2) {
-                return redirect('home/');
+                if($user){
+                    $data = collect([
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'id' => $user->id,
+                        'role_id' => $role,
+                    ]);
+                    Session::put('user', $data);
+                }
+
+                return $next($request);
             }else{
                 if($user){
                     $data = collect([

@@ -10,12 +10,15 @@ class Report extends Model
         'jenis_laporan',
         'tanggal',
         'product_id',
+        'order_id',
         'code_report',
         'harga',
         'keterangan',
+        'status',
         'jumlah_awal',
         'jumlah_jual',
-        'jumlah_akhir'
+        'jumlah_akhir',
+        'bm_jumlah',
     ];
 
     public function product()

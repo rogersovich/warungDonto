@@ -20,7 +20,7 @@
 @include('layouts.element.navbar')
 
 <!-- Header -->
-<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+<div class="header bg-gradient-warning pb-8 pt-5 pt-md-8">
 </div>
 <div class="container-fluid mt--7">
           <!-- Table -->
@@ -34,27 +34,31 @@
                         <ol class="breadcrumb breadcrumb-links" style="background:none;">
                             <li class="breadcrumb-item">
                                 <a href="javascript:;">
-                                    <i class="fa fa-home"></i>
+                                    <i class="fa fa-home text-warning"></i>
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Categories
+                                Pemasok
                             </li>
                         </ol>
                     </nav>
                 </div>
+                @if ($session['role_id'] == 2)
+                    
+                @else
                 <div class="col-4 text-right">
                     <a href="{{ route('products.create') }}" class="btn btn-icon btn-neutral btn-round">
-                        <span class="btn-inner--text">Tambah Barang Baru</span>
-                        <span class="btn-inner--icon">
-                            <i class="ni ni-fat-add"></i>
+                        {{-- <span class="btn-inner--text">Tambah Barang Baru</span> --}}
+                        <span class="btn-inner--icon text-lg">
+                            <i class="ni ni-fat-add text-warning"></i>
                         </span>
                     </a>
                 </div>
+                @endif
             </div>
         </div>
         <form action="{{ route('suppliers.pasok') }}" method="POST">
-        <div class="table-responsive p-3" style="background: #f7f8f9;">
+        <div class="table-responsive p-3">
           <table class="table align-items-center table-flush" id="table-category">
             <thead class="thead-light">
                 <tr>
@@ -84,7 +88,7 @@
                     <td>
                         <div class="custom-control custom-control-alternative custom-checkbox mb-3">
                             <input class="custom-control-input check-class" id="check-{{ $s->id }}" name="pasok[]" value="{{ $s->id }}" type="checkbox">
-                            <label class="custom-control-label text-primary font-weight-bold pt-1" for="check-{{ $s->id }}">
+                            <label class="custom-control-label text-warning font-weight-bold pt-1" for="check-{{ $s->id }}">
                                 Pasok
                             </label>
                         </div>
@@ -99,7 +103,7 @@
 
             @csrf
                 <div class="col text-right">
-                    <button type="submit" class="btn btn-icon btn-primary" style="border-radius: 22px;">
+                    <button type="submit" class="btn btn-icon btn-warning" style="border-radius: 22px;">
                         <span class="btn-inner--text">Submit</span>
                     </button>
                 </div>

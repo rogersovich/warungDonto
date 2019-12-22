@@ -26,7 +26,17 @@ class ReportController extends Controller
             $role = $user->roles->first()->pivot->role_id;
 
             if ($role == 2) {
-                return redirect('home/');
+                if($user){
+                    $data = collect([
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'id' => $user->id,
+                        'role_id' => $role,
+                    ]);
+                    Session::put('user', $data);
+                }
+
+                return $next($request);
             }else{
                 if($user){
                     $data = collect([
@@ -104,8 +114,9 @@ class ReportController extends Controller
 
     public function print($id)
     {
-
-        $data = Report::find($id);
+        
+        $data = Report::where('order_id', $id)->first();
+        // dd($data);
         $order_details = OrderDetail::with('Product.Unit')
             ->where('order_id', $data->order_id)->get();
 
@@ -127,7 +138,6 @@ class ReportController extends Controller
         $year = date_format(date_create($request->week), 'Y');
         $weekNow = Carbon::now()->format('W');
         $monthNow = Carbon::now()->format('m');
-        //dd($month);
 
         if($request->jenis_laporan == 'mingguan'){
 
@@ -140,6 +150,7 @@ class ReportController extends Controller
                         ->distinct('product_id')
                         ->get('product_id');
 
+                    $reports = [];
                     foreach ($getReport as $gp) {
                         $reports[] = Report::with('Product.Unit.Category','Product.Supplier')
                             ->where('product_id', $gp->product_id)
@@ -181,20 +192,61 @@ class ReportController extends Controller
 
                 //pasok
                 if($week == $weekNow){
-                    $reports = Report::whereBetween('tanggal',[Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
-                    ->get();
+                    
+                    $getReport = Report::with('Product.Unit.Category')
+                        ->whereBetween('tanggal',[Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                        ->where('bm_jumlah', '<>', null)
+                        ->distinct('product_id')
+                        ->get('product_id');
+
+                    $reports = [];
+                    foreach ($getReport as $gp) {
+                        $reports[] = Report::with('Product.Unit.Category','Product.Supplier')
+                            ->where([
+                                ['product_id', '=' , $gp->product_id],
+                                ['bm_jumlah', '<>', null]
+                            ])
+                            ->orderBy('code_report', 'desc')
+                            ->first();
+                    }
+
+                    $pdf = PDF::loadView('pdf.mingguan_pasok_pdf', compact('reports'));
+
+                    return $pdf->setPaper('a4', 'landscape')->save('test.pdf')->stream('haha.pdf');
+
 
                 }else{
+                    
                     $weekFirst = Carbon::now()->setISODate($year, $week);
                     $weekLast = Carbon::now()->setISODate($year, $week, 7);
-                    $reports = Report::whereBetween('tanggal', [$weekFirst, $weekLast])
-                        ->get();
+
+                    $getReport = Report::with('Product.Unit.Category')
+                        ->whereBetween('tanggal', [$weekFirst, $weekLast])
+                        ->where('bm_jumlah', '<>', null)
+                        ->distinct('product_id')
+                        ->get('product_id');
+
+                    $reports = [];
+
+                    foreach ($getReport as $gp) {
+                        $reports[] = Report::with('Product.Unit.Category','Product.Supplier')
+                            ->where([
+                                ['product_id', '=' , $gp->product_id],
+                                ['bm_jumlah', '<>', null]
+                            ])
+                            ->orderBy('code_report', 'desc')
+                            ->first();
+                    }
+
+                    $pdf = PDF::loadView('pdf.mingguan_pasok_pdf', compact('reports'));
+
+                    return $pdf->setPaper('a4', 'landscape')->save('test.pdf')->stream('haha.pdf');
 
                 }
             }
 
         }elseif($request->jenis_laporan == 'harian'){
-
+            
             if($request->laporan == 'barang'){
 
                 $getReport = Report::with('Product.Unit.Category')
@@ -206,13 +258,35 @@ class ReportController extends Controller
                 foreach ($getReport as $gp) {
                     $reports[] = Report::with('Product.Unit.Category','Product.Supplier')
                         ->where('product_id', $gp->product_id)
-                        ->orderBy('product_id', 'asc')
+                        ->orderBy('code_report', 'desc')
                         ->first();
                 }
 
                 $pdf = PDF::loadView('pdf.harian_pdf', compact('reports'));
                 return $pdf->setPaper('a4', 'landscape')->save('test.pdf')->stream('haha.pdf');
 
+
+            }else{
+
+                $getReport = Report::with('Product.Unit.Category')
+                    ->where('tanggal',$day)
+                    ->where('bm_jumlah', '<>', null)
+                    ->distinct('product_id')
+                    ->get('product_id');
+
+                $reports = [];
+                foreach ($getReport as $gp) {
+                    $reports[] = Report::with('Product.Unit.Category','Product.Supplier')
+                        ->where([
+                            ['product_id', '=' , $gp->product_id],
+                            ['bm_jumlah', '<>', null]
+                        ])
+                        ->orderBy('code_report', 'desc')
+                        ->first();
+                }
+
+                $pdf = PDF::loadView('pdf.harian_pasok_pdf', compact('reports'));
+                return $pdf->setPaper('a4', 'landscape')->save('test.pdf')->stream('haha.pdf');
 
             }
 
@@ -227,10 +301,11 @@ class ReportController extends Controller
                         ->distinct('product_id')
                         ->get('product_id');
 
+                    $reports = [];
                     foreach ($getReport as $gp) {
                         $reports[] = Report::with('Product.Unit.Category','Product.Supplier')
                             ->where('product_id', $gp->product_id)
-                            ->orderBy('product_id', 'asc')
+                            ->orderBy('code_report', 'desc')
                             ->first();
                     }
 
@@ -245,10 +320,11 @@ class ReportController extends Controller
                         ->distinct('product_id')
                         ->get('product_id');
 
+                    $reports = [];
                     foreach ($getReport as $gp) {
                         $reports[] = Report::with('Product.Unit.Category','Product.Supplier')
                             ->where('product_id', $gp->product_id)
-                            ->orderBy('product_id', 'asc')
+                            ->orderBy('code_report', 'desc')
                             ->first();
                     }
 
@@ -256,21 +332,56 @@ class ReportController extends Controller
 
                     return $pdf->setPaper('a4', 'landscape')->save('test.pdf')->stream('haha.pdf');
 
-                    // $reports = Report::whereMonth('tanggal',$month)
-                    // ->get();
-
                 }
 
             }else{
 
                 //pasok
                 if($month == $monthNow){
-                    $reports = Report::whereMonth('tanggal',$monthNow)
-                    ->get();
+
+                    $getReport = Report::with('Product.Unit.Category')
+                        ->whereMonth('tanggal',$monthNow)
+                        ->where('bm_jumlah', '<>', null)
+                        ->distinct('product_id')
+                        ->get('product_id');
+
+                    $reports = [];
+                    foreach ($getReport as $gp) {
+                        $reports[] = Report::with('Product.Unit.Category','Product.Supplier')
+                            ->where([
+                                ['product_id', '=' , $gp->product_id],
+                                ['bm_jumlah', '<>', null]
+                            ])
+                            ->orderBy('code_report', 'desc')
+                            ->first();
+                    }
+
+                    $pdf = PDF::loadView('pdf.bulanan_pasok_pdf', compact('reports'));
+
+                    return $pdf->setPaper('a4', 'landscape')->save('test.pdf')->stream('haha.pdf');
 
                 }else{
-                    $reports = Report::whereMonth('tanggal',$month)
-                    ->get();
+
+                    $getReport = Report::with('Product.Unit.Category')
+                        ->whereMonth('tanggal',$month)
+                        ->where('bm_jumlah', '<>', null)
+                        ->distinct('product_id')
+                        ->get('product_id');
+
+                    $reports = [];
+                    foreach ($getReport as $gp) {
+                        $reports[] = Report::with('Product.Unit.Category','Product.Supplier')
+                            ->where([
+                                ['product_id', '=' , $gp->product_id],
+                                ['bm_jumlah', '<>', null]
+                            ])
+                            ->orderBy('code_report', 'desc')
+                            ->first();
+                    }
+
+                    $pdf = PDF::loadView('pdf.bulanan_pasok_pdf', compact('reports'));
+
+                    return $pdf->setPaper('a4', 'landscape')->save('test.pdf')->stream('haha.pdf');
 
                 }
 

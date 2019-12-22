@@ -77,6 +77,17 @@ class AdminAccountController extends Controller
         return redirect()->route('adminAccount.index')->with('success','Account has added');
     }
 
+    public function accept($id)
+    {
+        $user = User::where(['id' =>  $id])->first();
+
+        User::where(['id' => $id])->update([
+            'status' => 1,
+        ]);
+
+        return redirect()->route('adminAccount.index')->with('success','Akun berhasil di ubah');
+    }
+
     public function edit($id)
     {
         $user = Auth::user();
@@ -99,11 +110,13 @@ class AdminAccountController extends Controller
             User::where('id',$id)->update([
                 'name' => $request->name,
                 'email' => $request->email,
+                'status' => $request->status
             ]);
         }else{
             User::where('id',$id)->update([
                 'name' => $request->name,
                 'email' => $request->email,
+                'status' => $request->status,
                 'password' => Hash::make($request->password),
             ]);
         }

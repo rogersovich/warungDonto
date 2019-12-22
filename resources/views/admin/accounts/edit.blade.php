@@ -147,6 +147,22 @@
                 <div class="col-6 p-2">
                     <div class="form-group">
                         <label class="form-control-label">
+                            Status
+                        </label>
+                        <select name="status" class="form-control form-control-alternative">
+                            @if ($admin->status == 1)
+                              <option value="1" selected>Accept</option>
+                              <option value="0">Pending</option> 
+                            @else
+                                <option value="0" selected>Pending</option> 
+                                <option value="1">Accept</option>
+                            @endif
+                        </select>
+                    </div>
+                </div>
+                <div class="col-6 p-2">
+                    <div class="form-group">
+                        <label class="form-control-label">
                             Hak Akses
                         </label>
 

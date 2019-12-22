@@ -13,6 +13,18 @@
     <link rel="stylesheet" href="{{ asset('assets/login/css/style.css') }}">
     @yield('custom-css')
 
+    <style>
+        .btn-purple{
+            color: #fff;
+            background-color: #5e72e4;
+        }
+
+        .btn-cyan{
+            color: #fff;
+            background-color: #11cdef;
+        }
+    </style>
+
 </head>
 <body>
 

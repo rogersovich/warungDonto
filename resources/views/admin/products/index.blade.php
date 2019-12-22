@@ -29,7 +29,7 @@
 @include('layouts.element.navbar')
 
 <!-- Header -->
-<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+<div class="header bg-gradient-warning pb-8 pt-5 pt-md-8">
 </div>
 <div class="container-fluid mt--7">
           <!-- Table -->
@@ -43,7 +43,7 @@
                         <ol class="breadcrumb breadcrumb-links" style="background:none;">
                             <li class="breadcrumb-item">
                                 <a href="javascript:;">
-                                    <i class="fa fa-home"></i>
+                                    <i class="fa fa-home text-warning"></i>
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
@@ -52,14 +52,17 @@
                         </ol>
                     </nav>
                 </div>
+                @if ($session['role_id'] == 2)
+                    
+                @else
                 <div class="col-4 text-right">
                     <a href="{{ route('products.create') }}" class="btn btn-icon btn-neutral btn-round">
-                        <span class="btn-inner--text">Add</span>
-                        <span class="btn-inner--icon">
-                            <i class="ni ni-fat-add"></i>
+                        <span class="btn-inner--icon text-lg">
+                            <i class="ni ni-fat-add text-warning"></i>
                         </span>
                     </a>
-                </div>
+                </div>  
+                @endif
             </div>
         </div>
         <form action="{{ route('carts.create') }}" method="POST">
@@ -104,22 +107,18 @@
                                     </a>
                                 </div>
                                 <div class="dropdown-item">
-                                    <a href="{{ route('products.destroy', $p->id) }}" class="badge badge-pill badge-danger">
+                                    <a href="javascript:;" data-id="{{ route('products.destroy', $p->id) }}" class="btn-danger badge badge-pill badge-danger">
                                         Delete
                                     </a>
                                 </div>
-                                {{-- <div class="dropdown-item">
-                                    <a href="{{ route('carts.edit', $p->id) }}" class="badge badge-pill badge-primary">
-                                        Pesen
-                                    </a>
-                                </div> --}}
+                               
                             </div>
                         </div>
                     </td>
                     <td>
                         <div class="custom-control custom-control-alternative custom-checkbox mb-3">
                             <input class="custom-control-input check-class" id="check-{{ $p->id }}" name="pesen[]" value="{{ $p->id }}" type="checkbox">
-                            <label class="custom-control-label text-primary font-weight-bold pt-1" for="check-{{ $p->id }}">
+                            <label class="custom-control-label text-warning font-weight-bold pt-1" for="check-{{ $p->id }}">
                                 Pesen
                             </label>
                         </div>
@@ -134,7 +133,7 @@
 
           @csrf
                 <div class="col text-right">
-                    <button type="submit" class="btn btn-icon btn-primary" style="border-radius: 22px;">
+                    <button type="submit" class="btn btn-icon btn-warning" style="border-radius: 22px;">
                         <span class="btn-inner--text">Pesan</span>
                     </button>
                 </div>
@@ -164,7 +163,33 @@
         $('.check-class').on('change', function(){
             var check = $(this).prop('checked');
             var val = $(this).val()
-        })
+        });
+
+        $('.btn-danger').on('click', function() {
+
+            Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#1aae6f',
+            cancelButtonColor: '#f80031',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel'
+            }).then((result) => {
+                if (result.value) {
+                    var data = $(this).data('id')
+                    console.log(data)
+                    window.location = data;
+                }else{
+                    Swal.fire(
+                    'Cancelled!',
+                    'Your file has been cancel.',
+                    'error'
+                    )
+                }
+            })
+        });
 
     } );
 

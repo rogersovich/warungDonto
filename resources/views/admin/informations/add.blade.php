@@ -1,6 +1,6 @@
 @extends('layouts.element.main')
 
-@section('title', 'Categories - Add')
+@section('title', 'Keterangan Satuan - Add')
 
 @section('custom-css')
     <style>
@@ -13,11 +13,21 @@
 
 @section('content')
 
+<!-- Navbar -->
+<nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+  <div class="container-fluid">
+    <!-- Brand -->
+    <a class="h4 mb-0 mt-3 text-white text-uppercase d-none d-lg-inline-block" href="javascript:;">
+      Dashboard
+    </a>
+  </div>
+</nav>
+<!-- End Navbar -->
 <!-- Header -->
-<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+<div class="header bg-gradient-success pb-8 pt-5 pt-md-8">
 </div>
 <div class="container-fluid mt--7">
-          <!-- Table -->
+<!-- Table -->
   <div class="row">
     <div class="col">
       <div class="card shadow">
@@ -28,12 +38,12 @@
                         <ol class="breadcrumb breadcrumb-links" style="background:none;">
                             <li class="breadcrumb-item">
                                 <a href="{{ route('dashboard') }}">
-                                    <i class="fa fa-home"></i>
+                                    <i class="fa fa-home text-success"></i>
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('informations.index') }}">
-                                    Categories
+                                <a class="text-success" href="{{ route('informations.index') }}">
+                                        Keterangan Satuan
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
@@ -56,7 +66,7 @@
                         <label class="form-control-label">
                             Kategori
                         </label>
-                        <select name="category_id" id="category_id" class="form-control">
+                        <select name="category_id" id="category_id" class="form-control form-control-alternative">
                             <option value="">Pilih Kategori</option>
                             @foreach ($categories as $c)
                             <option value="{{ $c->id }}">{{ $c->name }}</option>
@@ -77,9 +87,8 @@
                         <label class="form-control-label">
                             Satuan Awal
                         </label>
-                        <select name="satuan_awal_id" id="satuan_awal_id" class="form-control">
+                        <select name="satuan_awal_id" id="satuan_awal_id" class="form-control form-control-alternative">
                             <option value="">Pilih Satuan</option>
-
                         </select>
                     </div>
                 </div>
@@ -96,7 +105,7 @@
                         <label class="form-control-label">
                             Satuan Akhir
                         </label>
-                        <select name="satuan_akhir_id" id="satuan_akhir_id" class="form-control">
+                        <select name="satuan_akhir_id" id="satuan_akhir_id" class="form-control form-control-alternative">
                             <option value="">Pilih Satuan</option>
 
                         </select>
@@ -104,7 +113,7 @@
                 </div>
                 <div class="col-md-8"></div>
                 <div class="col text-right">
-                    <button type="submit" class="btn btn-icon btn-primary" style="border-radius: 22px;">
+                    <button type="submit" class="btn btn-icon btn-success" style="border-radius: 22px;">
                         <span class="btn-inner--text">Submit</span>
                     </button>
                 </div>
@@ -121,7 +130,7 @@
 
 @endsection
 
-@section('scripts')
+<script src="{{ asset('/assets/js/jquery-3.4.1.min.js') }}"></script>
 <script>
 
     $( document ).ready(function() {
@@ -141,7 +150,7 @@
                     console.log(response)
                     $("#satuan_awal_id").html($("<option value=''>Pilih Satuan</option>"))
                     $.each(response.results,function(e,i){
-                        $("#satuan_awal_id").append($("<option value='"+i.id+"'>"+i.name+"</option>"))
+                        $("#satuan_awal_id").append($("<option value='"+i.id+"'>"+i.name+" - tingkat "+i.tingkat+"</option>"))
                     })
                 }
             })
@@ -159,11 +168,11 @@
                     $("#satuan_akhir_id option,#district_id option").not(":first-child").remove();
                 },
                 success : function(response){
-                    console.log(response)
+                    //console.log(response)
                     $("#satuan_akhir_id").html($("<option value=''>Pilih Satuan</option>"))
                     $.each(response.results,function(e,i){
                         console.log(i);
-                        $("#satuan_akhir_id").append($("<option value='"+i.id+"'>"+i.name+"</option>"))
+                        $("#satuan_akhir_id").append($("<option value='"+i.id+"'>"+i.name+" - tingkat "+i.tingkat+"</option>"))
                     })
                 }
             })
@@ -172,4 +181,3 @@
         });
 
 </script>
-@endsection

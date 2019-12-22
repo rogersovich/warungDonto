@@ -1,5 +1,5 @@
 
-<title>Laporan Harian</title>
+<title>Laporan Mingguan</title>
 
 <style>
 
@@ -12,6 +12,7 @@
     .table {
         font-family: sans-serif;
         color: #232323;
+        margin-left: 70px;
         border-collapse: collapse;
 
     }
@@ -134,10 +135,10 @@
 
 <body class="pt-50 pb-50">
     <div class="">
-        <h1>
-            Laporan Mingguan -
+        <h1 style="margin-left: 100px;">
+            Laporan Barang Mingguan
             <span class="f-20">
-                2019 11 08
+                2019-11-08
             </span>
         </h1>
         <table class="table">
@@ -145,11 +146,11 @@
                 <th rowspan="2">No</th>
                 <th rowspan="2" class="wt-150">Nama Barang</th>
                 <th rowspan="2">Harga Beli</th>
-                <th rowspan="2" class="">Harga Jual</th>
+                <th rowspan="2">Harga Jual</th>
                 <th colspan="2">Pesedian Awal</th>
-                <th colspan="2" class="">Penjualan</th>
+                <th colspan="2">Penjualan</th>
                 <th colspan="2">Persediaan Akhir</th>
-                <th colspan="2" class="">Keterangan</th>
+                <!-- <th colspan="2">Keterangan</th> -->
             </tr>
             <tr>
                 <th class="">Jumlah</th>
@@ -158,8 +159,8 @@
                 <th class="">Harga</th>
                 <th class="">Jumlah</th>
                 <th class="">Harga</th>
-                <th class="" style="border-right: none;">Jumlah Beli</th>
-                <th class="" style="border-left: none;">Jumlah Jual</th>
+                <!-- <th class="" style="border-right: none;">Jumlah Beli</th>
+                <th class="" style="border-left: none;">Jumlah Jual</th> -->
             </tr>
             @php
                 $no = 1;
@@ -177,12 +178,12 @@
                     <td>{{ $r->jumlah_jual * $r->harga }}</td>
                     <td>{{ $r->jumlah_akhir }}</td>
                     <td>{{ $r->jumlah_akhir * $r->harga }}</td>
-                    <td>
+                    <!-- <td>
                         {{ $r->Product->Supplier['harga_beli'] * $r->jumlah_awal }}
                     </td>
                     <td>
                         {{ $r->Product->harga_jual * $r->jumlah_awal }}
-                    </td>
+                    </td> -->
                 </tr>
             @endforeach
         </table>

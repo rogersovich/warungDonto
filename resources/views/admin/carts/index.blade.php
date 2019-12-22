@@ -1,6 +1,6 @@
 @extends('layouts.element.main')
 
-@section('title', 'Categories')
+@section('title', 'Pemesanan')
 
 @section('custom-css')
     <style>
@@ -20,7 +20,7 @@
 @include('layouts.element.navbar')
 
 <!-- Header -->
-<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+<div class="header bg-gradient-warning pb-8 pt-5 pt-md-8">
 </div>
 <div class="container-fluid mt--7">
           <!-- Table -->
@@ -34,11 +34,11 @@
                         <ol class="breadcrumb breadcrumb-links" style="background:none;">
                             <li class="breadcrumb-item">
                                 <a href="javascript:;">
-                                    <i class="fa fa-home"></i>
+                                    <i class="fa fa-home text-warning"></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">
-                                Categories
+                            <li class="breadcrumb-item active text-warning" aria-current="page">
+                                Pemesanan
                             </li>
                         </ol>
                     </nav>

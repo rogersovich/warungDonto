@@ -2,26 +2,55 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Cart;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Session;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
+
     public function __construct()
     {
-        $this->middleware('auth');
+
+        $this->middleware(function ($request, $next) {
+            $user = Auth::user();
+            $role = $user->roles->first()->pivot->role_id;
+
+            if ($role == 2) {
+                if($user){
+                    $data = collect([
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'id' => $user->id,
+                        'role_id' => $role,
+                    ]);
+                    Session::put('user', $data);
+                }
+
+                return $next($request);
+            }else{
+                if($user){
+                    $data = collect([
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'id' => $user->id,
+                        'role_id' => $role,
+                    ]);
+                    Session::put('user', $data);
+                }
+
+                return $next($request);
+            }
+        });
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
+
     public function index()
     {
         return view('home');

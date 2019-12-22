@@ -8,7 +8,7 @@
         <div class="container">
             <div class="signup-content">
                 <div class="signup-form">
-                    <h2 class="form-title">Sign up</h2>
+                    <h2 class="form-title">Silahkan Daftar</h2>
                     <form action="{{ route('regiter.process') }}" method="POST" class="register-form">
                         @csrf
                         <div class="form-group">

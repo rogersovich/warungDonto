@@ -6,7 +6,9 @@ use App\Cart;
 use App\Debt;
 use App\DebtDetail;
 use App\Report;
+use App\Log;
 use App\Order;
+use App\OrderDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +25,18 @@ class DebtController extends Controller
             $role = $user->roles->first()->pivot->role_id;
 
             if ($role == 2) {
-                return redirect('home/');
+                if($user){
+                    $data = collect([
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'id' => $user->id,
+                        'role_id' => $role,
+                        'user_id' => $user->id,
+                    ]);
+                    Session::put('user', $data);
+                }
+
+                return $next($request);
             }else{
                 if($user){
                     $data = collect([
@@ -31,6 +44,7 @@ class DebtController extends Controller
                         'email' => $user->email,
                         'id' => $user->id,
                         'role_id' => $role,
+                        'user_id' => $user->id,
                     ]);
                     Session::put('user', $data);
                 }
@@ -70,7 +84,7 @@ class DebtController extends Controller
 
     public function process(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
 
         $date = Carbon::now()->format('Y-m-d');
 
@@ -87,17 +101,22 @@ class DebtController extends Controller
 
         //dd($order);
 
-            Order::where(['id' => $request->order_id])->update([
-                'total_bayar' => $totalBayar,
-                'kembalian' => $totalBayar - $order->total_harga,
+        $orderDetail = OrderDetail::where('order_id', $request->order_id)
+            ->get();
+
+        foreach ($orderDetail as $od) {
+            Report::where(
+                ['order_id' => $od->order_id],
+                ['product_id' => $od->product_id]
+            )->update([
+                'status' => 1
             ]);
+        }
 
 
-        Report::create([
-            'code_report' => $kdReport,
-            'tanggal' => $date,
-            'order_id' => $request->order_id,
-            'jenis_laporan' => 'harian'
+        Order::where(['id' => $request->order_id])->update([
+            'total_bayar' => $totalBayar,
+            'kembalian' => $totalBayar - $order->total_harga,
         ]);
 
         Debt::where(['id' => $request->debt_id])->update([
@@ -106,30 +125,34 @@ class DebtController extends Controller
             'status' => 1
         ]);
 
+        $dateNow = Carbon::now();
+
+        Log::create([
+            'user_id' => $request->user,
+            'activity' => $request->activity,
+            'detail_activity' =>  $request->activity.' hutang dengan nama '.$request->name,
+            'tanggal' => $dateNow,
+            'debt_change' => 1
+        ]);
+
         return redirect()->route('orders.struk');
-    }
-
-
-    public function edit(Debt $debt)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Debt  $debt
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Debt $debt)
-    {
-        //
     }
 
     public function destroy(Debt $debt)
     {
         $debt->delete();
+
+        $user = Auth::user();
+        $role = $user->roles->first()->pivot->role_id;
+        $date = Carbon::now();
+
+        Log::create([
+            'user_id' => $user->id,
+            'activity' => 'menghapus',
+            'detail_activity' => 'menghapus hutang dengan nama '.$debt->name,
+            'tanggal' => $date,
+            'debt_change' => 1
+        ]);
 
         return redirect()->route('debts.index');
     }
