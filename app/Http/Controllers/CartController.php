@@ -129,13 +129,14 @@ class CartController extends Controller
             'order_change' => 1
         ]);
         
-        return redirect()->route('products.index');
+        return redirect()->route('orders.create');
 
     }
 
 
     public function edit($id)
     {
+        
         $product = Product::where('id', $id)->first();
         //dd($product);
         $cart = Cart::where('product_id', $id)->first();

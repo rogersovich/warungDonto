@@ -275,26 +275,27 @@ class OrderController extends Controller
 
     public function destroy($id)
     {
+
+        $user = Auth::user();
+        $date = Carbon::now();
+
         $cart = Cart::find($id)->first();
         $product = Product::where('id', $cart->product_id)->first();
 
         Product::where('id', $cart->product_id)->update([
             'stok' => $cart->qty + $product->stok
         ]);
-
-        $cart->delete();
-        
-        $user = Auth::user();
-        $role = $user->roles->first()->pivot->role_id;
-        $date = Carbon::now();
+    
 
         Log::create([
-            'user_id' => $user,
+            'user_id' => $user->id,
             'activity' => 'menghapus',
             'detail_activity' => 'menghapus pesanan produk '.$product->name,
             'tanggal' => $date,
             'order_change' => 1
         ]);
+
+        $cart->delete();
 
         return redirect()->route('orders.create');
     }

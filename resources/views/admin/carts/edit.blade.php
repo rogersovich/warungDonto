@@ -91,7 +91,7 @@
                 </div>
                 <div class="col-md-8"></div>
                 <div class="col text-right">
-                    <input type="hidden" name="role" value="{{ $session['role_id'] }}">
+                    <input type="hidden" name="user" value="{{ $session['user_id'] }}">
                     <input type="hidden" name="activity" value="mengubah">
                     <button type="submit" id="btn-add" class="btn btn-icon btn-warning" style="border-radius: 22px;">
                         <span class="btn-inner--text">Submit</span>

@@ -68,9 +68,11 @@
                 @foreach ($logs as $l)
                 @php
                     $date = date_create($l->tanggal);
-                    $waktu = date_format($date, 'H:m:i');
-                    $tanggal = date_format($date, 'l F, Y');
+                    $waktu = date_format($date, 'H:i:s');
+                    $tanggal = date_format($date, 'd F, Y');
+                    $hari = date_format($date, 'l');
 
+                    // Pengubah
                     if ($l->product_change == 1) {
                         $change = "Produk";
                     }elseif($l->supplier_change == 1){
@@ -93,11 +95,27 @@
                         $change = "Akun";
                     }
                     
+                    // Hari 
+                    if ($hari == 'Monday') {
+                        $hari = "Senin";
+                    }elseif($hari == 'Tuesday'){
+                        $hari = "Selasa";
+                    }elseif($hari == 'Wednesday'){
+                        $hari = "Rabu";
+                    }elseif($hari == 'Thursday'){
+                        $hari = "Kamis";
+                    }elseif($hari == 'Friday'){
+                        $hari = "Jumat";
+                    }elseif($hari == 'Saturday'){
+                        $hari = "Sabtu";
+                    }elseif($hari == 'Sunday'){
+                        $hari = "Minggu";
+                    }
 
                 @endphp
                 <tr>
                     <td>{{ $no }}</td>
-                    <td>{{ $tanggal }}</td>
+                    <td>{{ $hari.' '.$tanggal }}</td>
                     <td>{{ $waktu }}</td>
                     <td>{{ $l->User->name }}</td>
                     <td>
