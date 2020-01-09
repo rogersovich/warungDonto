@@ -115,16 +115,62 @@ class SupplierController extends Controller
             ->latest()
             ->first();
 
-            // dd($report);
+            $report_akhir = Report::where('product_id',$val['id'])
+                ->latest()
+                ->first();
 
-            if ($report) {
+            //dd($report);
+
+            if ($report == null) {
+
+                //dd('dfsdff');
+
+                $product = Product::where('id',$val['id'])->first();
 
                 Report::create([
                     'product_id' => $val['id'],
                     'order_id' => null,
                     'tanggal' => $date,
-                    'jumlah_awal' => $report->jumlah_akhir,
+                    'jumlah_awal' => $product->stok,
                     'bm_jumlah' => $val['qty'],
+                    'jumlah_akhir' => $product->stok + $val['qty'],
+                    'harga' => $product->harga_jual,
+                    'keterangan' => null,
+                    'status' => 1,
+                    'code_report' => $kdReport,
+                    'jenis_laporan' => 'pasok'
+                ]);
+
+
+            }elseif($report_akhir->jenis_laporan == 'barang'){
+
+                //dd('heheh');
+
+                $product = Product::where('id',$val['id'])->first();
+
+                Report::create([
+                    'product_id' => $val['id'],
+                    'order_id' => null,
+                    'tanggal' => $date,
+                    'jumlah_awal' => $product->stok,
+                    'bm_jumlah' => $val['qty'],
+                    'jumlah_akhir' => $product->stok + $val['qty'],
+                    'harga' => $product->harga_jual,
+                    'keterangan' => null,
+                    'status' => 1,
+                    'code_report' => $kdReport,
+                    'jenis_laporan' => 'pasok'
+                ]);
+
+            }elseif($report->tanggal == $date){
+                //dd('test');
+                
+                Report::create([
+                    'product_id' => $val['id'],
+                    'order_id' => null,
+                    'tanggal' => $date,
+                    'jumlah_awal' => $report->jumlah_awal,
+                    'bm_jumlah' => $report->bm_jumlah + $val['qty'],
                     'jumlah_akhir' => $report->jumlah_akhir + ($val['qty']),
                     'harga' => $report->harga,
                     'keterangan' => null,
@@ -132,23 +178,8 @@ class SupplierController extends Controller
                     'code_report' => $kdReport,
                     'jenis_laporan' => 'pasok'
                     ]);
-
-                $report_back = Report::where('product_id', $val['id'])
-                    ->orderBy('code_report','asc')
-                    ->select('code_report','product_id')
-                    ->first();
-
-                $report_banget = Report::where('product_id', $val['id'])
-                    ->orderBy('code_report','desc')
-                    ->first();
-
-                Report::where(['id' => $report_back->id])->update([
-                    'bm_jumlah' => $report_banget->bm_jumlah,
-                    'jumlah_akhir' => $report_banget->jumlah_akhir
-                ]);
-
             }else{
-                //dd('test');
+
                 $product = Product::where('id',$val['id'])->first();
 
                 Report::create([

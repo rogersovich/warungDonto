@@ -155,76 +155,28 @@ class OrderController extends Controller
             $kdReport = $char . sprintf("%05s", $noUrut);
 
             $report = Report::where('product_id',$key['product_id'])
+                ->where('jenis_laporan', 'barang')
+                ->latest()
+                ->first();
+            
+            $report_akhir = Report::where('product_id',$key['product_id'])
                 ->latest()
                 ->first();
 
-            // dd($report);
+            //dd($report_akhir);
 
-            if ($report) {
-
-                // $report_now = Report::where('product_id',$reports->product_id)->first();
-
-                if(!$request->nama == null){
-
-                    Report::create([
-                        'product_id' => $key['product_id'],
-                        'order_id' => $order->id,
-                        'tanggal' => $date,
-                        'jumlah_awal' => $report->jumlah_akhir,
-                        'jumlah_jual' => $key['qty'],
-                        'jumlah_akhir' => $report->jumlah_akhir - $key['qty'],
-                        'harga' => $report->harga,
-                        'keterangan' => null,
-                        'code_report' => $kdReport,
-                        'jenis_laporan' => 'barang'
-                    ]);
-
-                }else{
-
-                    Report::create([
-                        'product_id' => $key['product_id'],
-                        'order_id' => $order->id,
-                        'tanggal' => $date,
-                        'jumlah_awal' => $report->jumlah_akhir,
-                        'jumlah_jual' => $key['qty'],
-                        'jumlah_akhir' => $report->jumlah_akhir - $key['qty'],
-                        'harga' => $report->harga,
-                        'keterangan' => null,
-                        'status' => 1,
-                        'code_report' => $kdReport,
-                        'jenis_laporan' => 'barang'
-                    ]);
-
-                }
-
-                $report_back = Report::where('product_id', $key['product_id'])
-                    ->orderBy('code_report','asc')
-                    ->select('code_report','product_id')
-                    ->first();
-
-                $report_banget = Report::where('product_id', $key['product_id'])
-                    ->orderBy('code_report','desc')
-                    ->first();
-
-                Report::where(['id' => $report_back->id])->update([
-                    'jumlah_jual' => $report_banget->jumlah_jual,
-                    'jumlah_akhir' => $report_banget->jumlah_akhir
-                ]);
-
-            }else{
-                //dd('null');
+            if ($report == null) {
 
                 $product = Product::where('id',$key['product_id'])->first();
-                //dd($product);
-
+                
                 if(!$request->nama == null){
                     Report::create([
                         'product_id' => $key['product_id'],
                         'order_id' => $order->id,
                         'tanggal' => $date,
-                        'jumlah_awal' => $product->stok + $key['qty'],
+                        'jumlah_awal' => $product->stok,
                         'jumlah_jual' => $key['qty'],
-                        'jumlah_akhir' => $product->stok,
+                        'jumlah_akhir' => $product->stok - $key['qty'],
                         'harga' => $product->harga_jual,
                         'keterangan' => null,
                         'code_report' => $kdReport,
@@ -235,9 +187,111 @@ class OrderController extends Controller
                         'product_id' => $key['product_id'],
                         'order_id' => $order->id,
                         'tanggal' => $date,
-                        'jumlah_awal' => $product->stok + $key['qty'],
+                        'jumlah_awal' => $product->stok,
                         'jumlah_jual' => $key['qty'],
-                        'jumlah_akhir' => $product->stok,
+                        'jumlah_akhir' => $product->stok - $key['qty'],
+                        'harga' => $product->harga_jual,
+                        'keterangan' => null,
+                        'status' => 1,
+                        'code_report' => $kdReport,
+                        'jenis_laporan' => 'barang'
+                    ]);
+                }
+
+        
+            }elseif($report_akhir->jenis_laporan == 'pasok'){
+
+                $product = Product::where('id',$key['product_id'])->first();
+                
+                if(!$request->nama == null){
+                    Report::create([
+                        'product_id' => $key['product_id'],
+                        'order_id' => $order->id,
+                        'tanggal' => $date,
+                        'jumlah_awal' => $product->stok,
+                        'jumlah_jual' => $key['qty'],
+                        'jumlah_akhir' => $product->stok - $key['qty'],
+                        'harga' => $product->harga_jual,
+                        'keterangan' => null,
+                        'code_report' => $kdReport,
+                        'jenis_laporan' => 'barang'
+                    ]);
+                }else{
+                    Report::create([
+                        'product_id' => $key['product_id'],
+                        'order_id' => $order->id,
+                        'tanggal' => $date,
+                        'jumlah_awal' => $product->stok,
+                        'jumlah_jual' => $key['qty'],
+                        'jumlah_akhir' => $product->stok - $key['qty'],
+                        'harga' => $product->harga_jual,
+                        'keterangan' => null,
+                        'status' => 1,
+                        'code_report' => $kdReport,
+                        'jenis_laporan' => 'barang'
+                    ]);
+                }
+
+            }elseif($report->tanggal == $date){
+
+                if(!$request->nama == null){
+
+                    Report::create([
+                        'product_id' => $key['product_id'],
+                        'order_id' => $order->id,
+                        'tanggal' => $date,
+                        'jumlah_awal' => $report->jumlah_awal,
+                        'jumlah_jual' => $report->jumlah_jual + $key['qty'],
+                        'jumlah_akhir' => $report->jumlah_akhir - $key['qty'],
+                        'harga' => $report->harga,
+                        'keterangan' => null,
+                        'code_report' => $kdReport,
+                        'jenis_laporan' => 'barang'
+                    ]);
+
+                }else{
+
+                    Report::create([
+                        'product_id' => $key['product_id'],
+                        'order_id' => $order->id,
+                        'tanggal' => $date,
+                        'jumlah_awal' => $report->jumlah_awal,
+                        'jumlah_jual' => $report->jumlah_jual + $key['qty'],
+                        'jumlah_akhir' => $report->jumlah_akhir - $key['qty'],
+                        'harga' => $report->harga,
+                        'keterangan' => null,
+                        'status' => 1,
+                        'code_report' => $kdReport,
+                        'jenis_laporan' => 'barang'
+                    ]);
+
+                }
+                
+            }else{
+
+                $product = Product::where('id',$key['product_id'])->first();
+                
+                if(!$request->nama == null){
+                    Report::create([
+                        'product_id' => $key['product_id'],
+                        'order_id' => $order->id,
+                        'tanggal' => $date,
+                        'jumlah_awal' => $product->stok,
+                        'jumlah_jual' => $key['qty'],
+                        'jumlah_akhir' => $product->stok - $key['qty'],
+                        'harga' => $product->harga_jual,
+                        'keterangan' => null,
+                        'code_report' => $kdReport,
+                        'jenis_laporan' => 'barang'
+                    ]);
+                }else{
+                    Report::create([
+                        'product_id' => $key['product_id'],
+                        'order_id' => $order->id,
+                        'tanggal' => $date,
+                        'jumlah_awal' => $product->stok,
+                        'jumlah_jual' => $key['qty'],
+                        'jumlah_akhir' => $product->stok - $key['qty'],
                         'harga' => $product->harga_jual,
                         'keterangan' => null,
                         'status' => 1,
