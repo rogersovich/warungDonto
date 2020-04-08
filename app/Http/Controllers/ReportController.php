@@ -122,9 +122,11 @@ class ReportController extends Controller
 
         $order = Order::where('id', $data->order_id)->first();
 
-        $pdf = PDF::loadView('pdf.struk_pdf', compact('data','order_details','order'));
+        $size = array(0,0,685.98,396.85);
+        $pdf = PDF::loadView('pdf.struk_pdf', compact('data','order_details','order'))
+            ->setPaper($size, 'landscape');
 
-        return $pdf->setPaper('a4', 'landscape')->save('test.pdf')->stream('haha.pdf');
+        return $pdf->save('test.pdf')->stream('haha.pdf');
     }
 
 

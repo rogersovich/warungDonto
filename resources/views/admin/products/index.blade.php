@@ -131,14 +131,14 @@
             </tbody>
           </table>
 
-          @csrf
-                <div class="col text-right">
-                    <button type="submit" class="btn btn-icon btn-warning" style="border-radius: 22px;">
-                        <span class="btn-inner--text">Pesan</span>
-                    </button>
-                </div>
-            </form>
+            @csrf
+            <div class="col text-right">
+                <button type="submit" class="btn btn-icon btn-warning" style="border-radius: 22px;">
+                    <span class="btn-inner--text">Pesan</span>
+                </button>
+            </div>
         </div>
+        </form>
         <div class="card-footer">
           {{ $products->render() }}
         </div>

@@ -74,6 +74,7 @@
                             Bayar
                         </div>
                     </a>
+                    
                 </div>
 
             </div>
